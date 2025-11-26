@@ -1,14 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Home from "./components/Home";
 
-function App() {
+export default function App() {
   return (
-    <>
+    <Router>
       <Navbar />
-      <div className="pt-20 text-white">
-        {/* Your content below navbar */}
+      {/* Prevent content hiding behind navbar */}
+      <div className="pt-24">
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
       </div>
-    </>
+    </Router>
   );
 }
-
-export default App;
