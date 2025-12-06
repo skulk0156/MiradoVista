@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import heroLogo from "../assets/miradovista-logo.png";
 import managementImg from "../assets/image.png";
+import { motion } from "framer-motion";
+import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
 export default function Home() {
-  // counters
   const counters = [
     { id: "clients", end: 320, label: "Clients" },
-    { id: "placements", end: 240, label: "Successful Placements" },
-    { id: "years", end: 35, label: "Years of Excellence", suffix: "+" },
+    { id: "placements", end: 240, label: "Placements" },
+    { id: "years", end: 35, label: "Years" },
   ];
 
   const [values, setValues] = useState(counters.map(() => 0));
@@ -20,7 +21,7 @@ export default function Home() {
           if (entry.isIntersecting && !doneRef.current) {
             doneRef.current = true;
             counters.forEach((c, idx) => {
-              const duration = 1400;
+              const duration = 1500;
               const frameRate = 30;
               const totalFrames = Math.round(duration / frameRate);
               let frame = 0;
@@ -33,20 +34,13 @@ export default function Home() {
                   copy[idx] = val;
                   return copy;
                 });
-                if (frame >= totalFrames) {
-                  clearInterval(counter);
-                  setValues((prev) => {
-                    const copy = [...prev];
-                    copy[idx] = c.end;
-                    return copy;
-                  });
-                }
+                if (frame >= totalFrames) clearInterval(counter);
               }, frameRate);
             });
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.4 }
     );
 
     const statEl = document.querySelector("#statistics");
@@ -54,252 +48,425 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
+  const staggerParent = { visible: { transition: { staggerChildren: 0.2 } } };
+
+  const services = [
+    {
+      title: "HR Solutions",
+      desc: "End-to-end recruitment, onboarding & employee relations.",
+      icon: <FaUserTie className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Talent Sourcing", "Skill Assessment", "Interview Coordination"]
+    },
+    {
+      title: "IT Services",
+      desc: "Software solutions, app development & IT staffing.",
+      icon: <FaLaptopCode className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Custom Development", "IT Staffing", "Tech Consulting"]
+    },
+    {
+      title: "Office Supplies",
+      desc: "Stationery, electronics & more delivered on demand.",
+      icon: <FaBoxes className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Bulk Ordering", "Fast Delivery", "Quality Products"]
+    },
+    {
+      title: "Legal & Compliance",
+      desc: "Corporate legal advice and accounting services.",
+      icon: <FaGavel className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Legal Advisory", "Compliance Management", "Documentation"]
+    },
+  ];
+
+  const offices = [
+    { city: "Noida", address: "Sector-76, Noida, Uttar Pradesh, India", phone: "+91 1234567890", email: "noida@miradovista.com" },
+    { city: "Rudrapur", address: "Rudrapur, Uttarakhand, India", phone: "+91 0987654321", email: "rudrapur@miradovista.com" },
+  ];
+
+  const testimonials = [
+    {
+      name: "Rajesh Kumar",
+      position: "CEO, Tech Solutions",
+      content: "MiradoVista helped us find the perfect candidates for our growing company. Their recruitment process is efficient and professional.",
+      rating: 5
+    },
+    {
+      name: "Priya Sharma",
+      position: "Marketing Manager",
+      content: "I found my dream job through MiradoVista. The team was supportive throughout the entire process and helped me land a position that matches my skills perfectly.",
+      rating: 5
+    },
+    {
+      name: "Amit Patel",
+      position: "HR Director",
+      content: "We've been working with MiradoVista for over 3 years now. They consistently provide high-quality candidates that fit our company culture.",
+      rating: 5
+    }
+  ];
+
+  const whyChooseUs = [
+    {
+      title: "Extensive Network",
+      desc: "Access to a vast pool of talented professionals across various industries."
+    },
+    {
+      title: "Personalized Approach",
+      desc: "Tailored solutions to meet your specific recruitment needs."
+    },
+    {
+      title: "Quick Turnaround",
+      desc: "Efficient processes that reduce hiring time without compromising quality."
+    },
+    {
+      title: "Industry Expertise",
+      desc: "Deep understanding of different sectors and their unique requirements."
+    }
+  ];
+
+  const particles = Array.from({ length: 25 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 2,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    delay: Math.random() * 5,
+  }));
+
   return (
-    <div className="pt-24 bg-[#FBF7F2] text-gray-800 font-[Poppins]">
+    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
+      {/* Animated Gold Gradient Background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
 
-      {/* HERO */}
-      <section className="relative w-full text-center px-6 py-24 overflow-hidden">
-        <div className="absolute top-[-140px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] 
-          bg-gradient-to-br from-[#f7ecd1] to-[#efe0b8] opacity-40 blur-[160px] rounded-full pointer-events-none">
-        </div>
+      {/* Hero Section */}
+      <section className="relative px-6 py-24 overflow-hidden">
+        {/* Floating Gold Glow */}
+        <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            initial={{ opacity: 0, x: `${p.x}%`, y: `${p.y}%`, scale: 0.5 }}
+            animate={{ opacity: [0, 0.6, 0], scale: [0.5, 1, 0.5] }}
+            transition={{ repeat: Infinity, duration: 8 + Math.random() * 4, delay: p.delay }}
+            className="absolute rounded-full bg-[#D4AF37] w-[4px] h-[4px] md:w-[6px] md:h-[6px] shadow-md"
+          />
+        ))}
+        <motion.div initial="hidden" animate="visible" className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* Left Side - Text Content */}
+          <motion.div variants={fadeUp} className="text-left">
+            <motion.h1 variants={fadeUp} className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
+              Best Placement Consultant in India
+            </motion.h1>
+            <motion.p variants={fadeUp} className="mt-6 text-lg text-[#333333]">
+              Connecting top talent with leading companies across Noida, Delhi, Mumbai, Pune, Hyderabad & more.
+            </motion.p>
+            <motion.div variants={staggerParent} className="mt-10 flex flex-wrap gap-6">
+              {["Get Started Now", "Learn More"].map((btn, i) => (
+                <motion.a key={i} variants={fadeUp} href="#contact" className={`px-8 py-3 font-semibold rounded-full shadow-lg border transition-all flex items-center gap-2 ${i === 0 ? "bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] border-[#D4AF37]" : "bg-white text-[#8B4513] border-[#D4AF37] hover:shadow-xl"}`}>
+                  {btn}
+                  {i === 0 && <FaArrowRight className="text-sm" />}
+                </motion.a>
+              ))}
+            </motion.div>
+          </motion.div>
+          
+          {/* Right Side - Logo with Pop-up Animation */}
+          <motion.div 
+            initial={{ scale: 0, rotate: -180, opacity: 0 }} 
+            animate={{ 
+              scale: [0, 1.2, 1], 
+              rotate: [-180, 10, 0], 
+              opacity: [0, 1, 1] 
+            }} 
+            transition={{ 
+              duration: 1.2,
+              ease: "easeOut",
+              times: [0, 0.6, 1]
+            }} 
+            className="flex justify-center"
+          >
+            <motion.div 
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 25px 70px rgba(0,0,0,0.3)",
+                rotate: [0, -2, 2, 0],
+                transition: { duration: 0.3 }
+              }}
+              className="inline-block p-8 rounded-3xl bg-white shadow-[0_16px_50px_rgba(0,0,0,0.18)] border border-[#D4AF37]/20 transition-all relative overflow-hidden"
+            >
+              {/* Animated glow effect behind logo */}
+              <motion.div 
+                initial={{ scale: 0 }}
+                animate={{ scale: [0, 1.5, 1] }}
+                transition={{ 
+                  duration: 1.5,
+                  ease: "easeOut",
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  repeatDelay: 3
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] opacity-20 blur-xl"
+              />
+              <img src={heroLogo} alt="MiradoVista HR" className="h-64 relative z-10" />
+              {/* Sparkle effects */}
+              {[...Array(6)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ 
+                    scale: [0, 1, 0],
+                    opacity: [0, 1, 0],
+                    rotate: [0, 360]
+                  }}
+                  transition={{
+                    duration: 2,
+                    delay: 0.8 + i * 0.1,
+                    repeat: Infinity,
+                    repeatDelay: 4
+                  }}
+                  className="absolute w-2 h-2 bg-[#D4AF37] rounded-full"
+                  style={{
+                    top: `${20 + Math.random() * 60}%`,
+                    left: `${20 + Math.random() * 60}%`,
+                  }}
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
 
-        <div className="relative z-10 mx-auto max-w-5xl px-6 animate-fadeIn">
-          <div className="inline-block p-6 rounded-3xl bg-white/70 backdrop-blur-md shadow-2xl border border-white/40 animate-float">
-            <img
-              src={heroLogo}
-              alt="MiradoVista HR"
-              className="mx-auto h-44 drop-shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
-            />
-          </div>
-
-          <h1 className="mt-8 text-3xl md:text-5xl font-extrabold leading-tight 
-            bg-gradient-to-r from-[#b58f4a] to-[#f3d7a0] bg-clip-text text-transparent 
-            drop-shadow-sm font-[Playfair_Display] animate-slideUp">
-            Best Placement Consultant in India
-          </h1>
-
-          <p className="mt-4 text-md md:text-lg text-gray-700 max-w-2xl mx-auto tracking-wide animate-fadeInSlow">
-            Building careers. Empowering businesses. We connect top talent with leading companies across Noida, Delhi, Mumbai, Pune, Hyderabad, Bangalore and more.
+      {/* About Section */}
+      <section id="about" className="max-w-6xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-14 items-center">
+        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <h2 className="text-4xl font-bold text-[#D4AF37] font-[Playfair_Display]">Who We Are</h2>
+          <p className="mt-4 text-lg text-[#333333] leading-relaxed">
+            We are hassle-free and fee-free for candidates! Known as India's best placement consultant with a strong presence across major cities.
           </p>
-
-          <div className="mt-8 flex items-center justify-center gap-4 animate-slideUpSlow">
-            <a
-              href="#contact"
-              className="inline-block px-10 py-3 rounded-full font-semibold 
-              bg-gradient-to-r from-[#d6b36b] to-[#f3d9a4] text-white shadow-lg hover:scale-105 transition-transform">
-              Get Started Now
-            </a>
-            <a
-              href="#services"
-              className="inline-block px-6 py-3 rounded-lg font-medium border border-[#e9d9a8] 
-              text-[#8d6f33] bg-white/60 backdrop-blur-sm hover:shadow-md transition">
-              Learn More
-            </a>
+          <p className="mt-4 text-lg text-[#333333] leading-relaxed">
+            We genuinely care about providing excellent services and match the best talent with the right opportunities.
+          </p>
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {["Hassle-free Hiring", "Top-Tier Talent"].map((item, i) => (
+              <motion.div key={i} variants={fadeUp} className="p-6 rounded-2xl bg-white border border-[#D4AF37]/20 shadow-inner hover:scale-105 transition-all">
+                <h4 className="font-semibold text-[#333333] flex items-center gap-2">
+                  <FaCheckCircle className="text-[#D4AF37]" />
+                  {item}
+                </h4>
+                <p className="mt-2 text-sm text-[#333333]">Transparent, timely, and efficient hiring solutions for businesses and candidates alike.</p>
+              </motion.div>
+            ))}
           </div>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} viewport={{ once: true }} className="rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all">
+          <img src={managementImg} className="object-cover w-full h-[400px]" />
+        </motion.div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#ffffff] font-[Playfair_Display]">Why Choose MiradoVista</motion.h2>
+          <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-14">
+            {whyChooseUs.map((item, i) => (
+              <motion.div key={i} variants={fadeUp} className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-[#F0C14B]/30 shadow-lg hover:scale-105 transition-all h-full">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#F0C14B] to-[#D4AF37] flex items-center justify-center mb-4">
+                  <span className="text-[#8B4513] font-bold text-xl">{i + 1}</span>
+                </div>
+                <h4 className="text-xl font-semibold text-white mb-2">{item.title}</h4>
+                <p className="text-white/90">{item.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
-      <section id="about" className="max-w-6xl mx-auto px-6 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-
-          {/* Left: Text */}
-          <div className="animate-slideLeft">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#a5864d] font-[Playfair_Display]">
-              Who We Are
-            </h2>
-            <p className="mt-4 text-gray-700 text-lg leading-relaxed">
-              “We are hassle-free and fee-free for our candidates!“ We proudly serve Noida, Delhi,
-              Mumbai, Pune, Hyderabad, Bangalore, Chandigarh, Mohali and more — connecting top talent
-              with top companies.
-            </p>
-
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl bg-white/60 backdrop-blur-md border border-white/30 shadow animate-fadeIn">
-                <h4 className="text-lg font-semibold text-[#8b6e3a]">Our Promise</h4>
-                <p className="mt-2 text-gray-700 text-sm">
-                  Hassle-free recruitment and fast, reliable hires for companies.
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl bg-white/60 backdrop-blur-md border border-white/30 shadow animate-fadeInDelay">
-                <h4 className="text-lg font-semibold text-[#8b6e3a]">Expert Reach</h4>
-                <p className="mt-2 text-gray-700 text-sm">
-                  Strong presence across major Indian cities with a deep candidate network.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-6 flex gap-4">
-              <a
-                href="#contact"
-                className="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-[#d6b36b] 
-                to-[#f3d9a4] text-white font-semibold shadow">
-                Contact Us
-              </a>
-              <a
-                href="#"
-                className="inline-block px-6 py-3 rounded-full border border-[#e9d9a8] bg-white/60 text-[#8d6f33]">
-                Post Your Resume
-              </a>
-            </div>
-          </div>
-
-          {/* Right: Image */}
-          <div className="rounded-2xl overflow-hidden shadow-2xl animate-slideRight">
-            <img
-              src={managementImg}
-              alt="Company management"
-              className="w-full h-[360px] object-cover"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* STATISTICS */}
-      <section id="statistics" className="bg-gradient-to-r from-[#fff8ef] to-white py-16">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center px-6">
+      {/* Statistics Section */}
+      <section id="statistics" className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3]">
+        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-3 gap-10 text-center max-w-6xl mx-auto px-6">
           {counters.map((c, idx) => (
-            <div key={c.id} className="py-6 animate-fadeIn">
-              <div className="text-5xl md:text-6xl font-extrabold text-[#c6a25c]">
-                {values[idx]}
-                {c.suffix || ""}
-              </div>
-              <div className="mt-2 text-gray-700 text-lg">{c.label}</div>
-            </div>
+            <motion.div key={c.id} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all">
+              <div className="text-5xl md:text-6xl font-extrabold text-[#D4AF37]">{values[idx]}+</div>
+              <div className="mt-2 text-lg text-[#333333]">{c.label}</div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
-      {/* SERVICES */}
-      <section id="services" className="max-w-6xl mx-auto px-6 py-24">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a5864d] font-[Playfair_Display]">
-          Services We Offer
-        </h2>
-        <p className="text-center text-gray-600 mt-3">Get in touch with us for professional services!</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mt-12">
-          {[
-            { title: "HR Solutions", desc: "End-to-end recruitment, onboarding & employee relations." },
-            { title: "IT Services", desc: "Software solutions, IT staffing & managed services." },
-            { title: "Office Supplies", desc: "Premium office essentials delivered on demand." },
-            { title: "Legal Solutions", desc: "Corporate legal advice & compliance support." },
-          ].map((svc, i) => (
-            <div
-              key={i}
-              className="relative p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 
-              shadow-lg hover:-translate-y-2 transition-transform duration-300 animate-fadeIn">
-              <div className="h-12 w-12 rounded-md bg-gradient-to-tr from-[#d6b36b] to-[#f3d9a4] 
-                flex items-center justify-center text-white font-bold">
-                {svc.title[0]}
+      {/* Services Section */}
+      <section id="services" className="max-w-6xl mx-auto py-24 px-6">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Services We Offer</motion.h2>
+        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Professional solutions tailored for your business needs.</p>
+        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-14">
+          {services.map((svc, i) => (
+            <motion.div key={i} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center hover:scale-105 transition-all h-full flex flex-col">
+              <div className="flex justify-center mb-4">{svc.icon}</div>
+              <h4 className="text-lg font-semibold text-[#D4AF37]">{svc.title}</h4>
+              <p className="mt-3 text-sm text-[#333333] flex-grow">{svc.desc}</p>
+              <ul className="mt-4 text-left space-y-2">
+                {svc.features.map((feature, idx) => (
+                  <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
+                    <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex justify-center gap-3">
+                <a href="#contact" className="px-4 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">Learn More</a>
+                <a href="#contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</a>
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-[#8b6e3a]">{svc.title}</h3>
-              <p className="mt-2 text-gray-700 text-sm">{svc.desc}</p>
-            </div>
+            </motion.div>
           ))}
+        </motion.div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#F0C14B] font-[Playfair_Display]">What Our Clients Say</motion.h2>
+          <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-14">
+            {testimonials.map((testimonial, i) => (
+              <motion.div key={i} variants={fadeUp} className="p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-[#F0C14B]/30 shadow-lg hover:scale-105 transition-all h-full flex flex-col">
+                <div className="flex justify-center mb-4">
+                  <FaQuoteLeft className="text-4xl text-[#F0C14B] opacity-30" />
+                </div>
+                <div className="flex justify-center mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FaStar key={i} className="text-[#F0C14B]" />
+                  ))}
+                </div>
+                <p className="text-white/90 italic flex-grow">"{testimonial.content}"</p>
+                <div className="mt-6 text-center">
+                  <h4 className="font-semibold text-white">{testimonial.name}</h4>
+                  <p className="text-sm text-white/70">{testimonial.position}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* CONTACT CTA */}
-      <section id="contact" className="py-20 bg-gradient-to-r from-[#fff6e8] to-white text-center">
-        <div className="max-w-3xl mx-auto animate-fadeIn">
-          <h2 className="text-3xl font-bold text-[#a5864d] font-[Playfair_Display]">Searching for a Job?</h2>
-          <p className="text-gray-700 mt-3">
-            We're here to help you every step of the way. Post your resume or contact our recruiters today.
-          </p>
+      {/* Offices Section */}
+      <section className="max-w-6xl mx-auto px-6 py-24">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Our Offices</motion.h2>
+        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Find us across India.</p>
+        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
+          {offices.map((office, i) => (
+            <motion.div key={i} variants={fadeUp} className="p-6 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all">
+              <h4 className="text-xl font-semibold text-[#333333] mb-4">{office.city}</h4>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <FaMapMarkerAlt className="text-[#D4AF37] mt-1" />
+                  <p className="text-[#333333]">{office.address}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <FaPhone className="text-[#D4AF37]" />
+                  <p className="text-[#333333]">{office.phone}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <FaEnvelope className="text-[#D4AF37]" />
+                  <p className="text-[#333333]">{office.email}</p>
+                </div>
+              </div>
+              <div className="mt-6">
+                <a href="#contact" className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">
+                  Get Directions
+                  <FaArrowRight className="text-sm" />
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
 
-          <div className="mt-6 flex items-center justify-center gap-4">
-            <a
-              href="#"
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-[#d6b36b] 
-                to-[#f3d9a4] text-white font-semibold shadow-lg hover:scale-105 transition">
-              Contact Us
-            </a>
-            <a
-              href="#"
-              className="px-6 py-3 rounded-lg border border-[#e9d9a8] text-[#8d6f33] 
-              bg-white/60 backdrop-blur-sm hover:shadow-md transition">
-              Post Your Resume
-            </a>
-          </div>
+      {/* Newsletter Section */}
+      <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-[#F0C14B] font-[Playfair_Display]">Stay Updated</motion.h2>
+          <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-white">
+            Subscribe to our newsletter for the latest job openings and industry insights.
+          </motion.p>
+          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <input type="email" placeholder="Enter your email" className="px-6 py-3 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#F0C14B] text-white placeholder-white/60 w-full sm:w-auto" />
+            <button className="px-8 py-3 rounded-full bg-gradient-to-r from-[#F0C14B] to-[#D4AF37] text-[#8B4513] font-semibold shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(240,193,75,0.6)] transition-all">
+              Subscribe
+            </button>
+          </motion.div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-[#171717] text-white py-14 px-6">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-14">
+      {/* Contact Section */}
+      <section id="contact" className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3] text-center">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl font-bold font-[Playfair_Display] text-[#D4AF37]">Searching for a Job?</motion.h2>
+        <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-[#333333] max-w-xl mx-auto">
+          We're here to help you every step of the way. Connect with us to post your resume or get in touch with our recruiters.
+        </motion.p>
+        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6">
+          <a href="#post-resume" className="px-8 py-3 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-semibold shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] transition flex items-center gap-2">
+            Post Your Resume
+            <FaArrowRight className="text-sm" />
+          </a>
+          <a href="./Contact" className="px-8 py-3 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition flex items-center gap-2">
+            Contact Recruiter
+            <FaArrowRight className="text-sm" />
+          </a>
+        </motion.div>
+      </section>
 
-          <div>
-            <h4 className="text-xl font-bold font-[Playfair_Display]">MiradoVista HR</h4>
-            <p className="text-gray-400 mt-3 leading-relaxed">
-              Building careers. Empowering businesses. Premium recruitment & HR solutions across India.
-            </p>
+      {/* Footer */}
+      <footer className="py-12 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <img src={heroLogo} alt="MiradoVista HR" className="h-16 mb-4" />
+              <p className="text-sm text-white/80">India's leading placement consultant connecting talent with opportunity.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#about" className="hover:text-[#F0C14B] transition">About Us</a></li>
+                <li><a href="#services" className="hover:text-[#F0C14B] transition">Our Services</a></li>
+                <li><a href="#contact" className="hover:text-[#F0C14B] transition">Contact Us</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Services</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#services" className="hover:text-[#F0C14B] transition">HR Solutions</a></li>
+                <li><a href="#services" className="hover:text-[#F0C14B] transition">IT Services</a></li>
+                <li><a href="#services" className="hover:text-[#F0C14B] transition">Office Supplies</a></li>
+                <li><a href="#services" className="hover:text-[#F0C14B] transition">Legal & Compliance</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-4">Contact Info</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <FaPhone className="text-[#F0C14B]" />
+                  <span>+91 1234567890</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaEnvelope className="text-[#F0C14B]" />
+                  <span>info@miradovista.com</span>
+                </li>
+              </ul>
+            </div>
           </div>
-
-          <div>
-            <h4 className="text-xl font-bold font-[Playfair_Display]">Quick Links</h4>
-            <ul className="text-gray-300 mt-3 space-y-3">
-              <li className="hover:text-[#d4b06a] cursor-pointer">About Us</li>
-              <li className="hover:text-[#d4b06a] cursor-pointer">Contact Us</li>
-              <li className="hover:text-[#d4b06a] cursor-pointer">Services</li>
-              <li className="hover:text-[#d4b06a] cursor-pointer">HR Solutions</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xl font-bold font-[Playfair_Display]">Contact</h4>
-            <p className="text-gray-300 mt-3 leading-relaxed">
-              Sector-76 Noida, Uttar Pradesh <br />
-              (+91) 741-707-6000 <br />
-              info@miradovista.com
-            </p>
+          <div className="mt-8 pt-12 border-t border-white/20 text-center text-sm">
+            <p>Powered by Word Lane Tech
+© Mirado Vista Hr 2025 All rights reserved.</p>
           </div>
         </div>
-
-        <p className="text-center text-gray-500 mt-12 text-sm">
-          © 2025 MiradoVista HR. All rights reserved.
-        </p>
       </footer>
 
-      {/* ----------- ANIMATION CLASSES ----------- */}
+      {/* Gradient animation */}
       <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        @keyframes gradientBackground {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
-        @keyframes fadeInSlow {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+        .animate-gradientBackground {
+          animation: gradientBackground 30s ease infinite;
         }
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideUpSlow {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideLeft {
-          from { opacity: 0; transform: translateX(-40px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideRight {
-          from { opacity: 0; transform: translateX(40px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-12px); }
-        }
-
-        .animate-fadeIn { animation: fadeIn 1s ease-in-out forwards; }
-        .animate-fadeInSlow { animation: fadeInSlow 1.4s ease-in-out forwards; }
-        .animate-slideUp { animation: slideUp 1s ease-out; }
-        .animate-slideUpSlow { animation: slideUpSlow 1.3s ease-out; }
-        .animate-slideLeft { animation: slideLeft 1s ease-out; }
-        .animate-slideRight { animation: slideRight 1s ease-out; }
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        .animate-fadeInDelay { animation: fadeIn 1.6s ease-in-out forwards; }
       `}</style>
     </div>
   );
