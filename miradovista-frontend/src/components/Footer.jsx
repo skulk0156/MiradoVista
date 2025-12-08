@@ -1,78 +1,195 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Footer.css';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaPaperPlane, FaClock } from 'react-icons/fa';
+import logo from "../assets/miradovista-logo.png";
 
 const Footer = () => {
-    // Function to get the current year for the copyright notice
     const currentYear = new Date().getFullYear();
 
+    const quickLinks = [
+        { name: "Home", href: "/" },
+        { name: "About Us", href: "/about" },
+        { name: "Services", href: "/services" },
+        { name: "Blogs", href: "/blogs" },
+        { name: "Contact Us", href: "/contact" },
+    ];
+
+    const services = [
+        { name: "HR Consulting", href: "/services/hr-consulting" },
+        { name: "Legal Solutions", href: "/services/legal-consulting" },
+        { name: "IT Services", href: "/services/it-consulting" },
+        { name: "Office Supplies", href: "/services/stationery-supplies" },
+    ];
+
+    const socialLinks = [
+        { icon: <FaFacebookF />, href: "#" },
+        { icon: <FaTwitter />, href: "#" },
+        { icon: <FaLinkedinIn />, href: "#" },
+        { icon: <FaInstagram />, href: "#" },
+    ];
+
     return (
-        <footer className="site-footer">
-            <div className="footer-content-wrapper">
-                {/* Column 1: Company Info / Logo */}
-                <div className="footer-column footer-info">
-                    <h3 className="footer-logo">MiradoVista HR</h3>
-                    <p className="footer-tagline">
-                        Strategic partnership for HR, Legal, IT Consulting, and essential business supply.
-                    </p>
-                    <div className="social-links">
-                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                            <i className="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                            <i className="fab fa-twitter-square"></i>
-                        </a>
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                            <i className="fab fa-facebook-square"></i>
-                        </a>
+        <footer className="relative bg-gradient-to-br from-[#8B4513] to-[#A0522D] text-white font-[Poppins] overflow-hidden">
+            {/* Decorative Background Pattern */}
+            <div className="absolute inset-0 opacity-5">
+                <div className="absolute inset-0" style={{ 
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` 
+                }}></div>
+            </div>
+            
+            <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    {/* Column 1: About & Logo */}
+                    <div className="lg:col-span-2">
+                        <Link to="/" className="flex items-center gap-3 mb-4 group">
+                            <div className="relative overflow-hidden rounded-full p-1 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] shadow-lg group-hover:shadow-xl transition-all duration-300">
+                                <img src={logo} alt="MiradoVista HR Logo" className="h-12 bg-white rounded-full p-1 transition-transform duration-300 group-hover:scale-110" />
+                            </div>
+                            <span className="text-2xl font-bold tracking-wider text-white">MiradoVista HR</span>
+                        </Link>
+                        <p className="text-white/80 leading-relaxed mb-4">
+                            India's leading placement consultant, connecting top talent with premier opportunities. We are your dedicated partner in growth.
+                        </p>
+                        
+                        {/* Social Media Icons */}
+                        <div className="flex space-x-4 mb-6">
+                            {socialLinks.map((social, index) => (
+                                <a
+                                    key={index}
+                                    href={social.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-gradient-to-r hover:from-[#D4AF37] hover:to-[#F0C14B] hover:scale-110 hover:shadow-lg transition-all duration-300"
+                                    aria-label="Social Media Link"
+                                >
+                                    {social.icon}
+                                </a>
+                            ))}
+                        </div>
+                        
+                        {/* Newsletter Signup */}
+                        <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                            <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                                <FaPaperPlane className="text-[#F0C14B]" />
+                                Stay Updated
+                            </h4>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <input 
+                                    type="email" 
+                                    placeholder="Your email" 
+                                    className="flex-1 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:bg-white/30 transition-all"
+                                />
+                                <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-[#8B4513] font-medium hover:shadow-lg transition-all duration-300">
+                                    Subscribe
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Column 2: Quick Links */}
+                    <div>
+                        <h4 className="text-xl font-bold font-[Playfair_Display] text-[#F0C14B] mb-4 relative">
+                            Quick Links
+                            <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B]"></span>
+                        </h4>
+                        <ul className="space-y-3">
+                            {quickLinks.map((link, index) => (
+                                <li key={index}>
+                                    <Link 
+                                        to={link.href} 
+                                        className="text-white/80 hover:text-[#F0C14B] transition-colors duration-300 flex items-center group"
+                                    >
+                                        <span className="w-0 h-0.5 bg-[#F0C14B] mr-0 transition-all duration-300 group-hover:w-6 group-hover:mr-2"></span>
+                                        {link.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 3: Our Services */}
+                    <div>
+                        <h4 className="text-xl font-bold font-[Playfair_Display] text-[#F0C14B] mb-4 relative">
+                            Our Services
+                            <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B]"></span>
+                        </h4>
+                        <ul className="space-y-3">
+                            {services.map((service, index) => (
+                                <li key={index}>
+                                    <Link 
+                                        to={service.href} 
+                                        className="text-white/80 hover:text-[#F0C14B] transition-colors duration-300 flex items-center group"
+                                    >
+                                        <span className="w-0 h-0.5 bg-[#F0C14B] mr-0 transition-all duration-300 group-hover:w-6 group-hover:mr-2"></span>
+                                        {service.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Contact Info */}
+                    <div>
+                        <h4 className="text-xl font-bold font-[Playfair_Display] text-[#F0C14B] mb-4 relative">
+                            Get In Touch
+                            <span className="absolute -bottom-2 left-0 w-12 h-0.5 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B]"></span>
+                        </h4>
+                        <div className="space-y-3">
+                            <div className="flex items-start gap-3 group">
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
+                                    <FaMapMarkerAlt className="text-[#F0C14B]" />
+                                </div>
+                                <p className="text-white/80">
+                                    Sector-76, Noida, <br />
+                                    Uttar Pradesh, India
+                                </p>
+                            </div>
+                            <div className="flex items-center gap-3 group">
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
+                                    <FaPhone className="text-[#F0C14B]" />
+                                </div>
+                                <a href="tel:+919876543210" className="text-white/80 hover:text-[#F0C14B] transition-colors duration-300">
+                                    +91 98765 43210
+                                </a>
+                            </div>
+                            <div className="flex items-center gap-3 group">
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
+                                    <FaEnvelope className="text-[#F0C14B]" />
+                                </div>
+                                <a href="mailto:info@miradovista.com" className="text-white/80 hover:text-[#F0C14B] transition-colors duration-300">
+                                    info@miradovista.com
+                                </a>
+                            </div>
+                            <div className="flex items-center gap-3 group">
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
+                                    <FaClock className="text-[#F0C14B]" />
+                                </div>
+                                <p className="text-white/80">
+                                    Mon-Fri: 9:00 AM - 6:00 PM
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {/* Column 2: Quick Links */}
-                <div className="footer-column footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/about">About Us</Link></li>
-                        <li><Link to="/services">Services</Link></li>
-                        <li><Link to="/testimonials">Testimonials</Link></li>
-                        <li><Link to="/blogs">Blog & Insights</Link></li>
-                    </ul>
-                </div>
-
-                {/* Column 3: Services Hub */}
-                <div className="footer-column footer-services">
-                    <h4>Our Expertise</h4>
-                    <ul>
-                        <li><Link to="/services/hr-consulting">HR Consulting</Link></li>
-                        <li><Link to="/services/legal-consulting">Legal & Compliance</Link></li>
-                        <li><Link to="/services/it-consulting">IT Consulting</Link></li>
-                        <li><Link to="/services/stationery-supplies">Office Supplies</Link></li>
-                    </ul>
-                </div>
-
-                {/* Column 4: Contact Information */}
-                <div className="footer-column footer-contact">
-                    <h4>Get In Touch</h4>
-                    <p>
-                        <i className="fas fa-map-marker-alt"></i> 123, Stellar Business Park, New Delhi, India
+                {/* Copyright Bottom Bar */}
+                <div className="mt-8 pt-6 border-t border-white/20">
+                    <div className="flex flex-col md:flex-row justify-between items-center">
+                        <p className="text-white/60 mb-4 md:mb-0">
+                            © {currentYear} MiradoVista HR. All Rights Reserved.
+                        </p>
+                        <div className="flex items-center gap-4">
+                            <Link to="/privacy" className="text-white/60 hover:text-[#F0C14B] transition-colors duration-300">
+                                Privacy Policy
+                            </Link>
+                            <Link to="/terms" className="text-white/60 hover:text-[#F0C14B] transition-colors duration-300">
+                                Terms of Service
+                            </Link>
+                        </div>
+                    </div>
+                    <p className="text-center text-white/40 text-sm mt-4">
+                        Powered by Word Lane Tech
                     </p>
-                    <p>
-                        <i className="fas fa-phone"></i> +91-98765 43210
-                    </p>
-                    <p>
-                        <i className="fas fa-envelope"></i> <a href="mailto:info@miradovistahr.com">info@miradovistahr.com</a>
-                    </p>
-                </div>
-            </div>
-
-            {/* Bottom Bar: Copyright and Legal */}
-            <div className="footer-bottom-bar">
-                <p>&copy; {currentYear} MiradoVista HR. All Rights Reserved.</p>
-                <div className="legal-links">
-                    <Link to="/privacy">Privacy Policy</Link>
-                    <span>|</span>
-                    <Link to="/terms">Terms of Use</Link>
                 </div>
             </div>
         </footer>

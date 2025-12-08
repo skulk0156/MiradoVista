@@ -410,53 +410,7 @@ export default function Home() {
           </a>
         </motion.div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-12 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <img src={heroLogo} alt="MiradoVista HR" className="h-16 mb-4" />
-              <p className="text-sm text-white/80">India's leading placement consultant connecting talent with opportunity.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#about" className="hover:text-[#F0C14B] transition">About Us</a></li>
-                <li><a href="#services" className="hover:text-[#F0C14B] transition">Our Services</a></li>
-                <li><a href="#contact" className="hover:text-[#F0C14B] transition">Contact Us</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Services</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#services" className="hover:text-[#F0C14B] transition">HR Solutions</a></li>
-                <li><a href="#services" className="hover:text-[#F0C14B] transition">IT Services</a></li>
-                <li><a href="#services" className="hover:text-[#F0C14B] transition">Office Supplies</a></li>
-                <li><a href="#services" className="hover:text-[#F0C14B] transition">Legal & Compliance</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-lg mb-4">Contact Info</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <FaPhone className="text-[#F0C14B]" />
-                  <span>+91 1234567890</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <FaEnvelope className="text-[#F0C14B]" />
-                  <span>info@miradovista.com</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-8 pt-12 border-t border-white/20 text-center text-sm">
-            <p>Powered by Word Lane Tech
-© Mirado Vista Hr 2025 All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-
+      
       {/* Gradient animation */}
       <style>{`
         @keyframes gradientBackground {

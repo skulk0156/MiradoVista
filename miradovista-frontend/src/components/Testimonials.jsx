@@ -1,6 +1,6 @@
 import React from 'react';
-import './Testimonials.css'; 
 import { Link } from 'react-router-dom';
+import { FaQuoteLeft, FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 
 // Data for the Testimonials
 const testimonialData = [
@@ -49,62 +49,93 @@ const renderStars = (rating) => {
     const hasHalfStar = rating % 1 !== 0;
 
     for (let i = 0; i < fullStars; i++) {
-        stars.push(<i key={`full-${i}`} className="fas fa-star full-star"></i>);
+        stars.push(<FaStar key={`full-${i}`} className="text-[#D4AF37]" />);
     }
     if (hasHalfStar) {
-        stars.push(<i key="half" className="fas fa-star-half-alt half-star"></i>);
+        stars.push(<FaStarHalfAlt key="half" className="text-[#D4AF37]" />);
     }
     // Fill remaining with empty stars
     const remaining = 5 - stars.length;
     for (let i = 0; i < remaining; i++) {
-        stars.push(<i key={`empty-${i}`} className="far fa-star empty-star"></i>);
+        stars.push(<FaRegStar key={`empty-${i}`} className="text-[#D4AF37]" />);
     }
     
-    return <div className="testimonial-rating">{stars}</div>;
+    return <div className="flex gap-1 mb-2">{stars}</div>;
 };
 
 const Testimonials = () => {
     return (
-        <div className="testimonials-container">
+        <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
+            {/* Animated Gold Gradient Background */}
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
+            
             {/* Hero Section */}
-            <section className="testimonials-hero">
-                <div className="hero-content-testimonials">
-                    <h1 className="hero-heading-testimonials">Voices of Our Success</h1>
-                    <p className="hero-tagline-testimonials">
+            <section className="relative px-6 py-24 overflow-hidden">
+                <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
+                <div className="max-w-6xl mx-auto text-center">
+                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6">
+                        Voices of Our Success
+                    </h1>
+                    <p className="text-lg text-[#333333] max-w-3xl mx-auto">
                         Hear directly from the clients who have partnered with MiradoVista HR to achieve their strategic business goals.
                     </p>
                 </div>
             </section>
 
             {/* Testimonials Grid */}
-            <section className="testimonials-grid-section">
-                <h2 className="section-title-testimonials">What Our Clients Say</h2>
-                <p className="section-subtitle-testimonials">
-                    Trusted across consulting, compliance, and essential business supply.
-                </p>
+            <section className="py-24">
+                <div className="max-w-6xl mx-auto px-6">
+                    <h2 className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-4">
+                        What Our Clients Say
+                    </h2>
+                    <p className="text-center text-[#333333] mb-12 max-w-2xl mx-auto">
+                        Trusted across consulting, compliance, and essential business supply.
+                    </p>
 
-                <div className="testimonials-grid">
-                    {testimonialData.map((t, index) => (
-                        <div key={index} className="testimonial-card">
-                            <i className="fas fa-quote-left quote-icon"></i>
-                            <p className="testimonial-quote">{t.quote}</p>
-                            
-                            <div className="testimonial-footer">
-                                {renderStars(t.rating)}
-                                <h3 className="testimonial-author">{t.author}</h3>
-                                <p className="testimonial-title">{t.title}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {testimonialData.map((t, index) => (
+                            <div key={index} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all h-full flex flex-col">
+                                <FaQuoteLeft className="text-4xl text-[#D4AF37] opacity-30 mb-4" />
+                                <p className="text-[#333333] mb-6 flex-grow italic">"{t.quote}"</p>
+                                
+                                <div className="mt-auto">
+                                    {renderStars(t.rating)}
+                                    <h3 className="text-xl font-semibold text-[#8B4513]">{t.author}</h3>
+                                    <p className="text-sm text-[#666666]">{t.title}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* CTA Section */}
-            <section className="cta-testimonials-section">
-                <h3>Ready to Experience the MiradoVista Difference?</h3>
-                <p>Contact us today and let us tailor a solution that meets your unique business needs.</p>
-                <Link to="/contact" className="cta-testimonials-button">Get Started Now</Link>
+            <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+                <div className="max-w-4xl mx-auto px-6 text-center">
+                    <h3 className="text-3xl font-bold text-[#F0C14B] mb-4">Ready to Experience the MiradoVista Difference?</h3>
+                    <p className="text-white/90 mb-8 max-w-2xl mx-auto">
+                        Contact us today and let us tailor a solution that meets your unique business needs.
+                    </p>
+                    <Link 
+                        to="/contact" 
+                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-semibold shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all"
+                    >
+                        Get Started Now
+                    </Link>
+                </div>
             </section>
+
+            {/* Gradient animation */}
+            <style>{`
+                @keyframes gradientBackground {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                .animate-gradientBackground {
+                    animation: gradientBackground 30s ease infinite;
+                }
+            `}</style>
         </div>
     );
 };
