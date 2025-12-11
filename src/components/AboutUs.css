@@ -1,0 +1,223 @@
+/* Color and Font Variables */
+:root {
+    --primary-gold: #a0845a; /* Gold/Brown accent from your button */
+    --light-background: #fcf8f4; /* Very light beige background */
+    --dark-text: #333;
+    --heading-font: 'Playfair Display', serif; /* Elegant font for headings */
+    --body-font: 'Roboto', sans-serif; /* Standard readable font */
+}
+
+/* Base Styles for the Component */
+.about-us-container {
+    padding: 60px 0;
+    background-color: var(--light-background);
+    color: var(--dark-text);
+    font-family: var(--body-font);
+}
+
+/* Reusable Section Titles */
+.section-title {
+    font-family: var(--heading-font);
+    font-size: 2.5rem;
+    color: var(--primary-gold);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 50px;
+}
+
+/* 1. Hero/Introduction Section */
+.about-hero {
+    text-align: center;
+    padding: 80px 15%;
+    margin-bottom: 50px;
+    background-color: #fff; /* A slightly brighter section */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.hero-heading {
+    font-family: var(--heading-font);
+    font-size: 3rem;
+    color: var(--primary-gold);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    color: var(--dark-text);
+}
+
+.hero-details strong {
+    color: var(--primary-gold);
+    font-size: 1.1rem;
+    margin: 0 15px;
+}
+
+/* 2. Mission, Vision, and Values Section */
+.mission-vision-section {
+    padding: 50px 10%;
+    text-align: center;
+}
+
+.principles-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.principle-box {
+    flex: 1;
+    max-width: 400px;
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #f0e8e0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+}
+
+.principle-box i {
+    font-size: 2.5rem;
+    color: var(--primary-gold);
+    margin-bottom: 15px;
+}
+
+.principle-box h3 {
+    font-family: var(--heading-font);
+    font-size: 1.5rem;
+    color: var(--dark-text);
+    margin-top: 0;
+}
+
+.values-list {
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: left;
+    padding: 20px;
+    border-top: 2px solid var(--primary-gold);
+}
+
+.values-heading {
+    font-family: var(--heading-font);
+    color: var(--primary-gold);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.values-list ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.values-list li {
+    flex: 1 1 45%; /* Two items per row */
+    font-size: 1.1rem;
+    color: var(--dark-text);
+}
+
+.values-list li i {
+    color: var(--primary-gold);
+    margin-right: 8px;
+}
+
+
+/* 3. Key Differentiators Section */
+.differentiators-section {
+    padding: 50px 10%;
+    background-color: var(--light-background);
+}
+
+.differentiator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.differentiator-card {
+    text-align: center;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+}
+
+.differentiator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.icon-style {
+    font-size: 3rem;
+    color: var(--primary-gold);
+    margin-bottom: 15px;
+    display: block;
+}
+
+.differentiator-card h3 {
+    font-family: var(--heading-font);
+    font-size: 1.4rem;
+    color: var(--dark-text);
+    margin-top: 0;
+}
+
+/* 4. Statistics Section */
+.stats-section {
+    background-color: var(--primary-gold);
+    padding: 40px 10%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+}
+
+.stat-box {
+    margin: 0 20px;
+}
+
+.stat-number {
+    font-family: var(--heading-font);
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.stat-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 5px 0 0 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-heading {
+        font-size: 2.2rem;
+    }
+
+    .principles-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .principle-box {
+        max-width: 100%;
+    }
+
+    .stats-section {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
