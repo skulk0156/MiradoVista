@@ -11,7 +11,7 @@ export default function Home() {
   const counters = [
     { id: "clients", end: 320, label: "Clients" },
     { id: "placements", end: 240, label: "Placements" },
-    { id: "years", end: 35, label: "Years" },
+    { id: "years", end: 3.5, label: "Years" },
   ];
 
   const [values, setValues] = useState(counters.map(() => 0));

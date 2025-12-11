@@ -188,7 +188,14 @@ const Footer = () => {
                         </div>
                     </div>
                     <p className="text-center text-gray-500 text-sm mt-4">
-                        Powered by Word Lane Tech
+                        Powered by <a 
+                            href="https://wordlanetech.com/" 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            className="text-[#D4AF37] hover:text-[#F0C14B] transition-colors duration-300"
+                        >
+                            Word Lane Tech
+                        </a>
                     </p>
                 </div>
             </div>
