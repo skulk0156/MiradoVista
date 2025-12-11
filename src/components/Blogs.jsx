@@ -92,7 +92,7 @@ const Blogs = () => {
                                 </ul>
                             </div>
 
-                            <div className="bg-gradient-to-br from-[#8B4513] to-[#A0522D] p-6 rounded-3xl shadow-lg text-white">
+                            <div className="bg-gradient-to-br from-[#0b0e10] to-[#36454f] p-6 rounded-3xl shadow-lg text-white">
                                 <h4 className="text-xl font-bold text-[#F0C14B] mb-3">Stay Updated</h4>
                                 <p className="text-white/90 mb-4">Subscribe to our newsletter for weekly insights directly to your inbox.</p>
                                 <div className="space-y-3">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaQuoteLeft, FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import testimonialsBg from '../assets/Testomonials.png'; // Update this path to match your image location
 
 // Data for the Testimonials
 const testimonialData = [
@@ -70,13 +71,19 @@ const Testimonials = () => {
             <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
             
             {/* Hero Section */}
-            <section className="relative px-6 py-24 overflow-hidden">
+            <section 
+                className="relative px-6 py-24 overflow-hidden bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${testimonialsBg})` }}
+            >
+                {/* Overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-black/50 z-0"></div>
+                
                 <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
-                <div className="max-w-6xl mx-auto text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6">
+                <div className="max-w-6xl mx-auto text-center relative z-10">
+                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6">
                         Voices of Our Success
                     </h1>
-                    <p className="text-lg text-[#333333] max-w-3xl mx-auto">
+                    <p className="text-lg text-white max-w-3xl mx-auto">
                         Hear directly from the clients who have partnered with MiradoVista HR to achieve their strategic business goals.
                     </p>
                 </div>
@@ -110,9 +117,9 @@ const Testimonials = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+            <section className="py-24 bg-gradient-to-r from-[#0b0e10] to-[#36454f] text-white">
                 <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h3 className="text-3xl font-bold text-[#F0C14B] mb-4">Ready to Experience the MiradoVista Difference?</h3>
+                    <h3 className="text-3xl font-bold text-[#F0C14B] mb-4">Ready to Experience the MiradoVista HR Difference?</h3>
                     <p className="text-white/90 mb-8 max-w-2xl mx-auto">
                         Contact us today and let us tailor a solution that meets your unique business needs.
                     </p>

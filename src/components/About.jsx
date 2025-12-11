@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle } from 'react-icons/fa';
+import aboutpiv from '../assets/Aboutpiv.png'; // Update this path to match your image location
 
 // --- Animation Variants ---
 const containerVariant = {
@@ -50,14 +51,20 @@ const AboutUs = () => {
             <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
             
             {/* Hero/Introduction Section */}
-            <section className="relative px-6 py-24 overflow-hidden">
+            <section 
+                className="relative px-6 py-24 overflow-hidden bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${aboutpiv})` }}
+            >
+                {/* Overlay to ensure text readability */}
+                <div className="absolute inset-0 bg-black/40 z-0"></div>
+                
                 <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-6xl mx-auto relative z-10">
                     <motion.h1
                         variants={headingVariant}
                         initial="hidden"
                         animate="visible"
-                        className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6"
+                        className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#EFBF04] bg-clip-text text-transparent font-[Playfair_Display] mb-6"
                     >
                         Building Careers, Empowering Businesses.
                     </motion.h1>
@@ -66,7 +73,7 @@ const AboutUs = () => {
                         initial="hidden"
                         animate="visible"
                         transition={{ duration: 0.7, delay: 0.2 }}
-                        className="text-lg text-[#333333] mb-8 max-w-3xl"
+                        className="text-lg text-white mb-8 max-w-3xl" // Changed text color to white for better contrast
                     >
                         MiradoVista HR is your trusted partner in talent acquisition and human resource consulting. We connect ambitious professionals with leading companies across India, fostering growth for both individuals and enterprises.
                     </motion.p>
@@ -161,8 +168,13 @@ const AboutUs = () => {
                 </div>
             </section>
 
-            {/* Key Differentiators Section */}
-            <section className="py-24 bg-gradient-to-r from-[#8B4513] to-[#A0522D] text-white">
+            {/* Key Differentiators Section — UPDATED */}
+            <section 
+                className="py-24 text-white"
+                style={{
+                    background: "linear-gradient(to right, #0b0e10, #36454f)"
+                }}
+            >
                 <div className="max-w-6xl mx-auto px-6">
                     <motion.h2
                         variants={headingVariant}
