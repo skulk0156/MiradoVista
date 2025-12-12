@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom"; // Add useLocation
+import { Link, useLocation } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
 import { FiChevronDown } from "react-icons/fi";
-import logo from "../assets/miradovista-logo.png";
+import logo from "../assets/hero1.jpeg";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const navRef = useRef(null);
-  const location = useLocation(); // Get current location
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -32,6 +32,11 @@ export default function Navbar() {
   // Close mobile menu when location changes
   useEffect(() => {
     setMobileOpen(false);
+  }, [location]);
+
+  // Close dropdown menu when location changes
+  useEffect(() => {
+    setOpenMenu(null);
   }, [location]);
 
   const navItems = [
