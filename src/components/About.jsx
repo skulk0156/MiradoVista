@@ -183,7 +183,7 @@ const AboutUs = () => {
                         viewport={{ once: true, amount: 0.5 }}
                         className="text-4xl font-bold text-center text-[#F0C14B] font-[Playfair_Display] mb-4"
                     >
-                        Why Partner with MiradoVista HR?
+                        Why partner with MiradoVista HR?
                     </motion.h2>
                     <p className="text-center text-white/90 mb-12 max-w-2xl mx-auto">Our commitment goes beyond placements—we build lasting relationships.</p>
 

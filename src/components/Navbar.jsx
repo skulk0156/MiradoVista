@@ -143,7 +143,7 @@ export default function Navbar() {
           {/* CTA Button */}
           <li>
             <Link
-              to="/contact"
+              to="/post-resume"
               className="px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium shadow-lg hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 transition-all duration-300"
             >
               Get In Touch
