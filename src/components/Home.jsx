@@ -86,7 +86,7 @@ export default function Home() {
   ];
 
   const offices = [
-    { city: "Noida", address: "Sector-76, Noida, Uttar Pradesh, India", phone: "+91 1234567890", email: "noida@miradovista.com" },
+    { city: "Pune", address: "Office No. 41/42 Tejaswani HSG, Baner Gaon, Haveli, Pune Maharashtra - 411045", phone: "+91 8669667854", email: "noida@miradovista.com" },
     { city: "Rudrapur", address: "Rudrapur, Uttarakhand, India", phone: "+91 0987654321", email: "rudrapur@miradovista.com" },
   ];
 

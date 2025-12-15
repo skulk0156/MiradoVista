@@ -273,7 +273,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Corporate Office</h3>
-                                    <p>Sector-76, Noida<br/>Uttar Pradesh, India 201301</p>
+                                    <p>Office No. 41/42 Tejaswani HSG,<br/> Baner Gaon, Haveli , Pune <br/>Maharashtra - 411045</p>
                                 </div>
                             </div>
 
@@ -283,7 +283,7 @@ const Contact = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Phone</h3>
-                                    <p>+91-98765 43210 (Sales)<br/>+91-99887 76655 (Support)</p>
+                                    <p>+91-8669667854</p>
                                 </div>
                             </div>
 

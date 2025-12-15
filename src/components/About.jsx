@@ -75,7 +75,8 @@ const AboutUs = () => {
                         transition={{ duration: 0.7, delay: 0.2 }}
                         className="text-lg text-white mb-8 max-w-3xl" // Changed text color to white for better contrast
                     >
-                        MiradoVista HR is your trusted partner in talent acquisition and human resource consulting. We connect ambitious professionals with leading companies across India, fostering growth for both individuals and enterprises.
+                        MiradoVista HR is a people-focused talent and HR consulting firm, enabling businesses to build high-performing teams while supporting professionals in achieving meaningful career growth.
+
                     </motion.p>
                     <motion.div
                         variants={headingVariant}
@@ -85,10 +86,10 @@ const AboutUs = () => {
                         className="flex flex-wrap gap-6"
                     >
                         <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-[#D4AF37]/20 shadow-md">
-                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Founded:</span> 2015</p>
+                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Founded:</span> 2025</p>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-[#D4AF37]/20 shadow-md">
-                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Headquarters:</span> Noida, India</p>
+                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Headquarters:</span> Pune, India</p>
                         </div>
                     </motion.div>
                 </div>

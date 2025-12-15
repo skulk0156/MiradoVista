@@ -2,6 +2,7 @@ import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaUserTie, FaBalanceScale, FaLaptopCode, FaBoxOpen, FaHandPointRight, FaArrowRight } from 'react-icons/fa';
 import AnimatedPage from './AnimatedPage';
+import backgroundImage from '../assets/WhatsApp Image 2025-12-12 at 21.42.40.jpeg';
 
 // --- 1. Sub-Component for Detailed Service Pages ---
 const ServiceDetail = ({ title, description, points, buttonText }) => {
@@ -12,37 +13,69 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
     title === 'Strategic HR Consulting Services';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      className={`${isDarkTheme ? 'bg-[#36454f]' : 'bg-white/80'} backdrop-blur-xl rounded-3xl border border-[#D4AF37]/20 shadow-lg p-8`}
-    >
-      <h2 className={`text-3xl font-bold font-[Playfair_Display] mb-6 ${isDarkTheme ? 'text-white' : 'text-[#D4AF37]'}`}>
-        {title}
-      </h2>
-      <p className={`text-lg mb-8 leading-relaxed ${isDarkTheme ? 'text-white' : 'text-[#333333]'}`}>
-        {description}
-      </p>
+    <div className="relative min-h-screen font-[Poppins] text-black">
+      {/* Full Page Background with Blur */}
+      <div 
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+          filter: 'blur(3px)',
+          transform: 'scale(1.1)'
+        }}
+      />
+      
+      {/* Dark Overlay for Better Contrast */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/40 to-black/50" />
+      
+      {/* Content Container */}
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className={`${isDarkTheme ? 'bg-[#36454f]/95' : 'bg-white/95'} backdrop-blur-md rounded-3xl border border-[#D4AF37]/30 shadow-2xl p-8 md:p-12 max-w-4xl w-full`}
+        >
+          {/* Title with Gold Accent */}
+          <div className="mb-8">
+            <h2 className={`text-3xl md:text-4xl font-bold font-[Playfair_Display] mb-2 ${isDarkTheme ? 'text-white' : 'text-[#D4AF37]'}`}>
+              {title}
+            </h2>
+            <div className="h-1 w-24 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] rounded-full" />
+          </div>
+          
+          {/* Description */}
+          <p className={`text-lg mb-8 leading-relaxed ${isDarkTheme ? 'text-white/90' : 'text-[#333333]'} drop-shadow-sm`}>
+            {description}
+          </p>
 
-      <div className="mb-8">
-        <h3 className={`text-xl font-semibold mb-4 ${isDarkTheme ? 'text-white' : 'text-[#8B4513]'}`}>
-          Key Focus Areas:
-        </h3>
-        <ul className="space-y-3">
-          {points.map((point, index) => (
-            <li key={index} className={`flex items-start gap-3 ${isDarkTheme ? 'text-white' : 'text-[#333333]'}`}>
-              <FaHandPointRight className="text-[#D4AF37] mt-1 flex-shrink-0" />
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
+          {/* Key Focus Areas */}
+          <div className="mb-8">
+            <h3 className={`text-xl font-semibold mb-6 ${isDarkTheme ? 'text-white' : 'text-[#8B4513]'}`}>
+              Key Focus Areas:
+            </h3>
+            <ul className="space-y-4">
+              {points.map((point, index) => (
+                <li key={index} className={`flex items-start gap-3 ${isDarkTheme ? 'text-white/90' : 'text-[#333333]'}`}>
+                  <FaHandPointRight className="text-[#D4AF37] mt-1 flex-shrink-0 text-lg drop-shadow-md" />
+                  <span className="leading-relaxed">{point}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA Button */}
+          <div className="flex justify-center mt-10">
+            <button className="px-10 py-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-semibold shadow-xl hover:scale-105 hover:shadow-[0_0_30px_rgba(212,175,55,0.8)] transition-all duration-300 transform">
+              {buttonText}
+            </button>
+          </div>
+        </motion.div>
       </div>
-
-      <button className="px-8 py-3 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-semibold shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] transition-all duration-300">
-        {buttonText}
-      </button>
-    </motion.div>
+    </div>
   );
 };
 
@@ -56,14 +89,14 @@ const HRConsultingPage = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
+    <AnimatedPage>
       <ServiceDetail
         title="Strategic HR Consulting Services"
         description="We partner with businesses to optimize their human resources functions, ensuring compliance, driving talent engagement, and fostering a productive workplace culture."
         points={points}
         buttonText="Request HR Consultation"
       />
-    </div>
+    </AnimatedPage>
   );
 };
 
@@ -76,14 +109,14 @@ const LegalConsultingPage = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
+    <AnimatedPage>
       <ServiceDetail
         title="Legal Consulting & Compliance Solutions"
         description="Navigate the complex legal landscape with our expert consulting. We provide proactive advice and solutions to minimize risk and ensure your operations adhere to all relevant commercial and employment laws."
         points={points}
         buttonText="Get Legal Advisory"
       />
-    </div>
+    </AnimatedPage>
   );
 };
 
@@ -96,14 +129,14 @@ const ITConsultingPage = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
+    <AnimatedPage>
       <ServiceDetail
         title="IT Consulting Services"
         description="Leverage technology for business growth. Our IT consultants provide strategic guidance on infrastructure, digital transformation, and system optimization to enhance efficiency and security."
         points={points}
         buttonText="Discuss Your IT Roadmap"
       />
-    </div>
+    </AnimatedPage>
   );
 };
 
@@ -116,14 +149,14 @@ const StationerySuppliesPage = () => {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24">
+    <AnimatedPage>
       <ServiceDetail
         title="Office Stationery Product Supplies"
         description="Ensure your office runs smoothly with our reliable and timely supply of high-quality stationery and consumables. We offer bulk ordering and consolidated billing for convenience."
         points={points}
         buttonText="View Product Catalog"
       />
-    </div>
+    </AnimatedPage>
   );
 };
 
@@ -159,7 +192,7 @@ const ServiceGrid = () => {
   return (
     <>
       <section className="relative px-6 py-24 overflow-hidden">
-        <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none" />
         <div className="max-w-6xl mx-auto">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -236,15 +269,15 @@ const Services = () => {
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
       {/* Animated Gold Gradient Background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10" />
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route index element={<AnimatedPage><ServiceGrid /></AnimatedPage>} />
-          <Route path="hr-consulting" element={<AnimatedPage><HRConsultingPage /></AnimatedPage>} />
-          <Route path="legal-consulting" element={<AnimatedPage><LegalConsultingPage /></AnimatedPage>} />
-          <Route path="it-consulting" element={<AnimatedPage><ITConsultingPage /></AnimatedPage>} />
-          <Route path="stationery-supplies" element={<AnimatedPage><StationerySuppliesPage /></AnimatedPage>} />
+          <Route path="hr-consulting" element={<HRConsultingPage />} />
+          <Route path="legal-consulting" element={<LegalConsultingPage />} />
+          <Route path="it-consulting" element={<ITConsultingPage />} />
+          <Route path="stationery-supplies" element={<StationerySuppliesPage />} />
         </Routes>
       </AnimatePresence>
     </div>

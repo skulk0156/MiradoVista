@@ -139,8 +139,7 @@ const Footer = () => {
                                     <FaMapMarkerAlt className="text-[#D4AF37]" />
                                 </div>
                                 <p className="text-gray-300">
-                                    Sector-76, Noida, <br />
-                                    Uttar Pradesh, India
+                                     Baner, Pune, Maharashtra, India
                                 </p>
                             </div>
                             <div className="flex items-center gap-3 group">
@@ -148,7 +147,7 @@ const Footer = () => {
                                     <FaPhone className="text-[#D4AF37]" />
                                 </div>
                                 <a href="tel:+919876543210" className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300">
-                                    +91 98765 43210
+                                    +91 8669667854
                                 </a>
                             </div>
                             <div className="flex items-center gap-3 group">
@@ -156,16 +155,10 @@ const Footer = () => {
                                     <FaEnvelope className="text-[#D4AF37]" />
                                 </div>
                                 <a href="mailto:info@miradovista.com" className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300">
-                                    info@miradovista.com
+                                    contact@miradovista.com
                                 </a>
                             </div>
                             <div className="flex items-center gap-3 group">
-                                <div className="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
-                                    <FaClock className="text-[#D4AF37]" />
-                                </div>
-                                <p className="text-gray-300">
-                                    Mon-Fri: 9:00 AM - 6:00 PM
-                                </p>
                             </div>
                         </div>
                     </div>
