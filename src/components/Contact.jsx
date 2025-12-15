@@ -200,7 +200,7 @@ const Contact = () => {
                                         aria-describedby={errors.service ? 'service-error' : undefined}
                                         className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.service ? 'border-red-500' : 'border-white/20'} text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] appearance-none focus:bg-[#0b0e10] transition-colors duration-300`}
                                     >
-                                        <option value="" disabled className="bg-[#0b0e10]">Select a Service</option>
+                                        <option value="" disabled className="bg-[#0b0e10]">Select a Sector</option>
                                         <option value="hr-consulting" className="bg-[#0b0e10]">HR Consulting Services</option>
                                         <option value="legal-consulting" className="bg-[#0b0e10]">Legal Consulting Solutions</option>
                                         <option value="it-consulting" className="bg-[#0b0e10]">IT Consulting Services</option>

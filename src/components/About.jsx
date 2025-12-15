@@ -39,8 +39,8 @@ const DifferentiatorCard = ({ icon, title, description }) => (
         <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
             {icon}
         </div>
-        <h3 className="text-xl font-semibold text-[#8B4513] mb-2">{title}</h3>
-        <p className="text-[#333333]">{description}</p>
+        <h3 className="text-xl font-semibold text-[#8B4513] mb-2 leading-relaxed">{title}</h3>
+        <p className="text-[#333333] leading-relaxed">{description}</p>
     </motion.div>
 );
 
@@ -64,7 +64,7 @@ const AboutUs = () => {
                         variants={headingVariant}
                         initial="hidden"
                         animate="visible"
-                        className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#EFBF04] bg-clip-text text-transparent font-[Playfair_Display] mb-6"
+                        className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#EFBF04] bg-clip-text text-transparent font-[Playfair_Display] mb-6 pb-2"
                     >
                         Building Careers, Empowering Businesses.
                     </motion.h1>
@@ -73,7 +73,7 @@ const AboutUs = () => {
                         initial="hidden"
                         animate="visible"
                         transition={{ duration: 0.7, delay: 0.2 }}
-                        className="text-lg text-white mb-8 max-w-3xl" // Changed text color to white for better contrast
+                        className="text-lg text-white mb-8 max-w-3xl leading-relaxed" // Changed text color to white for better contrast
                     >
                         MiradoVista HR is a people-focused talent and HR consulting firm, enabling businesses to build high-performing teams while supporting professionals in achieving meaningful career growth.
 
@@ -86,10 +86,10 @@ const AboutUs = () => {
                         className="flex flex-wrap gap-6"
                     >
                         <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-[#D4AF37]/20 shadow-md">
-                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Founded:</span> 2025</p>
+                            <p className="text-[#8B4513] font-semibold leading-relaxed"><span className="text-[#D4AF37]">Founded:</span> 2025</p>
                         </div>
                         <div className="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-[#D4AF37]/20 shadow-md">
-                            <p className="text-[#8B4513] font-semibold"><span className="text-[#D4AF37]">Headquarters:</span> Pune, India</p>
+                            <p className="text-[#8B4513] font-semibold leading-relaxed"><span className="text-[#D4AF37]">Headquarters:</span> Pune, India</p>
                         </div>
                     </motion.div>
                 </div>
@@ -103,7 +103,7 @@ const AboutUs = () => {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.5 }}
-                        className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-12"
+                        className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-12 leading-relaxed"
                     >
                         Our Guiding Principles
                     </motion.h2>
@@ -122,8 +122,8 @@ const AboutUs = () => {
                             <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
                                 <FaBullseye className="text-white text-2xl" />
                             </div>
-                            <h3 className="text-2xl font-semibold text-[#8B4513] mb-4">Our Mission</h3>
-                            <p className="text-[#333333]">To redefine the recruitment landscape by offering ethical, efficient, and tailored talent solutions that drive sustainable success for our clients and candidates.</p>
+                            <h3 className="text-2xl font-semibold text-[#8B4513] mb-4 leading-relaxed">Our Mission</h3>
+                            <p className="text-[#333333] leading-relaxed">To redefine the recruitment landscape by offering ethical, efficient, and tailored talent solutions that drive sustainable success for our clients and candidates.</p>
                         </motion.div>
                         
                         <motion.div 
@@ -133,8 +133,8 @@ const AboutUs = () => {
                             <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
                                 <FaEye className="text-white text-2xl" />
                             </div>
-                            <h3 className="text-2xl font-semibold text-[#8B4513] mb-4">Our Vision</h3>
-                            <p className="text-[#333333]">To be recognized as India's foremost HR consultancy, known for innovation, integrity, and unparalleled expertise in bridging the gap between talent and opportunity.</p>
+                            <h3 className="text-2xl font-semibold text-[#8B4513] mb-4 leading-relaxed">Our Vision</h3>
+                            <p className="text-[#333333] leading-relaxed">To be recognized as India's foremost HR consultancy, known for innovation, integrity, and unparalleled expertise in bridging the gap between talent and opportunity.</p>
                         </motion.div>
                     </motion.div>
                     
@@ -146,23 +146,23 @@ const AboutUs = () => {
                         viewport={{ once: true, amount: 0.8 }}
                         className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-[#D4AF37]/20 shadow-lg"
                     >
-                        <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center">Our Core Values</h3>
+                        <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center leading-relaxed">Our Core Values</h3>
                         <div className="grid md:grid-cols-2 gap-4">
                             <div className="flex items-start gap-3">
                                 <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333]">Integrity and Transparency</span>
+                                <span className="text-[#333333] leading-relaxed">Integrity and Transparency</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333]">Client-Centric Approach</span>
+                                <span className="text-[#333333] leading-relaxed">Client-Centric Approach</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333]">Professional Excellence</span>
+                                <span className="text-[#333333] leading-relaxed">Professional Excellence</span>
                             </div>
                             <div className="flex items-start gap-3">
                                 <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333]">Continuous Innovation</span>
+                                <span className="text-[#333333] leading-relaxed">Continuous Innovation</span>
                             </div>
                         </div>
                     </motion.div>
@@ -182,11 +182,11 @@ const AboutUs = () => {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.5 }}
-                        className="text-4xl font-bold text-center text-[#F0C14B] font-[Playfair_Display] mb-4"
+                        className="text-4xl font-bold text-center text-[#F0C14B] font-[Playfair_Display] mb-4 leading-relaxed"
                     >
                         Why partner with MiradoVista HR?
                     </motion.h2>
-                    <p className="text-center text-white/90 mb-12 max-w-2xl mx-auto">Our commitment goes beyond placements—we build lasting relationships.</p>
+                    <p className="text-center text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">Our commitment goes beyond placements—we build lasting relationships.</p>
 
                     <motion.div
                         className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
@@ -230,16 +230,16 @@ const AboutUs = () => {
                         viewport={{ once: true, amount: 0.5 }}
                     >
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2">2500+</p>
-                            <p className="text-lg text-[#333333]">Successful Placements</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">2500+</p>
+                            <p className="text-lg text-[#333333] leading-relaxed">Successful Placements</p>
                         </motion.div>
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2">50+</p>
-                            <p className="text-lg text-[#333333]">Cities Covered in India</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">50+</p>
+                            <p className="text-lg text-[#333333] leading-relaxed">Cities Covered in India</p>
                         </motion.div>
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2">8</p>
-                            <p className="text-lg text-[#333333]">Years of Expertise</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">8</p>
+                            <p className="text-lg text-[#333333] leading-relaxed">Years of Expertise</p>
                         </motion.div>
                     </motion.div>
                 </div>

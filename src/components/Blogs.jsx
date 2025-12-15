@@ -44,10 +44,10 @@ const Blogs = () => {
             <section className="relative px-6 py-24 overflow-hidden">
                 <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
                 <div className="max-w-6xl mx-auto text-center">
-                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6">
+                    <h1 className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6 pb-2">
                         Insights & Business Strategy
                     </h1>
-                    <p className="text-lg text-[#333333] max-w-3xl mx-auto mb-8">
+                    <p className="text-lg text-[#333333] max-w-3xl mx-auto mb-8 leading-relaxed">
                         Our expert perspectives on HR, Compliance, IT Infrastructure, and Procurement Management.
                     </p>
                     
@@ -58,7 +58,7 @@ const Blogs = () => {
                             placeholder="Search articles..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full px-6 py-3 pl-12 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] text-[#333333] placeholder-[#666666]"
+                            className="w-full px-6 py-3 pl-12 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 shadow-lg focus:outline-none focus:ring-2 focus:ring-[#D4AF37] text-[#333333] placeholder-[#666666] leading-relaxed"
                         />
                         <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#D4AF37]" />
                     </div>
@@ -71,7 +71,7 @@ const Blogs = () => {
                     <aside className="lg:col-span-1">
                         <div className="sticky top-24 space-y-8">
                             <div className="bg-white/80 backdrop-blur-sm p-6 rounded-3xl border border-[#D4AF37]/20 shadow-lg">
-                                <h3 className="text-xl font-bold text-[#8B4513] mb-4 flex items-center gap-2">
+                                <h3 className="text-xl font-bold text-[#8B4513] mb-4 flex items-center gap-2 leading-relaxed">
                                     <FaTag className="text-[#D4AF37]" />
                                     Explore Topics
                                 </h3>
@@ -79,7 +79,7 @@ const Blogs = () => {
                                     {BlogCategories.map(cat => (
                                         <li
                                             key={cat}
-                                            className={`px-4 py-2 rounded-xl cursor-pointer transition-all duration-300 ${
+                                            className={`px-4 py-2 rounded-xl cursor-pointer transition-all duration-300 leading-relaxed ${
                                                 selectedCategory === cat 
                                                     ? 'bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium' 
                                                     : 'hover:bg-[#D4AF37]/10 text-[#333333]'
@@ -93,15 +93,15 @@ const Blogs = () => {
                             </div>
 
                             <div className="bg-gradient-to-br from-[#0b0e10] to-[#36454f] p-6 rounded-3xl shadow-lg text-white">
-                                <h4 className="text-xl font-bold text-[#F0C14B] mb-3">Stay Updated</h4>
-                                <p className="text-white/90 mb-4">Subscribe to our newsletter for weekly insights directly to your inbox.</p>
+                                <h4 className="text-xl font-bold text-[#F0C14B] mb-3 leading-relaxed">Stay Updated</h4>
+                                <p className="text-white/90 mb-4 leading-relaxed">Subscribe to our newsletter for weekly insights directly to your inbox.</p>
                                 <div className="space-y-3">
                                     <input 
                                         type="email" 
                                         placeholder="Your Email" 
-                                        className="w-full px-4 py-2 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#F0C14B]"
+                                        className="w-full px-4 py-2 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#F0C14B] leading-relaxed"
                                     />
-                                    <button className="w-full px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-[#8B4513] font-bold hover:shadow-lg transition-all duration-300">
+                                    <button className="w-full px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-[#8B4513] font-bold hover:shadow-lg transition-all duration-300 leading-relaxed">
                                         Subscribe
                                     </button>
                                 </div>
@@ -109,18 +109,18 @@ const Blogs = () => {
 
                             {/* Popular Posts Widget */}
                             <div className="bg-white/80 backdrop-blur-sm p-6 rounded-3xl border border-[#D4AF37]/20 shadow-lg">
-                                <h3 className="text-xl font-bold text-[#8B4513] mb-4">Popular Posts</h3>
+                                <h3 className="text-xl font-bold text-[#8B4513] mb-4 leading-relaxed">Popular Posts</h3>
                                 <div className="space-y-4">
                                     {blogPosts.slice(0, 3).map(post => (
                                         <div key={post.id} className="flex gap-3">
                                             <div className="w-16 h-16 bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37]/30 rounded-xl flex-shrink-0 flex items-center justify-center">
                                                 <span className="text-[#8B4513] font-bold text-sm">{post.id}</span>
                                             </div>
-                                            <div>
-                                                <Link to={`/blogs/${post.id}`} className="text-[#333333] hover:text-[#D4AF37] transition-colors duration-300 font-medium text-sm line-clamp-2">
+                                            <div className="overflow-hidden">
+                                                <Link to={`/blogs/${post.id}`} className="text-[#333333] hover:text-[#D4AF37] transition-colors duration-300 font-medium text-sm leading-relaxed">
                                                     {post.title}
                                                 </Link>
-                                                <p className="text-xs text-[#666666] mt-1">{post.date}</p>
+                                                <p className="text-xs text-[#666666] mt-1 leading-relaxed">{post.date}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -136,31 +136,39 @@ const Blogs = () => {
                                 {filteredPosts.map(post => (
                                     <article key={post.id} className="bg-white/80 backdrop-blur-sm rounded-3xl border border-[#D4AF37]/20 shadow-lg overflow-hidden hover:scale-105 transition-all duration-300 group">
                                         <div className="h-48 bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37]/30 flex items-center justify-center relative overflow-hidden">
-                                            <p className="text-[#8B4513] font-medium">Blog Image</p>
+                                            <p className="text-[#8B4513] font-medium leading-relaxed">Blog Image</p>
                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
                                         </div>
                                         <div className="p-6 bg-[#36454f]">
                                             <div className="flex items-center justify-between mb-3">
-                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(post.category)}`}>
+                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border leading-relaxed ${getCategoryColor(post.category)}`}>
                                                     {post.category}
                                                 </span>
-                                                <div className="flex items-center gap-1 text-xs text-white/80">
+                                                <div className="flex items-center gap-1 text-xs text-white/80 leading-relaxed">
                                                     <FaClock className="text-[#D4AF37]" />
                                                     {post.date}
                                                 </div>
                                             </div>
-                                            <h2 className="text-xl font-bold text-white mb-3">
+                                            <h2 className="text-xl font-bold text-white mb-3 leading-relaxed">
                                                 <Link to={`/blogs/${post.id}`} className="hover:text-[#D4AF37] transition-colors duration-300">
                                                     {post.title}
                                                 </Link>
                                             </h2>
-                                            <p className="text-white/90 mb-4 line-clamp-3">{post.excerpt}</p>
+                                            <p className="text-white/90 mb-4 leading-relaxed" style={{ 
+                                                display: '-webkit-box',
+                                                WebkitLineClamp: 3,
+                                                WebkitBoxOrient: 'vertical',
+                                                overflow: 'hidden',
+                                                paddingBottom: '2px'
+                                            }}>
+                                                {post.excerpt}
+                                            </p>
                                             <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2 text-sm text-white/80">
+                                                <div className="flex items-center gap-2 text-sm text-white/80 leading-relaxed">
                                                     <FaUser className="text-[#D4AF37]" />
                                                     {post.author}
                                                 </div>
-                                                <Link to={`/blogs/${post.id}`} className="flex items-center gap-1 text-[#D4AF37] font-medium hover:text-white transition-colors duration-300">
+                                                <Link to={`/blogs/${post.id}`} className="flex items-center gap-1 text-[#D4AF37] font-medium hover:text-white transition-colors duration-300 leading-relaxed">
                                                     Read More <FaArrowRight className="text-xs" />
                                                 </Link>
                                             </div>
@@ -173,11 +181,11 @@ const Blogs = () => {
                                 <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
                                     <FaSearch className="text-3xl text-[#D4AF37]" />
                                 </div>
-                                <p className="text-xl text-[#333333] mb-2">No posts found</p>
-                                <p className="text-[#666666]">Try adjusting your search or filter criteria</p>
+                                <p className="text-xl text-[#333333] mb-2 leading-relaxed">No posts found</p>
+                                <p className="text-[#666666] leading-relaxed">Try adjusting your search or filter criteria</p>
                                 <button 
                                     onClick={() => {setSelectedCategory("All"); setSearchTerm("")}}
-                                    className="mt-4 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:shadow-lg transition-all duration-300"
+                                    className="mt-4 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:shadow-lg transition-all duration-300 leading-relaxed"
                                 >
                                     Reset Filters
                                 </button>
@@ -187,13 +195,13 @@ const Blogs = () => {
                         {/* Pagination */}
                         <div className="flex justify-center mt-12">
                             <nav className="flex items-center gap-2">
-                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 flex items-center justify-center hover:bg-[#D4AF37]/10 transition-colors duration-300">
+                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 flex items-center justify-center hover:bg-[#D4AF37]/10 transition-colors duration-300 leading-relaxed">
                                     <span className="text-[#8B4513]">&laquo;</span>
                                 </button>
-                                <button className="w-10 h-10 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium">1</button>
-                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 text-[#8B4513] hover:bg-[#D4AF37]/10 transition-colors duration-300">2</button>
-                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 text-[#8B4513] hover:bg-[#D4AF37]/10 transition-colors duration-300">3</button>
-                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 flex items-center justify-center hover:bg-[#D4AF37]/10 transition-colors duration-300">
+                                <button className="w-10 h-10 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium leading-relaxed">1</button>
+                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 text-[#8B4513] hover:bg-[#D4AF37]/10 transition-colors duration-300 leading-relaxed">2</button>
+                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 text-[#8B4513] hover:bg-[#D4AF37]/10 transition-colors duration-300 leading-relaxed">3</button>
+                                <button className="w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm border border-[#D4AF37]/20 flex items-center justify-center hover:bg-[#D4AF37]/10 transition-colors duration-300 leading-relaxed">
                                     <span className="text-[#8B4513]">&raquo;</span>
                                 </button>
                             </nav>
@@ -212,18 +220,9 @@ const Blogs = () => {
                 .animate-gradientBackground {
                     animation: gradientBackground 30s ease infinite;
                 }
-                .line-clamp-2, .line-clamp-3 {
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-                .line-clamp-3 {
-                    -webkit-line-clamp: 3;
-                }
             `}</style>
         </div>
     );
 };
 
-export default Blogs;
+export default Blogs;   

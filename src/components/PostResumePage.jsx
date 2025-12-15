@@ -7,7 +7,7 @@ const PostResumePage = () => {
     fullName: '',
     email: '',
     phone: '',
-    currentJobTitle: '',
+    DesiredJobTitle: '',
     linkedInProfile: '',
     coverLetter: ''
   });
@@ -46,7 +46,7 @@ const PostResumePage = () => {
     dataToSend.append('fullName', formData.fullName);
     dataToSend.append('email', formData.email);
     dataToSend.append('phone', formData.phone);
-    dataToSend.append('currentJobTitle', formData.currentJobTitle);
+    dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
     dataToSend.append('linkedInProfile', formData.linkedInProfile);
     dataToSend.append('coverLetter', formData.coverLetter);
     
@@ -64,7 +64,7 @@ const PostResumePage = () => {
       if (response.ok) {
         alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
         // Reset form
-        setFormData({ fullName: '', email: '', phone: '', currentJobTitle: '', linkedInProfile: '', coverLetter: '' });
+        setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
         setResumeFile(null);
         e.target.reset();
       } else {
@@ -161,17 +161,17 @@ const PostResumePage = () => {
                 />
               </div>
 
-              {/* Current Job Title */}
+              {/* Desired Job Title */}
               <div>
-                <label htmlFor="currentJobTitle" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
+                <label htmlFor="DesiredJobTitle" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                   <FaBriefcase className="text-[#D4AF37]" />
-                  Current Job Title
+                  Desired Job Title *
                 </label>
                 <input
                   type="text"
-                  id="currentJobTitle"
-                  name="currentJobTitle"
-                  value={formData.currentJobTitle}
+                  id="DesiredJobTitle"
+                  name="DesiredJobTitle"
+                  value={formData.DesiredJobTitle}
                   onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
                   placeholder="Senior Software Engineer"
@@ -183,7 +183,7 @@ const PostResumePage = () => {
             <div>
               <label htmlFor="linkedInProfile" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                 <FaLinkedin className="text-[#D4AF37]" />
-                LinkedIn Profile URL
+                LinkedIn Profile URL *
               </label>
               <input
                 type="url"
@@ -191,6 +191,7 @@ const PostResumePage = () => {
                 name="linkedInProfile"
                 value={formData.linkedInProfile}
                 onChange={handleInputChange}
+                required  // Added required attribute to make this field compulsory
                 className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
                 placeholder="https://linkedin.com/in/johndoe"
               />
