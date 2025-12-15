@@ -113,20 +113,20 @@ export default function Home() {
 
   const whyChooseUs = [
     {
-      title: "Extensive Network",
-      desc: "Access to a vast pool of talented professionals across various industries."
+      title: "Quality-First Hiring",
+      desc: "We focus on precision, not volume — delivering only well-screened, role-ready candidates who align with your business needs and culture."
     },
     {
-      title: "Personalized Approach",
-      desc: "Tailored solutions to meet your specific recruitment needs."
+      title: "Wide Talent Network",
+      desc: "With a strong presence across Tier 1 & Tier 2 cities, our network helps clients access diverse talent and candidates access nationwide opportunities."
     },
     {
-      title: "Quick Turnaround",
-      desc: "Efficient processes that reduce hiring time without compromising quality."
+      title: "Fast Turnaround Time",
+      desc: "Our structured sourcing and screening process ensures timely delivery without compromising on candidate quality."
     },
     {
-      title: "Industry Expertise",
-      desc: "Deep understanding of different sectors and their unique requirements."
+      title: "Transparent & Ethical Approach",
+      desc: "No hidden terms, no unclear processes. We maintain complete transparency, confidentiality, and integrity throughout the hiring cycle"
     }
   ];
 
@@ -251,10 +251,10 @@ export default function Home() {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           <h2 className="text-4xl font-bold text-[#D4AF37] font-[Playfair_Display]">Who We Are</h2>
           <p className="mt-4 text-lg text-[#333333] leading-relaxed">
-            We are hassle-free and fee-free for candidates! Known as India's best placement consultant with a strong presence across major cities.
+            We operate as a hassle-free and fee-free recruitment partner for candidates, ensuring a seamless experience at every stage of the hiring process. Recognized as one of India’s trusted placement consultants with a strong presence across key cities, we are committed to delivering excellence.
           </p>
           <p className="mt-4 text-lg text-[#333333] leading-relaxed">
-            We genuinely care about providing excellent services and match best talent with right opportunities.
+           Our focus is on connecting high-quality talent with the right opportunities while maintaining transparency, integrity, and a candidate-first approach.
           </p>
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
             {["Hassle-free Hiring", "Top-Tier Talent"].map((item, i) => (
@@ -394,7 +394,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-[#F0C14B] font-[Playfair_Display]">Stay Updated</motion.h2>
           <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-white">
-            Subscribe to our newsletter for latest job openings and industry insights.
+            Stay ahead of opportunities. Join our newsletter for curated job openings and industry updates.
           </motion.p>
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <input type="email" placeholder="Enter your email" className="px-6 py-3 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#F0C14B] text-white placeholder-white/60 w-full sm:w-auto" />
