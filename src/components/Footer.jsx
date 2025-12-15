@@ -170,14 +170,6 @@ const Footer = () => {
                         <p className="text-gray-400 mb-4 md:mb-0">
                             © {currentYear} MiradoVista HR. All Rights Reserved.
                         </p>
-                        <div className="flex items-center gap-4">
-                            <Link to="/privacy" className="text-gray-400 hover:text-[#D4AF37] transition-colors duration-300">
-                                Privacy Policy
-                            </Link>
-                            <Link to="/terms" className="text-gray-400 hover:text-[#D4AF37] transition-colors duration-300">
-                                Terms of Service
-                            </Link>
-                        </div>
                     </div>
                     <p className="text-center text-gray-500 text-sm mt-4">
                         Powered by <a 
