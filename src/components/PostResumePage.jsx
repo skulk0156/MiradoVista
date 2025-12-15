@@ -39,7 +39,7 @@ const PostResumePage = () => {
     setIsSubmitting(true);
 
     // --- PASTE YOUR GETFORM URL HERE ---
-    const getformEndpoint = 'https://getform.io/f/your-unique-id'; // <--- REPLACE THIS WITH YOUR GETFORM URL
+    const getformEndpoint = 'https://formspree.io/f/xrbnvpqv'; // <--- REPLACE THIS WITH YOUR GETFORM URL
 
     const dataToSend = new FormData();
     dataToSend.append('resume', resumeFile);

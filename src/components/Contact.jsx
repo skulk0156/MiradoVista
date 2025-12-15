@@ -307,8 +307,7 @@ const Contact = () => {
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Business Hours</h3>
                                     <p>
-                                        Monday - Friday: 9:00 AM - 6:00 PM<br/>
-                                        Saturday: 9:30 AM - 7:30 PM
+                                        Monday - Saturday: 9:30 AM - 7:30 PM
                                     </p>
                                 </div>
                             </div>
