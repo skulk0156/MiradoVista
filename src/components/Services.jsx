@@ -2,7 +2,9 @@ import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FaUserTie, FaBalanceScale, FaLaptopCode, FaBoxOpen, FaHandPointRight, FaArrowRight } from 'react-icons/fa';
 import AnimatedPage from './AnimatedPage';
-import backgroundImage from '../assets/WhatsApp Image 2025-12-12 at 21.42.40.jpeg';
+
+// Try importing the image with ES6 import syntax (more reliable)
+import backgroundImage from '../assets/NONTECH.png';
 
 // --- 1. Sub-Component for Detailed Service Pages ---
 const ServiceDetail = ({ title, description, points, buttonText }) => {
@@ -23,21 +25,23 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           backgroundAttachment: 'fixed',
-          filter: 'blur(3px)',
-          transform: 'scale(1.1)'
+          filter: 'blur(2px)',
+          transform: 'scale(1.05)',
+          width: '100vw',
+          height: '100vh'
         }}
       />
       
       {/* Dark Overlay for Better Contrast */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/40 to-black/50" />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/50 to-black/60" />
       
-      {/* Content Container */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-24">
+      {/* Content Container - Modified class */}
+      <div className="relative z-10 min-h-screen px-6 py-24 flex flex-col justify-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className={`${isDarkTheme ? 'bg-[#36454f]/95' : 'bg-white/95'} backdrop-blur-md rounded-3xl border border-[#D4AF37]/30 shadow-2xl p-8 md:p-12 max-w-4xl w-full`}
+          className={`${isDarkTheme ? 'bg-[#36454f]/70' : 'bg-white/70'} backdrop-blur-md rounded-3xl border border-[#D4AF37]/30 shadow-2xl p-8 md:p-12 max-w-4xl w-full mx-auto`}
         >
           {/* Title with Gold Accent */}
           <div className="mb-8">
@@ -48,7 +52,7 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
           </div>
           
           {/* Description */}
-          <p className={`text-lg mb-8 leading-relaxed ${isDarkTheme ? 'text-white/90' : 'text-[#333333]'} drop-shadow-sm`}>
+          <p className={`text-lg mb-8 leading-relaxed ${isDarkTheme ? 'text-white/95' : 'text-[#333333]'} drop-shadow-sm`}>
             {description}
           </p>
 
@@ -59,7 +63,7 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
             </h3>
             <ul className="space-y-4">
               {points.map((point, index) => (
-                <li key={index} className={`flex items-start gap-3 ${isDarkTheme ? 'text-white/90' : 'text-[#333333]'}`}>
+                <li key={index} className={`flex items-start gap-3 ${isDarkTheme ? 'text-white/95' : 'text-[#333333]'}`}>
                   <FaHandPointRight className="text-[#D4AF37] mt-1 flex-shrink-0 text-lg drop-shadow-md" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
@@ -267,7 +271,20 @@ const Services = () => {
   const location = useLocation();
 
   return (
-    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
+    <div className="relative overflow-x-hidden font-[Poppins] pt-10 text-black">
+      {/* Background Image with Overlay */}
+      <div 
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed',
+        }}
+      />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-[#FAF8F3]/90 via-white/90 to-[#FFF9E5]/90" />
+      
       {/* Animated Gold Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10" />
 
@@ -284,4 +301,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Services; 
