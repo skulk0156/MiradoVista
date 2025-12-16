@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import aboutpiv from '../assets/Aboutpiv.png'; // Update this path to match your image location
