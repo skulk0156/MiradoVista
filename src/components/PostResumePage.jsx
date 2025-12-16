@@ -35,36 +35,23 @@ const handleSubmit = async (e) => {
     alert('Please upload your resume file.');
     return;
   }
+
   setIsSubmitting(true);
 
-  // 1. TRIPLE-CHECK THIS URL
-  const formspreeEndpoint = 'https://formspree.io/f/xyzraelk'; 
+  const formspreeEndpoint = 'https://formspree.io/f/xzznqeje'; // Your endpoint
 
   const dataToSend = new FormData();
-  // 2. Ensure these names match your 'name' attributes in the JSX
   dataToSend.append('resume', resumeFile);
-  dataToSend.append('fullName', formData.fullName);
-  dataToSend.append('email', formData.email);
-  dataToSend.append('phone', formData.phone);
-  dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
-  dataToSend.append('linkedInProfile', formData.linkedInProfile);
-  dataToSend.append('coverLetter', formData.coverLetter);
-  
-  dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
+  // ... append other fields
 
   try {
     const response = await fetch(formspreeEndpoint, {
       method: 'POST',
       body: dataToSend,
-      headers: {
-        'Accept': 'application/json'
-        // IMPORTANT: Do NOT set 'Content-Type' header when using FormData.
-        // The browser sets it automatically with the correct boundary.
-      }
+      headers: { 'Accept': 'application/json' }
     });
 
-    // The error message from Formspree is in the response body
-    const responseBody = await response.json(); 
+    const responseBody = await response.json(); // Get the error details from Formspree
 
     if (response.ok) {
       alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
@@ -73,9 +60,13 @@ const handleSubmit = async (e) => {
       setResumeFile(null);
       e.target.reset();
     } else {
-      // Log the detailed error from Formspree to the console
-      console.error("Formspree Error:", responseBody); 
-      alert(`Failed to submit resume: ${responseBody.error || 'Please check the form and try again.'}`);
+      // Check for the specific "File Uploads Not Permitted" error
+      if (responseBody.error && responseBody.error.includes("File Uploads Not Permitted")) {
+        alert("File uploads are not enabled for this form. Please contact the administrator or remove the file.");
+      } else {
+        // Generic error for other issues
+        alert(`Failed to submit resume: ${responseBody.error || 'Please check the form and try again.'}`);
+      }
     }
   } catch (error) {
     console.error('Network or fetch error:', error);
