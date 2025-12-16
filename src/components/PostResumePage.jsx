@@ -1,13 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // <-- Import useEffect
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUpload, FaUser, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
 
 // --- PASTE YOUR GOOGLE CLOUD CREDENTIALS HERE ---
-// For a real app, use environment variables (.env file) for security
-const API_KEY = 'AIzaSyBLO3k6mIasxlVvCGOdQIFEFwFPFij2Fyk';
-const CLIENT_ID = '778409427154-b3csg6v7db08t0m9l2lfnq92jrdh86l0.apps.googleusercontent.com';
+const API_KEY = 'YOUR_API_KEY';
+const CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
 
-// Scopes define what the file picker can access. We only need to see files.
+// Scopes define what the file picker can access.
 const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
 
 const PostResumePage = () => {
@@ -20,11 +19,43 @@ const PostResumePage = () => {
     coverLetter: ''
   });
 
-  // --- MODIFIED STATE ---
-  // Replaced resumeFile with resumeData to hold the file's name and URL from Google Drive
   const [resumeData, setResumeData] = useState({ name: '', url: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPickerLoading, setIsPickerLoading] = useState(false);
+  
+  // --- NEW STATE FOR MODERN AUTH ---
+  const [tokenClient, setTokenClient] = useState(null);
+
+  // --- NEW: Initialize the Google Identity Services token client when the component mounts ---
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://accounts.google.com/gsi/client';
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPE,
+        callback: (tokenResponse) => {
+          if (tokenResponse && tokenResponse.access_token) {
+            // Once we have the token, create and show the picker
+            createPicker(tokenResponse.access_token);
+          } else {
+            console.error('No token received from Google.');
+            alert('Could not authenticate with Google. Please try again.');
+            setIsPickerLoading(false);
+          }
+        },
+      });
+      setTokenClient(client);
+    };
+    document.body.appendChild(script);
+
+    // Cleanup function to remove the script when the component unmounts
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,71 +65,59 @@ const PostResumePage = () => {
     }));
   };
 
-  // --- ADDED: GOOGLE PICKER LOGIC ---
+  // --- MODIFIED: This function now requests the token ---
   const openGooglePicker = () => {
-    setIsPickerLoading(true);
-    // Load the Google APIs script if it's not already loaded
-    if (!window.gapi || !window.gapi.load) {
-      const script = document.createElement('script');
-      script.src = 'https://apis.google.com/js/api.js';
-      script.onload = () => initializePicker();
-      document.body.appendChild(script);
-    } else {
-      initializePicker();
+    if (!tokenClient) {
+      alert('Google services are still loading. Please wait a moment and try again.');
+      return;
     }
+    setIsPickerLoading(true);
+    tokenClient.requestAccessToken();
   };
 
-  const initializePicker = () => {
-    window.gapi.load('picker', () => {
-      const picker = new window.google.picker.PickerBuilder()
-        .addView(window.google.picker.ViewId.DOCS) // Show Google Docs
-        .addView(window.google.picker.ViewId.PDFS) // Show PDFs
-        .setDeveloperKey(API_KEY)
-        .setCallback(pickerCallback);
-      
-      // For OAuth 2.0, you need to authenticate first
-      window.gapi.auth.authorize(
-        { client_id: CLIENT_ID, scope: SCOPE, immediate: false },
-        (authResult) => {
-          if (authResult && !authResult.error) {
-            picker.setOAuthToken(authResult.access_token);
-            picker.build().setVisible(true);
-          } else {
-            console.error('Auth error', authResult);
-            alert('Could not authenticate with Google. Please try again.');
-            setIsPickerLoading(false);
-          }
-        }
-      );
-    });
+  // --- NEW: This function creates the picker after authentication is successful ---
+  const createPicker = (accessToken) => {
+    // Load the Google Picker API script
+    const pickerScript = document.createElement('script');
+    pickerScript.src = 'https://apis.google.com/js/api.js';
+    pickerScript.onload = () => {
+      window.gapi.load('picker', () => {
+        const picker = new window.google.picker.PickerBuilder()
+          .addView(window.google.picker.ViewId.DOCS)
+          .addView(window.google.picker.ViewId.PDFS)
+          .setOAuthToken(accessToken) // Use the token we received
+          .setDeveloperKey(API_KEY)
+          .setCallback(pickerCallback);
+        picker.build().setVisible(true);
+      });
+    };
+    document.body.appendChild(pickerScript);
   };
-
+  
+  // --- MODIFIED: This callback now also revokes the token for security ---
   const pickerCallback = (data) => {
     if (data.action === window.google.picker.Action.PICKED) {
       const document = data.docs[0];
       setResumeData({
         name: document.name,
-        url: document.url // This is the shareable link
+        url: document.url,
       });
     }
     setIsPickerLoading(false);
+    // It's good practice to revoke the token after you're done with it
+    window.google.accounts.oauth2.revoke(resumeData.accessToken);
   };
-  
-  // --- MODIFIED handleSubmit ---
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if a resume link from Google Drive has been provided
     if (!resumeData.url) {
       alert('Please select your resume from Google Drive.');
       return;
     }
 
     setIsSubmitting(true);
-
     const formspreeEndpoint = 'https://formspree.io/f/xzznqeje';
 
-    // We are sending a simple JSON object now, not FormData
     const dataToSend = {
       fullName: formData.fullName,
       email: formData.email,
@@ -106,7 +125,7 @@ const PostResumePage = () => {
       DesiredJobTitle: formData.DesiredJobTitle,
       linkedInProfile: formData.linkedInProfile,
       coverLetter: formData.coverLetter,
-      resumeLink: resumeData.url, // Send the Google Drive link
+      resumeLink: resumeData.url,
       subject: `New Resume Submission from ${formData.fullName}`,
     };
 
@@ -122,9 +141,8 @@ const PostResumePage = () => {
 
       if (response.ok) {
         alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
-        // Reset form
         setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
-        setResumeData({ name: '', url: '' }); // Reset resume data
+        setResumeData({ name: '', url: '' });
         e.target.reset();
       } else {
         const errorData = await response.json();
@@ -139,6 +157,7 @@ const PostResumePage = () => {
   };
 
   return (
+    // --- Your JSX remains the same ---
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
       
@@ -251,14 +270,14 @@ const PostResumePage = () => {
               />
             </div>
 
-            {/* --- REPLACED: Resume Upload Section --- */}
+            {/* Resume Upload */}
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                 <FaUpload className="text-[#D4AF37]" />
                 Resume from Google Drive *
               </label>
               <button
-                type="button" // Important: type="button" prevents it from submitting the form
+                type="button"
                 onClick={openGooglePicker}
                 disabled={isPickerLoading}
                 className="w-full px-4 py-3 border-2 border-dashed border-gray-600 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300 text-gray-300"
