@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { FaBriefcase, FaUpload, FaUser, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
 
 // --- PASTE YOUR GOOGLE CLOUD CREDENTIALS HERE ---
-const API_KEY = 'YOUR_API_KEY';
-const CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
+const API_KEY = 'AIzaSyBLO3k6mIasxlVvCGOdQIFEFwFPFij2Fyk';
+const CLIENT_ID = '778409427154-b3csg6v7db08t0m9l2lfnq92jrdh86l0.apps.googleusercontent.com';
 
 // Scopes define what the file picker can access.
 const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
