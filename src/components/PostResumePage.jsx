@@ -30,7 +30,6 @@ const PostResumePage = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     if (!resumeFile) {
       alert('Please upload your resume file.');
       return;
@@ -39,7 +38,7 @@ const PostResumePage = () => {
     setIsSubmitting(true);
 
     // --- PASTE YOUR GETFORM URL HERE ---
-    const getformEndpoint = 'https://formspree.io/f/xrbnvpqv'; // <--- REPLACE THIS WITH YOUR GETFORM URL
+    const getformEndpoint = 'https://formspree.io/f/xzznqeje'; // <--- REPLACE THIS WITH YOUR GETFORM URL
 
     const dataToSend = new FormData();
     dataToSend.append('resume', resumeFile);
