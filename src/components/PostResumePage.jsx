@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUpload, FaUser, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
 
+// --- PASTE YOUR GOOGLE CLOUD CREDENTIALS HERE ---
+// For a real app, use environment variables (.env file) for security
+const API_KEY = 'AIzaSyBLO3k6mIasxlVvCGOdQIFEFwFPFij2Fyk';
+const CLIENT_ID = '778409427154-b3csg6v7db08t0m9l2lfnq92jrdh86l0.apps.googleusercontent.com';
+
+// Scopes define what the file picker can access. We only need to see files.
+const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
+
 const PostResumePage = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -12,8 +20,11 @@ const PostResumePage = () => {
     coverLetter: ''
   });
 
-  const [resumeFile, setResumeFile] = useState(null);
+  // --- MODIFIED STATE ---
+  // Replaced resumeFile with resumeData to hold the file's name and URL from Google Drive
+  const [resumeData, setResumeData] = useState({ name: '', url: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPickerLoading, setIsPickerLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -23,60 +34,110 @@ const PostResumePage = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setResumeFile(e.target.files[0]);
+  // --- ADDED: GOOGLE PICKER LOGIC ---
+  const openGooglePicker = () => {
+    setIsPickerLoading(true);
+    // Load the Google APIs script if it's not already loaded
+    if (!window.gapi || !window.gapi.load) {
+      const script = document.createElement('script');
+      script.src = 'https://apis.google.com/js/api.js';
+      script.onload = () => initializePicker();
+      document.body.appendChild(script);
+    } else {
+      initializePicker();
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!resumeFile) {
-    alert('Please upload your resume file.');
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  const formspreeEndpoint = 'https://formspree.io/f/xzznqeje'; // Your endpoint
-
-  const dataToSend = new FormData();
-  dataToSend.append('resume', resumeFile);
-  // ... append other fields
-
-  try {
-    const response = await fetch(formspreeEndpoint, {
-      method: 'POST',
-      body: dataToSend,
-      headers: { 'Accept': 'application/json' }
+  const initializePicker = () => {
+    window.gapi.load('picker', () => {
+      const picker = new window.google.picker.PickerBuilder()
+        .addView(window.google.picker.ViewId.DOCS) // Show Google Docs
+        .addView(window.google.picker.ViewId.PDFS) // Show PDFs
+        .setDeveloperKey(API_KEY)
+        .setCallback(pickerCallback);
+      
+      // For OAuth 2.0, you need to authenticate first
+      window.gapi.auth.authorize(
+        { client_id: CLIENT_ID, scope: SCOPE, immediate: false },
+        (authResult) => {
+          if (authResult && !authResult.error) {
+            picker.setOAuthToken(authResult.access_token);
+            picker.build().setVisible(true);
+          } else {
+            console.error('Auth error', authResult);
+            alert('Could not authenticate with Google. Please try again.');
+            setIsPickerLoading(false);
+          }
+        }
+      );
     });
+  };
 
-    const responseBody = await response.json(); // Get the error details from Formspree
-
-    if (response.ok) {
-      alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
-      // Reset form...
-      setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
-      setResumeFile(null);
-      e.target.reset();
-    } else {
-      // Check for the specific "File Uploads Not Permitted" error
-      if (responseBody.error && responseBody.error.includes("File Uploads Not Permitted")) {
-        alert("File uploads are not enabled for this form. Please contact the administrator or remove the file.");
-      } else {
-        // Generic error for other issues
-        alert(`Failed to submit resume: ${responseBody.error || 'Please check the form and try again.'}`);
-      }
+  const pickerCallback = (data) => {
+    if (data.action === window.google.picker.Action.PICKED) {
+      const document = data.docs[0];
+      setResumeData({
+        name: document.name,
+        url: document.url // This is the shareable link
+      });
     }
-  } catch (error) {
-    console.error('Network or fetch error:', error);
-    alert('An error occurred while submitting. Please check your connection and try again.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    setIsPickerLoading(false);
+  };
+  
+  // --- MODIFIED handleSubmit ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  // --- Your JSX remains the same ---
+    // Check if a resume link from Google Drive has been provided
+    if (!resumeData.url) {
+      alert('Please select your resume from Google Drive.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const formspreeEndpoint = 'https://formspree.io/f/xzznqeje';
+
+    // We are sending a simple JSON object now, not FormData
+    const dataToSend = {
+      fullName: formData.fullName,
+      email: formData.email,
+      phone: formData.phone,
+      DesiredJobTitle: formData.DesiredJobTitle,
+      linkedInProfile: formData.linkedInProfile,
+      coverLetter: formData.coverLetter,
+      resumeLink: resumeData.url, // Send the Google Drive link
+      subject: `New Resume Submission from ${formData.fullName}`,
+    };
+
+    try {
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (response.ok) {
+        alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
+        // Reset form
+        setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
+        setResumeData({ name: '', url: '' }); // Reset resume data
+        e.target.reset();
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to submit resume: ${errorData.error || 'Please check the form and try again.'}`);
+      }
+    } catch (error) {
+      console.error('Network or fetch error:', error);
+      alert('An error occurred while submitting. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
@@ -99,7 +160,6 @@ const handleSubmit = async (e) => {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* ... (All your form fields and JSX go here, unchanged) ... */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div>
@@ -191,34 +251,20 @@ const handleSubmit = async (e) => {
               />
             </div>
 
-            {/* Resume Upload */}
+            {/* --- REPLACED: Resume Upload Section --- */}
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                 <FaUpload className="text-[#D4AF37]" />
-                Upload Resume (PDF, DOC, DOCX) *
+                Resume from Google Drive *
               </label>
-              <div className="relative">
-                <input
-                  type="file"
-                  id="resume"
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx"
-                  required
-                  className="hidden"
-                />
-                <label
-                  htmlFor="resume"
-                  className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300"
-                >
-                  <div className="text-center">
-                    <FaUpload className="text-3xl text-[#D4AF37] mx-auto mb-2" />
-                    <p className="text-gray-300">
-                      {resumeFile ? resumeFile.name : 'Click to upload or drag and drop'}
-                    </p>
-                    <p className="text-xs text-gray-400">PDF, DOC, DOCX (MAX. 5MB)</p>
-                  </div>
-                </label>
-              </div>
+              <button
+                type="button" // Important: type="button" prevents it from submitting the form
+                onClick={openGooglePicker}
+                disabled={isPickerLoading}
+                className="w-full px-4 py-3 border-2 border-dashed border-gray-600 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300 text-gray-300"
+              >
+                {isPickerLoading ? 'Loading...' : resumeData.name ? `Selected: ${resumeData.name}` : 'Choose file from Google Drive'}
+              </button>
             </div>
 
             {/* Cover Letter */}
