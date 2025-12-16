@@ -85,11 +85,6 @@ export default function Home() {
     },
   ];
 
-  const offices = [
-    { city: "Pune", address: "Office No. 41/42 Tejaswani HSG, Baner Gaon, Haveli, Pune Maharashtra - 411045", phone: "+91 8669667854", email: "noida@miradovista.com" },
-    { city: "Rudrapur", address: "Rudrapur, Uttarakhand, India", phone: "+91 0987654321", email: "rudrapur@miradovista.com" },
-  ];
-
   const testimonials = [
     {
       name: "Rajesh Kumar",
@@ -251,7 +246,7 @@ export default function Home() {
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
           <h2 className="text-4xl font-bold text-[#D4AF37] font-[Playfair_Display]">Who We Are</h2>
           <p className="mt-4 text-lg text-[#333333] leading-relaxed">
-            We operate as a hassle-free and fee-free recruitment partner for candidates, ensuring a seamless experience at every stage of the hiring process. Recognized as one of India’s trusted placement consultants with a strong presence across key cities, we are committed to delivering excellence.
+            We operate as a hassle-free and fee-free recruitment partner for candidates, ensuring a seamless experience at every stage of the hiring process. Recognized as one of India's trusted placement consultants with a strong presence across key cities, we are committed to delivering excellence.
           </p>
           <p className="mt-4 text-lg text-[#333333] leading-relaxed">
            Our focus is on connecting high-quality talent with the right opportunities while maintaining transparency, integrity, and a candidate-first approach.
@@ -356,37 +351,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Offices Section */}
-      <section className="max-w-6xl mx-auto px-6 py-24">
-        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Our Offices</motion.h2>
-        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Find us across India.</p>
-        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
-          {offices.map((office, i) => (
-            <motion.div key={i} variants={fadeUp} className="p-6 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all">
-              <h4 className="text-xl font-semibold text-[#333333] mb-4">{office.city}</h4>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <FaMapMarkerAlt className="text-[#D4AF37] mt-1" />
-                  <p className="text-[#333333]">{office.address}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <FaPhone className="text-[#D4AF37]" />
-                  <p className="text-[#333333]">{office.phone}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <FaEnvelope className="text-[#D4AF37]" />
-                  <p className="text-[#333333]">{office.email}</p>
-                </div>
+      {/* Rudrapur Office Section - Centered Card */}
+      <section className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3]">
+        <div className="max-w-2xl mx-auto px-6">
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-12">Our Office</motion.h2>
+          <motion.div 
+            variants={fadeUp} 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true }}
+            className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all"
+          >
+            <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center">Pune </h3>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <FaMapMarkerAlt className="text-[#D4AF37] mt-1" />
+                <p className="text-[#333333]">Office No. 41/42 Tejaswani HSG, Baner Gaon, Haveli, Pune Maharashtra - 411045</p>
               </div>
-              <div className="mt-6">
-                <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">
-                  Get Directions
-                  <FaArrowRight className="text-sm" />
-                </Link>
+              <div className="flex items-center gap-3">
+                <FaPhone className="text-[#D4AF37]" />
+                <p className="text-[#333333]">+91 +91 8669667854</p>
               </div>
-            </motion.div>
-          ))}
-        </motion.div>
+              <div className="flex items-center gap-3">
+                <FaEnvelope className="text-[#D4AF37]" />
+                <p className="text-[#333333]">contact@miradovista.com</p>
+              </div>
+            </div>
+            <div className="mt-8 flex justify-center">
+              <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">
+                Get Directions
+                <FaArrowRight className="text-sm" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Newsletter Section */}

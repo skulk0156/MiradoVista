@@ -3,5 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/MiradoVista/", // <-- EXACT repo name (capital letters matter)
+  base: "/MiradoVista/", // ⚠️ EXACT repo name with capitalization
 });
