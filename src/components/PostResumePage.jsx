@@ -29,58 +29,61 @@ const PostResumePage = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!resumeFile) {
+    alert('Please upload your resume file.');
+    return;
+  }
+  setIsSubmitting(true);
 
-    if (!resumeFile) {
-      alert('Please upload your resume file.');
-      return;
-    }
+  // 1. TRIPLE-CHECK THIS URL
+  const formspreeEndpoint = 'https://formspree.io/f/xyzraelk'; 
 
-    setIsSubmitting(true);
+  const dataToSend = new FormData();
+  // 2. Ensure these names match your 'name' attributes in the JSX
+  dataToSend.append('resume', resumeFile);
+  dataToSend.append('fullName', formData.fullName);
+  dataToSend.append('email', formData.email);
+  dataToSend.append('phone', formData.phone);
+  dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
+  dataToSend.append('linkedInProfile', formData.linkedInProfile);
+  dataToSend.append('coverLetter', formData.coverLetter);
+  
+  dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
 
-    // --- REPLACE THIS WITH YOUR OWN FORMSPREE ENDPOINT URL ---
-    const formspreeEndpoint = 'https://formspree.io/f/xyzraelk'; 
-
-    // FormData is used to handle file uploads
-    const dataToSend = new FormData();
-    dataToSend.append('resume', resumeFile);
-    dataToSend.append('fullName', formData.fullName);
-    dataToSend.append('email', formData.email);
-    dataToSend.append('phone', formData.phone);
-    dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
-    dataToSend.append('linkedInProfile', formData.linkedInProfile);
-    dataToSend.append('coverLetter', formData.coverLetter);
-    
-    // You can add a hidden 'subject' field to customize the email subject
-    dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
-
-    try {
-      const response = await fetch(formspreeEndpoint, {
-        method: 'POST',
-        body: dataToSend,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
-        // Reset form
-        setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
-        setResumeFile(null);
-        e.target.reset(); // Resets the file input
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to submit resume: ${errorData.message || 'Please check your form fields and try again.'}`);
+  try {
+    const response = await fetch(formspreeEndpoint, {
+      method: 'POST',
+      body: dataToSend,
+      headers: {
+        'Accept': 'application/json'
+        // IMPORTANT: Do NOT set 'Content-Type' header when using FormData.
+        // The browser sets it automatically with the correct boundary.
       }
-    } catch (error) {
-      console.error('Error submitting resume:', error);
-      alert('An error occurred while submitting. Please check your connection and try again.');
-    } finally {
-      setIsSubmitting(false);
+    });
+
+    // The error message from Formspree is in the response body
+    const responseBody = await response.json(); 
+
+    if (response.ok) {
+      alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
+      // Reset form...
+      setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
+      setResumeFile(null);
+      e.target.reset();
+    } else {
+      // Log the detailed error from Formspree to the console
+      console.error("Formspree Error:", responseBody); 
+      alert(`Failed to submit resume: ${responseBody.error || 'Please check the form and try again.'}`);
     }
-  };
+  } catch (error) {
+    console.error('Network or fetch error:', error);
+    alert('An error occurred while submitting. Please check your connection and try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   // --- Your JSX remains the same ---
   return (
