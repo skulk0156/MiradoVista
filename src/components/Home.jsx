@@ -370,7 +370,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-3">
                 <FaPhone className="text-[#D4AF37]" />
-                <p className="text-[#333333]">+91 +91 8669667854</p>
+                <p className="text-[#333333]">+91 8669667854</p>
               </div>
               <div className="flex items-center gap-3">
                 <FaEnvelope className="text-[#D4AF37]" />
