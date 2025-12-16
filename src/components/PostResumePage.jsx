@@ -30,6 +30,8 @@ const PostResumePage = () => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
     if (!resumeFile) {
       alert('Please upload your resume file.');
       return;
@@ -37,9 +39,10 @@ const PostResumePage = () => {
 
     setIsSubmitting(true);
 
-    // --- PASTE YOUR GETFORM URL HERE ---
-    const getformEndpoint = 'https://formspree.io/f/xzznqeje'; // <--- REPLACE THIS WITH YOUR GETFORM URL
+    // --- REPLACE THIS WITH YOUR OWN FORMSPREE ENDPOINT URL ---
+    const formspreeEndpoint = 'https://formspree.io/f/xyzraelk'; 
 
+    // FormData is used to handle file uploads
     const dataToSend = new FormData();
     dataToSend.append('resume', resumeFile);
     dataToSend.append('fullName', formData.fullName);
@@ -49,10 +52,11 @@ const PostResumePage = () => {
     dataToSend.append('linkedInProfile', formData.linkedInProfile);
     dataToSend.append('coverLetter', formData.coverLetter);
     
+    // You can add a hidden 'subject' field to customize the email subject
     dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
 
     try {
-      const response = await fetch(getformEndpoint, {
+      const response = await fetch(formspreeEndpoint, {
         method: 'POST',
         body: dataToSend,
         headers: {
@@ -65,7 +69,7 @@ const PostResumePage = () => {
         // Reset form
         setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
         setResumeFile(null);
-        e.target.reset();
+        e.target.reset(); // Resets the file input
       } else {
         const errorData = await response.json();
         alert(`Failed to submit resume: ${errorData.message || 'Please check your form fields and try again.'}`);
@@ -78,9 +82,9 @@ const PostResumePage = () => {
     }
   };
 
+  // --- Your JSX remains the same ---
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
-      {/* Animated Gold Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
       
       <div className="max-w-4xl mx-auto px-6 py-24">
@@ -88,7 +92,6 @@ const PostResumePage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          // --- CHANGED: Added dark gradient background ---
           className="bg-gradient-to-b from-[#22282c] to-[#36454f] rounded-3xl border border-[#D4AF37]/20 shadow-lg p-8 md:p-12"
         >
           <div className="text-center mb-8">
@@ -96,22 +99,20 @@ const PostResumePage = () => {
             <h1 className="text-4xl font-bold font-[Playfair_Display] text-[#D4AF37] mb-3">
               Join Our Talent Network
             </h1>
-            {/* --- CHANGED: Text color to light --- */}
             <p className="text-lg text-gray-200">
               Submit your resume and we'll keep you in mind for future opportunities that match your profile.
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* ... (All your form fields and JSX go here, unchanged) ... */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div>
-                {/* --- CHANGED: Label text color to light --- */}
                 <label htmlFor="fullName" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                   <FaUser className="text-[#D4AF37]" />
                   Full Name *
                 </label>
-                {/* --- CHANGED: Input styles for dark theme --- */}
                 <input
                   type="text"
                   id="fullName"
@@ -190,7 +191,7 @@ const PostResumePage = () => {
                 name="linkedInProfile"
                 value={formData.linkedInProfile}
                 onChange={handleInputChange}
-                required  // Added required attribute to make this field compulsory
+                required
                 className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
                 placeholder="https://linkedin.com/in/johndoe"
               />
@@ -211,14 +212,12 @@ const PostResumePage = () => {
                   required
                   className="hidden"
                 />
-                {/* --- CHANGED: File upload area styles for dark theme --- */}
                 <label
                   htmlFor="resume"
                   className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300"
                 >
                   <div className="text-center">
                     <FaUpload className="text-3xl text-[#D4AF37] mx-auto mb-2" />
-                    {/* --- CHANGED: Text color to light --- */}
                     <p className="text-gray-300">
                       {resumeFile ? resumeFile.name : 'Click to upload or drag and drop'}
                     </p>
@@ -230,11 +229,9 @@ const PostResumePage = () => {
 
             {/* Cover Letter */}
             <div>
-              {/* --- CHANGED: Label text color to light --- */}
               <label htmlFor="coverLetter" className="text-sm font-semibold text-gray-300 mb-2 block">
                 Cover Letter / Additional Information
               </label>
-              {/* --- CHANGED: Textarea styles for dark theme --- */}
               <textarea
                 id="coverLetter"
                 name="coverLetter"
