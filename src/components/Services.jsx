@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FaUserTie, FaBalanceScale, FaLaptopCode, FaBoxOpen, FaHandPointRight, FaArrowRight } from 'react-icons/fa';
+import { FaUserTie, FaIndustry, FaHandshake, FaUserGraduate, FaBuilding, FaArrowRight } from 'react-icons/fa';
 import AnimatedPage from './AnimatedPage';
 
 // Try importing the image with ES6 import syntax (more reliable)
@@ -8,11 +8,13 @@ import backgroundImage from '../assets/NONTECH.png';
 
 // --- 1. Sub-Component for Detailed Service Pages ---
 const ServiceDetail = ({ title, description, points, buttonText }) => {
+  // MODIFIED: Added "Candidate Services" and "Talent Acquisition Services" to dark theme condition
   const isDarkTheme =
-    title === 'Legal Consulting & Compliance Solutions' ||
-    title === 'IT Consulting Services' ||
-    title === 'Office Stationery Product Supplies' ||
-    title === 'Strategic HR Consulting Services';
+    title === 'Industry-Specific Hiring' ||
+    title === 'Consulting & Advisory' ||
+    title === 'Employer Support' ||
+    title === 'Candidate Services' ||
+    title === 'Talent Acquisition Services';
 
   return (
     <div className="relative min-h-screen font-[Poppins] text-black">
@@ -64,7 +66,7 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
             <ul className="space-y-4">
               {points.map((point, index) => (
                 <li key={index} className={`flex items-start gap-3 ${isDarkTheme ? 'text-white/95' : 'text-[#333333]'}`}>
-                  <FaHandPointRight className="text-[#D4AF37] mt-1 flex-shrink-0 text-lg drop-shadow-md" />
+                  <FaHandshake className="text-[#D4AF37] mt-1 flex-shrink-0 text-lg drop-shadow-md" />
                   <span className="leading-relaxed">{point}</span>
                 </li>
               ))}
@@ -84,81 +86,106 @@ const ServiceDetail = ({ title, description, points, buttonText }) => {
 };
 
 // --- 2. Individual Page Components ---
-const HRConsultingPage = () => {
+const TalentAcquisitionPage = () => {
   const points = [
-    "Talent Management: Performance Appraisal Systems, Training & Development.",
-    "Policy & Compliance: HR manual drafting, Statutory Compliance audits.",
-    "Compensation & Benefits: Benchmarking and salary structure design.",
-    "Employee Engagement: Surveys, retention strategies, and conflict resolution."
+    "End-to-end recruitment process management from sourcing to onboarding",
+    "Candidate screening and assessment using industry-standard methodologies",
+    "Interview coordination and facilitation with your hiring teams",
+    "Reference checks and background verification services",
+    "Offer negotiation and candidate experience management"
   ];
 
   return (
     <AnimatedPage>
       <ServiceDetail
-        title="Strategic HR Consulting Services"
-        description="We partner with businesses to optimize their human resources functions, ensuring compliance, driving talent engagement, and fostering a productive workplace culture."
+        title="Talent Acquisition Services"
+        description="Our comprehensive talent acquisition services help you identify, attract, and hire the right talent for your organization. We handle the entire recruitment lifecycle, allowing you to focus on your core business operations."
         points={points}
-        buttonText="Request HR Consultation"
+        buttonText="Start Hiring"
       />
     </AnimatedPage>
   );
 };
 
-const LegalConsultingPage = () => {
+const IndustryHiringPage = () => {
   const points = [
-    "Commercial Law: Contract drafting, review, and negotiation.",
-    "Labor Law Compliance: PF, ESI, Minimum Wages Act adherence.",
-    "Business Registrations: Guidance on company formation and licensing.",
-    "Intellectual Property: Basic advisory on trademarks and copyrights."
+    "Specialized recruitment for IT, healthcare, finance, manufacturing sectors",
+    "Industry-specific talent mapping and market intelligence",
+    "Access to pre-vetted candidate pools tailored to your industry",
+    "Understanding of unique skill requirements and compliance standards",
+    "Seasoned recruiters with domain expertise in your specific industry"
   ];
 
   return (
     <AnimatedPage>
       <ServiceDetail
-        title="Legal Consulting & Compliance Solutions"
-        description="Navigate the complex legal landscape with our expert consulting. We provide proactive advice and solutions to minimize risk and ensure your operations adhere to all relevant commercial and employment laws."
+        title="Industry-Specific Hiring"
+        description="Leverage our industry-specific hiring expertise to find candidates who not only have the right skills but also understand the unique challenges and opportunities in your sector. We specialize in multiple industries with dedicated recruitment teams."
         points={points}
-        buttonText="Get Legal Advisory"
+        buttonText="Find Industry Talent"
       />
     </AnimatedPage>
   );
 };
 
-const ITConsultingPage = () => {
+const ConsultingPage = () => {
   const points = [
-    "Digital Transformation Strategy: Roadmap for technology adoption.",
-    "Cloud Services: Migration planning and cloud optimization.",
-    "Cybersecurity Audits: Risk assessment and policy implementation.",
-    "Software Selection: Guidance on choosing the right CRM/ERP systems."
+    "HR strategy development and implementation",
+    "Compensation and benefits benchmarking",
+    "Organizational design and workforce planning",
+    "Employee engagement and retention strategies",
+    "Performance management system design"
   ];
 
   return (
     <AnimatedPage>
       <ServiceDetail
-        title="IT Consulting Services"
-        description="Leverage technology for business growth. Our IT consultants provide strategic guidance on infrastructure, digital transformation, and system optimization to enhance efficiency and security."
+        title="Consulting & Advisory"
+        description="Our consulting services provide strategic guidance to optimize your HR functions and align them with your business objectives. We help you build a strong foundation for sustainable growth through effective people management practices."
         points={points}
-        buttonText="Discuss Your IT Roadmap"
+        buttonText="Get Consultation"
       />
     </AnimatedPage>
   );
 };
 
-const StationerySuppliesPage = () => {
+const CandidateServicesPage = () => {
   const points = [
-    "Paper Products: All types of printing and writing paper.",
-    "Desk Essentials: Pens, markers, staplers, and folders.",
-    "Printing Consumables: Printer cartridges (toner and ink).",
-    "Customized Items: Branded notebooks and promotional stationery."
+    "Resume optimization and career counseling",
+    "Skill assessment and development recommendations",
+    "Interview preparation and mock sessions",
+    "Job matching based on skills and career aspirations",
+    "Career transition guidance and support"
   ];
 
   return (
     <AnimatedPage>
       <ServiceDetail
-        title="Office Stationery Product Supplies"
-        description="Ensure your office runs smoothly with our reliable and timely supply of high-quality stationery and consumables. We offer bulk ordering and consolidated billing for convenience."
+        title="Candidate Services"
+        description="We support job seekers in their career journey by providing personalized guidance, skill development resources, and access to exclusive opportunities. Our goal is to help candidates find roles that align with their skills, experience, and career aspirations."
         points={points}
-        buttonText="View Product Catalog"
+        buttonText="Explore Opportunities"
+      />
+    </AnimatedPage>
+  );
+};
+
+const EmployerSupportPage = () => {
+  const points = [
+    "Employer branding and value proposition development",
+    "Job description optimization for better candidate attraction",
+    "Hiring process audit and improvement recommendations",
+    "Onboarding framework design and implementation",
+    "Employment law compliance and documentation support"
+  ];
+
+  return (
+    <AnimatedPage>
+      <ServiceDetail
+        title="Employer Support"
+        description="Our employer support services help you create an attractive workplace that draws top talent. We assist with everything from employer branding to streamlining your hiring processes, ensuring you stand out in a competitive job market."
+        points={points}
+        buttonText="Enhance Your Hiring"
       />
     </AnimatedPage>
   );
@@ -168,28 +195,34 @@ const StationerySuppliesPage = () => {
 const ServiceGrid = () => {
   const coreServices = [
     {
-      slug: "hr-consulting",
+      slug: "talent-acquisition",
       icon: <FaUserTie className="text-3xl" />,
-      title: "HR Consulting Services",
-      description: "Strategic advisory on talent management, compliance, and policy development.",
+      title: "Talent Acquisition Services",
+      description: "Comprehensive recruitment solutions to find and hire the right talent for your organization.",
     },
     {
-      slug: "legal-consulting",
-      icon: <FaBalanceScale className="text-3xl" />,
-      title: "Legal Consulting Solutions",
-      description: "Expert guidance on commercial laws, labor compliance, and corporate registrations.",
+      slug: "industry-hiring",
+      icon: <FaIndustry className="text-3xl" />,
+      title: "Industry-Specific Hiring",
+      description: "Specialized recruitment expertise tailored to your specific industry sector.",
     },
     {
-      slug: "it-consulting",
-      icon: <FaLaptopCode className="text-3xl" />,
-      title: "IT Consulting Services",
-      description: "Strategy and implementation support for cloud, security, and digital transformation.",
+      slug: "consulting-advisory",
+      icon: <FaHandshake className="text-3xl" />,
+      title: "Consulting & Advisory",
+      description: "Strategic HR guidance to optimize your workforce and organizational effectiveness.",
     },
     {
-      slug: "stationery-supplies",
-      icon: <FaBoxOpen className="text-3xl" />,
-      title: "Office Stationery Supplies",
-      description: "Reliable and bulk supply of quality paper products, consumables, and desk essentials.",
+      slug: "candidate-services",
+      icon: <FaUserGraduate className="text-3xl" />,
+      title: "Candidate Services",
+      description: "Career support and guidance for job seekers to find their ideal opportunities.",
+    },
+    {
+      slug: "employer-support",
+      icon: <FaBuilding className="text-3xl" />,
+      title: "Employer Support",
+      description: "Tools and strategies to enhance your employer brand and hiring processes.",
     },
   ];
 
@@ -204,7 +237,7 @@ const ServiceGrid = () => {
             transition={{ duration: 0.7 }}
             className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] text-center mb-6"
           >
-            Integrated Business Solutions
+            HR Services & Solutions
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -212,7 +245,7 @@ const ServiceGrid = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-lg text-[#333333] max-w-3xl mx-auto"
           >
-            Beyond HR, we offer a portfolio of essential consulting and supply services tailored to streamline your business operations and procurement needs.
+            Our comprehensive HR services are designed to meet the diverse needs of both employers and job seekers, creating meaningful connections and fostering career growth.
           </motion.p>
         </div>
       </section>
@@ -225,7 +258,7 @@ const ServiceGrid = () => {
             transition={{ duration: 0.7 }}
             className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-4"
           >
-            Our Service Verticals
+            Our Service Offerings
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
@@ -233,10 +266,10 @@ const ServiceGrid = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-center text-[#333333] mb-12 max-w-2xl mx-auto"
           >
-            Select a service to explore how we can add value to your organization.
+            Select a service to explore how we can add value to your organization or career journey.
           </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {coreServices.map((service, index) => (
               <motion.div
                 key={index}
@@ -245,13 +278,16 @@ const ServiceGrid = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Link to={service.slug} className="group block h-full">
-                  <div className="p-8 rounded-3xl bg-white/80 backdrop-blur-xl border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all duration-300 h-full">
+                  {/* MODIFIED: Dark Card Background and Light Text */}
+                  <div className="p-8 rounded-3xl bg-[#36454f]/80 backdrop-blur-xl border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all duration-300 h-full">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
                       {service.icon}
                     </div>
-                    <h3 className="text-xl font-semibold text-[#8B4513] mb-3">{service.title}</h3>
-                    <p className="text-[#333333] mb-4 flex-grow">{service.description}</p>
-                    <div className="flex items-center text-[#D4AF37] font-medium group-hover:text-[#8B4513] transition-colors duration-300">
+                    {/* MODIFIED: Light Text Color */}
+                    <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
+                    {/* MODIFIED: Light Text Color */}
+                    <p className="text-white/90 mb-4 flex-grow">{service.description}</p>
+                    <div className="flex items-center text-[#D4AF37] font-medium group-hover:text-white transition-colors duration-300">
                       View Details
                       <FaArrowRight className="ml-2 text-sm" />
                     </div>
@@ -291,14 +327,15 @@ const Services = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route index element={<AnimatedPage><ServiceGrid /></AnimatedPage>} />
-          <Route path="hr-consulting" element={<HRConsultingPage />} />
-          <Route path="legal-consulting" element={<LegalConsultingPage />} />
-          <Route path="it-consulting" element={<ITConsultingPage />} />
-          <Route path="stationery-supplies" element={<StationerySuppliesPage />} />
+          <Route path="talent-acquisition" element={<TalentAcquisitionPage />} />
+          <Route path="industry-hiring" element={<IndustryHiringPage />} />
+          <Route path="consulting-advisory" element={<ConsultingPage />} />
+          <Route path="candidate-services" element={<CandidateServicesPage />} />
+          <Route path="employer-support" element={<EmployerSupportPage />} />
         </Routes>
       </AnimatePresence>
     </div>
   );
 };
 
-export default Services; 
+export default Services;

@@ -45,10 +45,11 @@ export default function Navbar() {
     {
       name: "Services",
       submenu: [
-        { name: "HR Consulting Services", link: "/services/hr-consulting" },
-        { name: "Legal Consulting Solutions", link: "/services/legal-consulting" },
-        { name: "IT Consulting Services", link: "/services/it-consulting" },
-        { name: "Stationery Supplies", link: "/services/stationery-supplies" },
+        { name: "Talent Acquisition Services", link: "/services/talent-acquisition" },
+        { name: "Industry-Specific Hiring", link: "/services/industry-hiring" },
+        { name: "Consulting & Advisory", link: "/services/consulting-advisory" },
+        { name: "Candidate Services", link: "/services/candidate-services" },
+        { name: "Employer Support", link: "/services/employer-support" },
       ],
     },
     { name: "Testimonials", link: "/testimonials" },

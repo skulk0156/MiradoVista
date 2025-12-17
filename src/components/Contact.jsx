@@ -201,10 +201,13 @@ const Contact = () => {
                                         className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.service ? 'border-red-500' : 'border-white/20'} text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] appearance-none focus:bg-[#0b0e10] transition-colors duration-300`}
                                     >
                                         <option value="" disabled className="bg-[#0b0e10]">Select a Sector</option>
-                                        <option value="hr-consulting" className="bg-[#0b0e10]">HR Consulting Services</option>
-                                        <option value="legal-consulting" className="bg-[#0b0e10]">Legal Consulting Solutions</option>
-                                        <option value="it-consulting" className="bg-[#0b0e10]">IT Consulting Services</option>
-                                        <option value="stationery" className="bg-[#0b0e10]">Office Stationery Supplies</option>
+                                        <option value="it" className="bg-[#0b0e10]">IT</option>
+                                        <option value="real-estate" className="bg-[#0b0e10]">Real Estate</option>
+                                        <option value="bfsi" className="bg-[#0b0e10]">BFSI</option>
+                                        <option value="edtech" className="bg-[#0b0e10]">EdTech</option>
+                                        <option value="automotive-manufacturing" className="bg-[#0b0e10]">Automobile &  Manufacturing</option>
+                                        <option value="retail-fmcg" className="bg-[#0b0e10]">Retail & FMCG</option>
+                                        <option value="logistics-ecommerce" className="bg-[#0b0e10]">Logistic & E-commerce</option>
                                         <option value="general" className="bg-[#0b0e10]">General Inquiry</option>
                                     </select>
                                     <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">

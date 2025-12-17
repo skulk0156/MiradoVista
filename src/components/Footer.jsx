@@ -9,7 +9,7 @@ const Footer = () => {
     const quickLinks = [
         { name: "Home", href: "/" },
         { name: "About Us", href: "/about" },
-        { name: "Blogs", href: "/blogs" },
+        { name: "Services", href: "/services" },
         { name: "Contact Us", href: "/contact" },
     ];
 
@@ -154,8 +154,8 @@ const Footer = () => {
                                 <div className="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37]/30 transition-colors duration-300">
                                     <FaEnvelope className="text-[#D4AF37]" />
                                 </div>
-                                <a href="mailto:info@miradovista.com" className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300">
-                                    contact@miradovista.com
+                                <a href="mailto:info@miradovistahr.com" className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300">
+                                    contact@miradovistahr.com
                                 </a>
                             </div>
                             <div className="flex items-center gap-3 group">
