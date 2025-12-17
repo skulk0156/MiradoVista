@@ -1,3 +1,4 @@
+// Blogs.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaClock, FaArrowRight, FaSearch, FaUser, FaCalendarAlt, FaTag } from 'react-icons/fa';
@@ -225,4 +226,4 @@ const Blogs = () => {
     );
 };
 
-export default Blogs;   
+export default Blogs;

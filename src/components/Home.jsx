@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import heroLogo from "../assets/miradovista-logo.png";
 import heroLogo1 from "../assets/hero1.jpeg";
-import managementImg from "../assets/image.png";
+import managementImg from "../assets/employeeRep.jpeg";
 import heroBg from "../assets/hero-bg.jpg";
 import { motion } from "framer-motion";
 import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
@@ -164,7 +164,7 @@ export default function Home() {
               Best Placement Consultant in India
             </motion.h1>
             <motion.p variants={fadeUp} className="mt-6 text-lg text-white">
-              Connecting top talent with leading companies across Noida, Delhi, Mumbai, Pune, Hyderabad & more.
+              Connecting top talent with leading companies across Pune, Delhi, Mumbai, Bangalore & more.
             </motion.p>
             <motion.div variants={staggerParent} className="mt-10 flex flex-wrap gap-6">
               {["Get Started Now", "Learn More"].map((btn, i) => (
@@ -264,7 +264,7 @@ export default function Home() {
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} viewport={{ once: true }} className="rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all">
-          <img src={managementImg} className="object-cover w-full h-[400px]" />
+          <img src={managementImg} className="object-cover w-full h-[350 px]" />
         </motion.div>
       </section>
 

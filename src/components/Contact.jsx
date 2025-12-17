@@ -294,8 +294,7 @@ const Contact = () => {
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Email</h3>
                                     <p>
-                                        <a href="mailto:info@miradovista.com" className="text-[#F0C14B]">info@miradovista.com</a><br/>
-                                        <a href="mailto:support@miradovista.com" className="text-[#F0C14B]">support@miradovista.com</a>
+                                        <a href="contact@miradovistahr.com" className="text-[#F0C14B]">contact@miradovistahr.com</a><br/>
                                     </p>
                                 </div>
                             </div>
@@ -307,7 +306,8 @@ const Contact = () => {
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Business Hours</h3>
                                     <p>
-                                        Monday - Saturday: 9:30 AM - 7:30 PM
+                                        Monday - Friday : 9 AM - 6 PM
+
                                     </p>
                                 </div>
                             </div>

@@ -121,7 +121,7 @@ const AboutUs = () => {
                                 <FaBullseye className="text-white text-2xl" />
                             </div>
                             <h3 className="text-2xl font-semibold text-[#8B4513] mb-4 leading-relaxed">Our Mission</h3>
-                            <p className="text-[#333333] leading-relaxed">To redefine the recruitment landscape by offering ethical, efficient, and tailored talent solutions that drive sustainable success for our clients and candidates.</p>
+                            <p className="text-[#333333] leading-relaxed">To build meaningful connections between people and organizations by delivering thoughtful, ethical, and insight-driven recruitment solutions—helping professionals find roles where they can grow with confidence, and enabling businesses to build teams that are aligned, capable, and future-ready</p>
                         </motion.div>
                         
                         <motion.div 
@@ -228,15 +228,15 @@ const AboutUs = () => {
                         viewport={{ once: true, amount: 0.5 }}
                     >
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">2500+</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">250+</p>
                             <p className="text-lg text-[#333333] leading-relaxed">Successful Placements</p>
                         </motion.div>
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">50+</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">10+</p>
                             <p className="text-lg text-[#333333] leading-relaxed">Cities Covered in India</p>
                         </motion.div>
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center" variants={itemVariant}>
-                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">8</p>
+                            <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">4</p>
                             <p className="text-lg text-[#333333] leading-relaxed">Years of Expertise</p>
                         </motion.div>
                     </motion.div>

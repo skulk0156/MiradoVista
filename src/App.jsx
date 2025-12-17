@@ -13,6 +13,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import VideoSplash from "./components/VideoSplash";
 import introVideo from "./assets/intro.mp4";
 import PostResumePage from "./components/PostResumePage";
+import BlogPost from "./components/BlogPost";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogPost />} />
           <Route path="/post-resume" element={<PostResumePage />} />
           <Route
             path="/privacy"
