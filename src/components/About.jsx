@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle } from 'react-icons/fa';
+import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle, FaClock, FaSearch, FaHandshake } from 'react-icons/fa';
 import aboutpiv from '../assets/Aboutpiv.png'; // Update this path to match your image location
 
 // --- Animation Variants ---
@@ -44,6 +44,30 @@ const DifferentiatorCard = ({ icon, title, description }) => (
 );
 
 const AboutUs = () => {
+    // New data for why choose us section
+    const whyChooseUs = [
+        {
+            title: "Quality-First Hiring",
+            desc: "We focus on precision, not volume — delivering only well-screened, role-ready candidates who align with your business needs and culture.",
+            icon: <FaHandshake className="text-white text-xl" />
+        },
+        {
+            title: "Wide Talent Network",
+            desc: "With a strong presence across Tier 1 & Tier 2 cities, our network helps clients access diverse talent and candidates access nationwide opportunities.",
+            icon: <FaNetworkWired className="text-white text-xl" />
+        },
+        {
+            title: "Fast Turnaround Time",
+            desc: "Our structured sourcing and screening process ensures timely delivery without compromising on candidate quality.",
+            icon: <FaClock className="text-white text-xl" />
+        },
+        {
+            title: "Transparent & Ethical Approach",
+            desc: "No hidden terms, no unclear processes. We maintain complete transparency, confidentiality, and integrity throughout the hiring cycle",
+            icon: <FaShieldAlt className="text-white text-xl" />
+        }
+    ];
+
     return (
         <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
             {/* Animated Gold Gradient Background */}
@@ -193,26 +217,14 @@ const AboutUs = () => {
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.2 }}
                     >
-                        <DifferentiatorCard
-                            icon={<FaNetworkWired className="text-white text-xl" />}
-                            title="Vast Talent Network"
-                            description="Access to a premium, curated database of top-tier talent, specialized in various domains across India's major cities."
-                        />
-                        <DifferentiatorCard
-                            icon={<FaUserTie className="text-white text-xl" />}
-                            title="Sector Expertise"
-                            description="Our consultants are specialists, not generalists, ensuring a deep understanding of industry-specific requirements and cultures."
-                        />
-                        <DifferentiatorCard
-                            icon={<FaShieldAlt className="text-white text-xl" />}
-                            title="Ethical & Confidential"
-                            description="We adhere to the highest standards of professional ethics, ensuring complete confidentiality for both clients and candidates."
-                        />
-                        <DifferentiatorCard
-                            icon={<FaChartLine className="text-white text-xl" />}
-                            title="Proven Track Record"
-                            description="Over 8 years of successful placements in IT, Finance, Marketing, and Operations, contributing to client growth."
-                        />
+                        {whyChooseUs.map((item, index) => (
+                            <DifferentiatorCard
+                                key={index}
+                                icon={item.icon}
+                                title={item.title}
+                                description={item.desc}
+                            />
+                        ))}
                     </motion.div>
                 </div>
             </section>
