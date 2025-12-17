@@ -1,13 +1,6 @@
-import { useState, useEffect } from 'react'; // <-- Import useEffect
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaBriefcase, FaUpload, FaUser, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
-
-// --- PASTE YOUR GOOGLE CLOUD CREDENTIALS HERE ---
-const API_KEY = 'AIzaSyBLO3k6mIasxlVvCGOdQIFEFwFPFij2Fyk';
-const CLIENT_ID = '778409427154-b3csg6v7db08t0m9l2lfnq92jrdh86l0.apps.googleusercontent.com';
-
-// Scopes define what the file picker can access.
-const SCOPE = 'https://www.googleapis.com/auth/drive.readonly';
 
 const PostResumePage = () => {
   const [formData, setFormData] = useState({
@@ -19,43 +12,8 @@ const PostResumePage = () => {
     coverLetter: ''
   });
 
-  const [resumeData, setResumeData] = useState({ name: '', url: '' });
+  const [resumeFile, setResumeFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPickerLoading, setIsPickerLoading] = useState(false);
-  
-  // --- NEW STATE FOR MODERN AUTH ---
-  const [tokenClient, setTokenClient] = useState(null);
-
-  // --- NEW: Initialize the Google Identity Services token client when the component mounts ---
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://accounts.google.com/gsi/client';
-    script.async = true;
-    script.defer = true;
-    script.onload = () => {
-      const client = window.google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPE,
-        callback: (tokenResponse) => {
-          if (tokenResponse && tokenResponse.access_token) {
-            // Once we have the token, create and show the picker
-            createPicker(tokenResponse.access_token);
-          } else {
-            console.error('No token received from Google.');
-            alert('Could not authenticate with Google. Please try again.');
-            setIsPickerLoading(false);
-          }
-        },
-      });
-      setTokenClient(client);
-    };
-    document.body.appendChild(script);
-
-    // Cleanup function to remove the script when the component unmounts
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -65,91 +23,55 @@ const PostResumePage = () => {
     }));
   };
 
-  // --- MODIFIED: This function now requests the token ---
-  const openGooglePicker = () => {
-    if (!tokenClient) {
-      alert('Google services are still loading. Please wait a moment and try again.');
-      return;
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setResumeFile(e.target.files[0]);
     }
-    setIsPickerLoading(true);
-    tokenClient.requestAccessToken();
-  };
-
-  // --- NEW: This function creates the picker after authentication is successful ---
-  const createPicker = (accessToken) => {
-    // Load the Google Picker API script
-    const pickerScript = document.createElement('script');
-    pickerScript.src = 'https://apis.google.com/js/api.js';
-    pickerScript.onload = () => {
-      window.gapi.load('picker', () => {
-        const picker = new window.google.picker.PickerBuilder()
-          .addView(window.google.picker.ViewId.DOCS)
-          .addView(window.google.picker.ViewId.PDFS)
-          .setOAuthToken(accessToken) // Use the token we received
-          .setDeveloperKey(API_KEY)
-          .setCallback(pickerCallback);
-        picker.build().setVisible(true);
-      });
-    };
-    document.body.appendChild(pickerScript);
-  };
-  
-  // --- MODIFIED: This callback now also revokes the token for security ---
-  const pickerCallback = (data) => {
-    if (data.action === window.google.picker.Action.PICKED) {
-      const document = data.docs[0];
-      setResumeData({
-        name: document.name,
-        url: document.url,
-      });
-    }
-    setIsPickerLoading(false);
-    // It's good practice to revoke the token after you're done with it
-    window.google.accounts.oauth2.revoke(resumeData.accessToken);
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!resumeData.url) {
-      alert('Please select your resume from Google Drive.');
+    if (!resumeFile) {
+      alert('Please upload your resume file.');
       return;
     }
 
     setIsSubmitting(true);
-    const formspreeEndpoint = 'https://formspree.io/f/xzznqeje';
 
-    const dataToSend = {
-      fullName: formData.fullName,
-      email: formData.email,
-      phone: formData.phone,
-      DesiredJobTitle: formData.DesiredJobTitle,
-      linkedInProfile: formData.linkedInProfile,
-      coverLetter: formData.coverLetter,
-      resumeLink: resumeData.url,
-      subject: `New Resume Submission from ${formData.fullName}`,
-    };
+    // --- PASTE YOUR GETFORM URL HERE ---
+    const getformEndpoint = 'https://formspree.io/f/xzznqeje'; // <--- REPLACE THIS WITH YOUR GETFORM URL
+
+    const dataToSend = new FormData();
+    dataToSend.append('resume', resumeFile);
+    dataToSend.append('fullName', formData.fullName);
+    dataToSend.append('email', formData.email);
+    dataToSend.append('phone', formData.phone);
+    dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
+    dataToSend.append('linkedInProfile', formData.linkedInProfile);
+    dataToSend.append('coverLetter', formData.coverLetter);
+    
+    dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
 
     try {
-      const response = await fetch(formspreeEndpoint, {
+      const response = await fetch(getformEndpoint, {
         method: 'POST',
+        body: dataToSend,
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
+          'Accept': 'application/json'
+        }
       });
 
       if (response.ok) {
         alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
+        // Reset form
         setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
-        setResumeData({ name: '', url: '' });
+        setResumeFile(null);
         e.target.reset();
       } else {
         const errorData = await response.json();
-        alert(`Failed to submit resume: ${errorData.error || 'Please check the form and try again.'}`);
+        alert(`Failed to submit resume: ${errorData.message || 'Please check your form fields and try again.'}`);
       }
     } catch (error) {
-      console.error('Network or fetch error:', error);
+      console.error('Error submitting resume:', error);
       alert('An error occurred while submitting. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
@@ -157,8 +79,8 @@ const PostResumePage = () => {
   };
 
   return (
-    // --- Your JSX remains the same ---
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
+      {/* Animated Gold Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
       
       <div className="max-w-4xl mx-auto px-6 py-24">
@@ -166,6 +88,7 @@ const PostResumePage = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
+          // --- CHANGED: Added dark gradient background ---
           className="bg-gradient-to-b from-[#22282c] to-[#36454f] rounded-3xl border border-[#D4AF37]/20 shadow-lg p-8 md:p-12"
         >
           <div className="text-center mb-8">
@@ -173,6 +96,7 @@ const PostResumePage = () => {
             <h1 className="text-4xl font-bold font-[Playfair_Display] text-[#D4AF37] mb-3">
               Join Our Talent Network
             </h1>
+            {/* --- CHANGED: Text color to light --- */}
             <p className="text-lg text-gray-200">
               Submit your resume and we'll keep you in mind for future opportunities that match your profile.
             </p>
@@ -182,10 +106,12 @@ const PostResumePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Full Name */}
               <div>
+                {/* --- CHANGED: Label text color to light --- */}
                 <label htmlFor="fullName" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                   <FaUser className="text-[#D4AF37]" />
                   Full Name *
                 </label>
+                {/* --- CHANGED: Input styles for dark theme --- */}
                 <input
                   type="text"
                   id="fullName"
@@ -264,7 +190,7 @@ const PostResumePage = () => {
                 name="linkedInProfile"
                 value={formData.linkedInProfile}
                 onChange={handleInputChange}
-                required
+                required  // Added required attribute to make this field compulsory
                 className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
                 placeholder="https://linkedin.com/in/johndoe"
               />
@@ -274,23 +200,41 @@ const PostResumePage = () => {
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
                 <FaUpload className="text-[#D4AF37]" />
-                Resume from Google Drive *
+                Upload Resume (PDF, DOC, DOCX) *
               </label>
-              <button
-                type="button"
-                onClick={openGooglePicker}
-                disabled={isPickerLoading}
-                className="w-full px-4 py-3 border-2 border-dashed border-gray-600 rounded-lg bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300 text-gray-300"
-              >
-                {isPickerLoading ? 'Loading...' : resumeData.name ? `Selected: ${resumeData.name}` : 'Choose file from Google Drive'}
-              </button>
+              <div className="relative">
+                <input
+                  type="file"
+                  id="resume"
+                  onChange={handleFileChange}
+                  accept=".pdf,.doc,.docx"
+                  required
+                  className="hidden"
+                />
+                {/* --- CHANGED: File upload area styles for dark theme --- */}
+                <label
+                  htmlFor="resume"
+                  className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300"
+                >
+                  <div className="text-center">
+                    <FaUpload className="text-3xl text-[#D4AF37] mx-auto mb-2" />
+                    {/* --- CHANGED: Text color to light --- */}
+                    <p className="text-gray-300">
+                      {resumeFile ? resumeFile.name : 'Click to upload or drag and drop'}
+                    </p>
+                    <p className="text-xs text-gray-400">PDF, DOC, DOCX (MAX. 5MB)</p>
+                  </div>
+                </label>
+              </div>
             </div>
 
             {/* Cover Letter */}
             <div>
+              {/* --- CHANGED: Label text color to light --- */}
               <label htmlFor="coverLetter" className="text-sm font-semibold text-gray-300 mb-2 block">
                 Cover Letter / Additional Information
               </label>
+              {/* --- CHANGED: Textarea styles for dark theme --- */}
               <textarea
                 id="coverLetter"
                 name="coverLetter"
