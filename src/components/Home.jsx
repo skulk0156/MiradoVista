@@ -4,6 +4,14 @@ import heroLogo from "../assets/miradovista-logo.png";
 import heroLogo1 from "../assets/hero1.jpeg";
 import managementImg from "../assets/employeeRep.jpeg";
 import heroBg from "../assets/1218.mp4";
+// Import your custom industry icons
+import retailIcon from "../assets/side-view-woman-working-as-real-estate-agent.jpg";
+import logisticsIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain Management through Warehousing in Ukraine.jfif";
+import itIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain Management through Warehousing in Ukraine.jfif";
+import realEstateIcon from "../assets/side-view-woman-working-as-real-estate-agent.jpg";
+import bfsiIcon from "../assets/technology-concept-with-futuristic-element.jpg";
+import edTechIcon from "../assets/city-committed-education-collage-concept (4).jpg";
+import automobileIcon from "../assets/Dream car menufecturing.jfif";
 import { motion } from "framer-motion";
 import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIndustry, FaBuilding, FaUniversity, FaCar, FaShoppingCart, FaShippingFast, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -76,53 +84,53 @@ export default function Home() {
 
   const industries = [
     {
-      title: "IT",
-      desc: "Software development, cloud services, cybersecurity, and tech innovation.",
-      icon: <FaLaptopCode className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Software Development", "IT Infrastructure", "Tech Support"],
-      learnMoreLink: "/industries/it"
-    },
-    {
-      title: "Real Estate",
-      desc: "Property management, real estate development, and construction services.",
-      icon: <FaBuilding className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Property Management", "Real Estate Development", "Construction"],
-      learnMoreLink: "/industries/real-estate"
-    },
-    {
-      title: "BFSI",
-      desc: "Banking, financial services, and insurance solutions for modern businesses.",
-      icon: <FaIndustry className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Banking Services", "Financial Planning", "Insurance Solutions"],
-      learnMoreLink: "/industries/bfsi"
-    },
-    {
-      title: "EdTech",
-      desc: "Educational technology solutions, e-learning platforms, and digital training.",
-      icon: <FaUniversity className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["E-Learning Platforms", "Educational Software", "Digital Training"],
-      learnMoreLink: "/industries/edtech"
-    },
-    {
-      title: "Automobile & Manufacturing",
-      desc: "Automotive engineering, manufacturing processes, and industrial solutions.",
-      icon: <FaCar className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Automotive Engineering", "Manufacturing", "Industrial Solutions"],
-      learnMoreLink: "/industries/automobile-manufacturing"
-    },
-    {
       title: "Retail & FMCG",
       desc: "Retail management, fast-moving consumer goods, and supply chain solutions.",
-      icon: <FaShoppingCart className="w-10 h-10 text-[#D4AF37]" />,
+      icon: retailIcon,
       features: ["Retail Management", "Consumer Goods", "Supply Chain"],
       learnMoreLink: "/industries/retail-fmcg"
     },
     {
       title: "Logistic & E-commerce",
       desc: "Logistics management, e-commerce platforms, and delivery solutions.",
-      icon: <FaShippingFast className="w-10 h-10 text-[#D4AF37]" />,
+      icon: logisticsIcon,
       features: ["Logistics Management", "E-commerce Platforms", "Delivery Solutions"],
       learnMoreLink: "/industries/logistics-ecommerce"
+    },
+    {
+      title: "IT",
+      desc: "Software development, cloud services, cybersecurity, and tech innovation.",
+      icon: itIcon,
+      features: ["Software Development", "IT Infrastructure", "Tech Support"],
+      learnMoreLink: "/industries/it"
+    },
+    {
+      title: "Real Estate",
+      desc: "Property management, real estate development, and construction services.",
+      icon: realEstateIcon,
+      features: ["Property Management", "Real Estate Development", "Construction"],
+      learnMoreLink: "/industries/real-estate"
+    },
+    {
+      title: "BFSI",
+      desc: "Banking, financial services, and insurance solutions for modern businesses.",
+      icon: bfsiIcon,
+      features: ["Banking Services", "Financial Planning", "Insurance Solutions"],
+      learnMoreLink: "/industries/bfsi"
+    },
+    {
+      title: "EdTech",
+      desc: "Educational technology solutions, e-learning platforms, and digital training.",
+      icon: edTechIcon,
+      features: ["E-Learning Platforms", "Educational Software", "Digital Training"],
+      learnMoreLink: "/industries/edtech"
+    },
+    {
+      title: "Automobile & Manufacturing",
+      desc: "Automotive engineering, manufacturing processes, and industrial solutions.",
+      icon: automobileIcon,
+      features: ["Automotive Engineering", "Manufacturing", "Industrial Solutions"],
+      learnMoreLink: "/industries/automobile-manufacturing"
     }
   ];
 
@@ -401,7 +409,11 @@ export default function Home() {
                 variants={fadeUp} 
                 className="min-w-[300px] p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center hover:scale-105 transition-all h-full flex flex-col"
               >
-                <div className="flex justify-center mb-4">{industry.icon}</div>
+                <div className="flex justify-center mb-4">
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#D4AF37]/30 p-1 bg-white">
+                    <img src={industry.icon} alt={`${industry.title} icon`} className="w-full h-full rounded-full object-cover" />
+                  </div>
+                </div>
                 <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
                 <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
                 <ul className="mt-4 text-left space-y-2">
