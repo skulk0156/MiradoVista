@@ -198,15 +198,19 @@ const Jobs = () => {
         >
           Join our team and build a rewarding career with us.
         </motion.p>
-        <motion.button 
+        <motion.div 
           variants={headingVariant}
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.4 }}
-          className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-black font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300"
         >
-          Explore Positions
-        </motion.button>
+          <Link 
+            to="/contact" 
+            className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-black font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 inline-block"
+          >
+            Contact Recruiter
+          </Link>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram, FaPaperPlane, FaClock } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaLinkedinIn, FaInstagram, FaPaperPlane, FaClock } from 'react-icons/fa';
 import logo from "../assets/miradovista-logo.png";
 
 const Footer = () => {
@@ -10,6 +10,7 @@ const Footer = () => {
         { name: "Home", href: "/" },
         { name: "About Us", href: "/about" },
         { name: "Services", href: "/services" },
+        { name: "Careers", href: "/careers" },
         { name: "Contact Us", href: "/contact" },
     ];
 
@@ -21,10 +22,9 @@ const Footer = () => {
     ];
 
     const socialLinks = [
-        { icon: <FaFacebookF />, href: "#" },
-        { icon: <FaTwitter />, href: "#" },
-        { icon: <FaLinkedinIn />, href: "#" },
-        { icon: <FaInstagram />, href: "#" },
+        { icon: <FaFacebookF />, href: "https://www.facebook.com/share/1Aoztp5koT/?mibextid=wwXIfr" },
+        { icon: <FaLinkedinIn />, href: "https://www.linkedin.com/company/miradovista-hr/" },
+        { icon: <FaInstagram />, href: "https://www.instagram.com/miradovistahr/" },
     ];
 
     return (
@@ -64,24 +64,6 @@ const Footer = () => {
                                     {social.icon}
                                 </a>
                             ))}
-                        </div>
-                        
-                        {/* Newsletter Signup */}
-                        <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
-                            <h4 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                <FaPaperPlane className="text-[#D4AF37]" />
-                                Stay Updated
-                            </h4>
-                            <div className="flex flex-col sm:flex-row gap-2">
-                                <input 
-                                    type="email" 
-                                    placeholder="Your email" 
-                                    className="flex-1 px-4 py-2 rounded-lg bg-gray-700/50 backdrop-blur-sm border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] focus:bg-gray-700 transition-all"
-                                />
-                                <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-gray-900 font-medium hover:shadow-lg transition-all duration-300">
-                                    Subscribe
-                                </button>
-                            </div>
                         </div>
                     </div>
 

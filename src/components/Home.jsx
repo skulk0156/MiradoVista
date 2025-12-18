@@ -10,7 +10,7 @@ import logisticsIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain
 import itIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain Management through Warehousing in Ukraine.jfif";
 import realEstateIcon from "../assets/side-view-woman-working-as-real-estate-agent.jpg";
 import bfsiIcon from "../assets/technology-concept-with-futuristic-element.jpg";
-import edTechIcon from "../assets/city-committed-education-collage-concept (4).jpg";
+import edTechIcon from "../assets/city-committed-education.jpg";
 import automobileIcon from "../assets/Dream car menufecturing.jfif";
 import { motion } from "framer-motion";
 import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIndustry, FaBuilding, FaUniversity, FaCar, FaShoppingCart, FaShippingFast, FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -61,7 +61,7 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-scroll functionality for the slider
+  // Auto-scroll functionality for the slider with infinite loop
   useEffect(() => {
     if (!sliderRef.current || isPaused) return;
     
@@ -69,7 +69,8 @@ export default function Home() {
     const scrollAmount = 1;
     
     const scrollInterval = setInterval(() => {
-      if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+      // When reaching the end of the first set, jump to the beginning of the second set
+      if (slider.scrollLeft >= slider.scrollWidth / 2) {
         slider.scrollLeft = 0;
       } else {
         slider.scrollLeft += scrollAmount;
@@ -268,7 +269,6 @@ export default function Home() {
             <motion.div 
               whileHover={{ 
                 scale: 1.05,
-                rotate: [0, -2, 2, 0],
                 transition: { duration: 0.3 }
               }}
               className="relative"
@@ -372,7 +372,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Industries We Serve Section - Horizontal Slider */}
+      {/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
       <section id="industries" className="max-w-6xl mx-auto py-24 px-6">
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
         <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
@@ -394,7 +394,7 @@ export default function Home() {
             <FaChevronRight className="text-xl" />
           </button>
           
-          {/* Slider container */}
+          {/* Slider container with infinite loop */}
           <div 
             ref={sliderRef}
             className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
@@ -407,26 +407,61 @@ export default function Home() {
               <motion.div 
                 key={`${industry.title}-${i}`} 
                 variants={fadeUp} 
-                className="min-w-[300px] p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center hover:scale-105 transition-all h-full flex flex-col"
+                className="min-w-[300px] p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center h-full flex flex-col relative overflow-hidden"
+                style={{
+                  backgroundImage: `url(${industry.icon})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.3 }
+                }}
+                viewport={{ once: true }}
               >
-                <div className="flex justify-center mb-4">
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-[#D4AF37]/30 p-1 bg-white">
-                    <img src={industry.icon} alt={`${industry.title} icon`} className="w-full h-full rounded-full object-cover" />
+                {/* Add a semi-transparent overlay */}
+                <div className="absolute inset-0 bg-white/80 rounded-3xl"></div>
+                
+                {/* Content with higher z-index */}
+                <div className="relative z-10">
+                  <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
+                  <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
+                  <ul className="mt-4 text-left space-y-2">
+                    {industry.features.map((feature, idx) => (
+                      <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
+                        <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 flex justify-center">
+                    <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
                   </div>
                 </div>
-                <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
-                <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
-                <ul className="mt-4 text-left space-y-2">
-                  {industry.features.map((feature, idx) => (
-                    <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
-                      <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-6 flex justify-center">
-                  <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
-                </div>
+                
+                {/* Sparkle effects */}
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileInView={{ 
+                      scale: [0, 1, 0],
+                      opacity: [0, 0.5, 0],
+                      rotate: [0, 360]
+                    }}
+                    transition={{
+                      duration: 2,
+                      delay: 0.8 + i * 0.1,
+                      repeat: Infinity,
+                      repeatDelay: 4
+                    }}
+                    className="absolute w-2 h-2 bg-[#D4AF37] rounded-full z-20"
+                    style={{
+                      top: `${20 + Math.random() * 60}%`,
+                      left: `${20 + Math.random() * 60}%`,
+                    }}
+                  />
+                ))}
               </motion.div>
             ))}
           </div>
@@ -485,36 +520,13 @@ export default function Home() {
                 <p className="text-[#333333]">contact@miradovista.com</p>
               </div>
             </div>
-            <div className="mt-8 flex justify-center">
-              <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">
-                Get Directions
-                <FaArrowRight className="text-sm" />
-              </Link>
-            </div>
           </motion.div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      <section className="py-24 bg-gradient-to-r from-[#263037] to-[#36454f] text-white">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-[#F0C14B] font-[Playfair_Display]">Stay Updated</motion.h2>
-          <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-white">
-            Stay ahead of opportunities. Join our newsletter for curated job openings and industry updates.
-          </motion.p>
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-            <input type="email" placeholder="Enter your email" className="px-6 py-3 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#F0C14B] text-white placeholder-white/60 w-full sm:w-auto" />
-            <button className="px-8 py-3 rounded-full bg-gradient-to-r from-[#F0C14B] to-[#D4AF37] text-[#20292f] font-semibold shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(240,193,75,0.6)] transition-all">
-              Subscribe
-            </button>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Contact Section */}
-      <section id="contact" className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3] text-center">
+      <section id="contact" className="py-24 bg-gradient-to-br from-[#263037] to-[#36454f] text-center">
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl font-bold font-[Playfair_Display] text-[#D4AF37]">Searching for a Job?</motion.h2>
-        <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-[#333333] max-w-xl mx-auto">
+        <motion.p variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-4 text-[#ffffff] max-w-xl mx-auto">
           We're here to help you every step of the way. Connect with us to post your resume or get in touch with our recruiters.
         </motion.p>
         <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6">
@@ -522,7 +534,7 @@ export default function Home() {
             Post Your Resume
             <FaArrowRight className="text-sm" />
           </Link>
-          <Link to="/contact" className="px-8 py-3 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition flex items-center gap-2">
+          <Link to="/contact" className="px-8 py-3 rounded-full border border-[#D4AF37] bg-white text-[#000000] hover:bg-[#D4AF37] hover:text-white transition flex items-center gap-2">
             Contact Recruiter
             <FaArrowRight className="text-sm" />
           </Link>
