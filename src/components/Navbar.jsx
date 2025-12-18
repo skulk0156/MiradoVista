@@ -53,7 +53,13 @@ export default function Navbar() {
       ],
     },
     { name: "Testimonials", link: "/testimonials" },
-    { name: "Blogs", link: "/blogs" },
+    {
+      name: "Careers",
+      submenu: [
+        { name: "Jobs", link: "/careers/jobs" },
+        { name: "Internships", link: "/careers/internships" },
+      ],
+    },
     { name: "Contact Us", link: "/contact" },
   ];
 

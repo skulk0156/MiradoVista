@@ -234,8 +234,8 @@ export default function Home() {
         <motion.div initial="hidden" animate="visible" className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           {/* Left Side - Text Content */}
           <motion.div variants={fadeUp} className="text-left">
-            <motion.h1 variants={fadeUp} className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
-              Best Placement Consultant in India
+            <motion.h1 variants={fadeUp} className="text-12xl md:text-4xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
+              Creating Meaningful Connections Between Talent & Employment
             </motion.h1>
             <motion.p variants={fadeUp} className="mt-6 text-lg text-white">
               Connecting top talent with leading companies across Pune, Delhi, Mumbai, Bangalore & more.
@@ -345,7 +345,7 @@ export default function Home() {
       {/* Why Choose Us Section */}
       <section className="py-24 bg-gradient-to-r from-[#263037] to-[#36454f] text-white">
         <div className="max-w-6xl mx-auto px-6">
-          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#ffffff] font-[Playfair_Display]">Why Choose MiradoVista HR</motion.h2>
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#ffffff] font-[Playfair_Display]">Why Choose MiradoVista HR ?</motion.h2>
           <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-14">
             {whyChooseUs.map((item, i) => (
               <motion.div key={i} variants={fadeUp} className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-[#F0C14B]/30 shadow-lg hover:scale-105 transition-all h-full">

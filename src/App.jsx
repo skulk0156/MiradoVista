@@ -6,15 +6,13 @@ import AboutUs from "./components/About";
 import Services from "./components/Services";
 import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
-import Blogs from "./components/Blogs";
 import Footer from "./components/Footer";
 import AnimatedPage from "./components/AnimatedPage";
 import ScrollToTop from "./components/ScrollToTop";
 import VideoSplash from "./components/VideoSplash";
 import introVideo from "./assets/intro.mp4";
 import PostResumePage from "./components/PostResumePage";
-import BlogPost from "./components/BlogPost";
-
+import CareersPage from "./components/CareersPage";
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
 
@@ -41,8 +39,7 @@ export default function App() {
           <Route path="/services/*" element={<Services />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/:id" element={<BlogPost />} />
+          <Route path="/careers/*" element={<CareersPage />} />
           <Route path="/post-resume" element={<PostResumePage />} />
           <Route
             path="/privacy"
