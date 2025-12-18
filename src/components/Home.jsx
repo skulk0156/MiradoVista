@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import heroLogo from "../assets/miradovista-logo.png";
 import heroLogo1 from "../assets/hero1.jpeg";
 import managementImg from "../assets/employeeRep.jpeg";
-import heroBg from "../assets/hero-bg.jpg";
+import heroBg from "../assets/1218.mp4";
 import { motion } from "framer-motion";
 import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -125,9 +125,10 @@ export default function Home() {
     }
   ];
 
-  const particles = Array.from({ length: 25 }).map((_, i) => ({
+  // Reduced number of particles for less golden effect
+  const particles = Array.from({ length: 10 }).map((_, i) => ({
     id: i,
-    size: Math.random() * 4 + 2,
+    size: Math.random() * 2 + 1,
     x: Math.random() * 100,
     y: Math.random() * 100,
     delay: Math.random() * 5,
@@ -135,26 +136,36 @@ export default function Home() {
 
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
-      {/* Animated Gold Gradient Background */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
+      {/* Reduced opacity of Animated Gold Gradient Background */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-5"></div>
 
       {/* Hero Section */}
       <section className="relative px-6 py-24 overflow-hidden">
-        {/* Hero Background Image */}
+        {/* Hero Background Video - Replaced image with video element */}
         <div className="absolute inset-0 -z-5">
-          <img src={heroBg} alt="Background" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/60"></div>
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={heroBg} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Reduced overlay opacity for clearer background video */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-black/20"></div>
         </div>
         
-        {/* Floating Gold Glow */}
-        <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
+        {/* Reduced opacity and size of Floating Gold Glow */}
+        <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-10 blur-[200px] rounded-full pointer-events-none"></div>
         {particles.map((p) => (
           <motion.div
             key={p.id}
             initial={{ opacity: 0, x: `${p.x}%`, y: `${p.y}%`, scale: 0.5 }}
-            animate={{ opacity: [0, 0.6, 0], scale: [0.5, 1, 0.5] }}
+            animate={{ opacity: [0, 0.3, 0], scale: [0.5, 1, 0.5] }}
             transition={{ repeat: Infinity, duration: 8 + Math.random() * 4, delay: p.delay }}
-            className="absolute rounded-full bg-[#D4AF37] w-[4px] h-[4px] md:w-[6px] md:h-[6px] shadow-md"
+            className="absolute rounded-full bg-[#D4AF37] w-[2px] h-[2px] md:w-[3px] md:h-[3px] shadow-md"
           />
         ))}
         <motion.div initial="hidden" animate="visible" className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
@@ -199,7 +210,7 @@ export default function Home() {
               }}
               className="relative"
             >
-              {/* Animated glow effect behind logo */}
+              {/* Reduced opacity of Animated glow effect behind logo */}
               <motion.div 
                 initial={{ scale: 0 }}
                 animate={{ scale: [0, 1.5, 1] }}
@@ -210,17 +221,17 @@ export default function Home() {
                   repeatType: "reverse",
                   repeatDelay: 3
                 }}
-                className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] opacity-20 blur-xl rounded-3xl"
+                className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] opacity-10 blur-xl rounded-3xl"
               />
               <img src={heroLogo1} alt="MiradoVista HR" className="h-80 w-80 rounded-3xl relative z-10 object-cover" />
-              {/* Sparkle effects */}
-              {[...Array(6)].map((_, i) => (
+              {/* Reduced number of sparkle effects */}
+              {[...Array(3)].map((_, i) => (
                 <motion.div
                   key={i}
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ 
                     scale: [0, 1, 0],
-                    opacity: [0, 1, 0],
+                    opacity: [0, 0.5, 0],
                     rotate: [0, 360]
                   }}
                   transition={{
@@ -264,7 +275,7 @@ export default function Home() {
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} viewport={{ once: true }} className="rounded-3xl overflow-hidden shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)] transition-all">
-          <img src={managementImg} className="object-cover w-full h-[350 px]" />
+          <img src={managementImg} className="object-cover w-full h-[350px]" />
         </motion.div>
       </section>
 
@@ -421,7 +432,7 @@ export default function Home() {
         </motion.div>
       </section>
       
-      {/* Gradient animation */}
+      {/* Gradient animation - Fixed warning by removing jsx attribute */}
       <style>{`
         @keyframes gradientBackground {
           0% { background-position: 0% 50%; }
