@@ -5,7 +5,7 @@ import heroLogo1 from "../assets/hero1.jpeg";
 import managementImg from "../assets/employeeRep.jpeg";
 import heroBg from "../assets/1218.mp4";
 import { motion } from "framer-motion";
-import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIndustry, FaBuilding, FaUniversity, FaCar, FaShoppingCart, FaShippingFast, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function Home() {
   const counters = [
@@ -16,6 +16,8 @@ export default function Home() {
 
   const [values, setValues] = useState(counters.map(() => 0));
   const doneRef = useRef(false);
+  const sliderRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -51,38 +53,77 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  // Auto-scroll functionality for the slider
+  useEffect(() => {
+    if (!sliderRef.current || isPaused) return;
+    
+    const slider = sliderRef.current;
+    const scrollAmount = 1;
+    
+    const scrollInterval = setInterval(() => {
+      if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth) {
+        slider.scrollLeft = 0;
+      } else {
+        slider.scrollLeft += scrollAmount;
+      }
+    }, 30);
+    
+    return () => clearInterval(scrollInterval);
+  }, [isPaused]);
+
   const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
   const staggerParent = { visible: { transition: { staggerChildren: 0.2 } } };
 
-  const services = [
+  const industries = [
     {
-      title: "HR Solutions",
-      desc: "End-to-end recruitment, onboarding & employee relations.",
-      icon: <FaUserTie className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Talent Sourcing", "Skill Assessment", "Interview Coordination"],
-      learnMoreLink: "/services/hr-consulting"
-    },
-    {
-      title: "IT Services",
-      desc: "Software solutions, app development & IT staffing.",
+      title: "IT",
+      desc: "Software development, cloud services, cybersecurity, and tech innovation.",
       icon: <FaLaptopCode className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Custom Development", "IT Staffing", "Tech Consulting"],
-      learnMoreLink: "/services/it-consulting"
+      features: ["Software Development", "IT Infrastructure", "Tech Support"],
+      learnMoreLink: "/industries/it"
     },
     {
-      title: "Office Supplies",
-      desc: "Stationery, electronics & more delivered on demand.",
-      icon: <FaBoxes className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Bulk Ordering", "Fast Delivery", "Quality Products"],
-      learnMoreLink: "/services/stationery-supplies"
+      title: "Real Estate",
+      desc: "Property management, real estate development, and construction services.",
+      icon: <FaBuilding className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Property Management", "Real Estate Development", "Construction"],
+      learnMoreLink: "/industries/real-estate"
     },
     {
-      title: "Legal & Compliance",
-      desc: "Corporate legal advice and accounting services.",
-      icon: <FaGavel className="w-10 h-10 text-[#D4AF37]" />,
-      features: ["Legal Advisory", "Compliance Management", "Documentation"],
-      learnMoreLink: "/services/legal-consulting"
+      title: "BFSI",
+      desc: "Banking, financial services, and insurance solutions for modern businesses.",
+      icon: <FaIndustry className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Banking Services", "Financial Planning", "Insurance Solutions"],
+      learnMoreLink: "/industries/bfsi"
     },
+    {
+      title: "EdTech",
+      desc: "Educational technology solutions, e-learning platforms, and digital training.",
+      icon: <FaUniversity className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["E-Learning Platforms", "Educational Software", "Digital Training"],
+      learnMoreLink: "/industries/edtech"
+    },
+    {
+      title: "Automobile & Manufacturing",
+      desc: "Automotive engineering, manufacturing processes, and industrial solutions.",
+      icon: <FaCar className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Automotive Engineering", "Manufacturing", "Industrial Solutions"],
+      learnMoreLink: "/industries/automobile-manufacturing"
+    },
+    {
+      title: "Retail & FMCG",
+      desc: "Retail management, fast-moving consumer goods, and supply chain solutions.",
+      icon: <FaShoppingCart className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Retail Management", "Consumer Goods", "Supply Chain"],
+      learnMoreLink: "/industries/retail-fmcg"
+    },
+    {
+      title: "Logistic & E-commerce",
+      desc: "Logistics management, e-commerce platforms, and delivery solutions.",
+      icon: <FaShippingFast className="w-10 h-10 text-[#D4AF37]" />,
+      features: ["Logistics Management", "E-commerce Platforms", "Delivery Solutions"],
+      learnMoreLink: "/industries/logistics-ecommerce"
+    }
   ];
 
   const testimonials = [
@@ -133,6 +174,20 @@ export default function Home() {
     y: Math.random() * 100,
     delay: Math.random() * 5,
   }));
+
+  // Function to handle manual slider navigation
+  const handleSliderNavigation = (direction) => {
+    if (!sliderRef.current) return;
+    
+    const slider = sliderRef.current;
+    const scrollAmount = 320; // Width of one card plus gap
+    
+    if (direction === 'left') {
+      slider.scrollLeft -= scrollAmount;
+    } else {
+      slider.scrollLeft += scrollAmount;
+    }
+  };
 
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
@@ -309,31 +364,61 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="max-w-6xl mx-auto py-24 px-6">
-        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Services We Offer</motion.h2>
-        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Professional solutions tailored for your business needs.</p>
-        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-14">
-          {services.map((svc, i) => (
-            <motion.div key={i} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center hover:scale-105 transition-all h-full flex flex-col">
-              <div className="flex justify-center mb-4">{svc.icon}</div>
-              <h4 className="text-lg font-semibold text-[#D4AF37]">{svc.title}</h4>
-              <p className="mt-3 text-sm text-[#333333] flex-grow">{svc.desc}</p>
-              <ul className="mt-4 text-left space-y-2">
-                {svc.features.map((feature, idx) => (
-                  <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
-                    <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex justify-center gap-3">
-                <Link to={svc.learnMoreLink} className="px-4 py-2 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium hover:scale-105 transition">Learn More</Link>
-                <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+      {/* Industries We Serve Section - Horizontal Slider */}
+      <section id="industries" className="max-w-6xl mx-auto py-24 px-6">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
+        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
+        
+        <div className="relative mt-14">
+          {/* Navigation buttons */}
+          <button 
+            onClick={() => handleSliderNavigation('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3 shadow-lg"
+            aria-label="Previous slide"
+          >
+            <FaChevronLeft className="text-xl" />
+          </button>
+          <button 
+            onClick={() => handleSliderNavigation('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3 shadow-lg"
+            aria-label="Next slide"
+          >
+            <FaChevronRight className="text-xl" />
+          </button>
+          
+          {/* Slider container */}
+          <div 
+            ref={sliderRef}
+            className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {/* Duplicate the industries array for seamless looping */}
+            {[...industries, ...industries].map((industry, i) => (
+              <motion.div 
+                key={`${industry.title}-${i}`} 
+                variants={fadeUp} 
+                className="min-w-[300px] p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center hover:scale-105 transition-all h-full flex flex-col"
+              >
+                <div className="flex justify-center mb-4">{industry.icon}</div>
+                <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
+                <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
+                <ul className="mt-4 text-left space-y-2">
+                  {industry.features.map((feature, idx) => (
+                    <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
+                      <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6 flex justify-center">
+                  <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Testimonials Section */}
@@ -441,6 +526,9 @@ export default function Home() {
         }
         .animate-gradientBackground {
           animation: gradientBackground 30s ease infinite;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </div>
