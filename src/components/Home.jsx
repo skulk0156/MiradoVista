@@ -371,103 +371,82 @@ export default function Home() {
           ))}
         </motion.div>
       </section>
+// Find this section in your code and replace it with the updated version
 
-      {/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
-      <section id="industries" className="max-w-6xl mx-auto py-24 px-6">
-        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
-        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
-        
-        <div className="relative mt-14">
-          {/* Navigation buttons */}
-          <button 
-            onClick={() => handleSliderNavigation('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3 shadow-lg"
-            aria-label="Previous slide"
-          >
-            <FaChevronLeft className="text-xl" />
-          </button>
-          <button 
-            onClick={() => handleSliderNavigation('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3 shadow-lg"
-            aria-label="Next slide"
-          >
-            <FaChevronRight className="text-xl" />
-          </button>
+{/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
+{/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
+<section id="industries" className="max-w-8xl mx-auto py-24 px-8">
+  <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
+  <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
+  
+  <div className="relative mt-14">
+    {/* Navigation buttons */}
+    <button 
+      onClick={() => handleSliderNavigation('left')}
+      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
+      aria-label="Previous slide"
+    >
+      <FaChevronLeft className="text-xl" />
+    </button>
+    <button 
+      onClick={() => handleSliderNavigation('right')}
+      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
+      aria-label="Next slide"
+    >
+      <FaChevronRight className="text-xl" />
+    </button>
+    
+    {/* Slider container with infinite loop */}
+    <div 
+      ref={sliderRef}
+      className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide pt-8"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
+      {/* Duplicate the industries array for seamless looping */}
+      {[...industries, ...industries].map((industry, i) => (
+        <motion.div 
+          key={`${industry.title}-${i}`} 
+          variants={fadeUp} 
+          className="min-w-[300px] p-8 pt-12 rounded-3xl border border-[#D4AF37]/20 text-center h-full flex flex-col relative overflow-hidden"
+          style={{
+            backgroundImage: `url(${industry.icon})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          whileHover={{ 
+            scale: 1.05,
+            x: Math.random() > 0.5 ? 10 : -10,
+            transition: { duration: 0.3, type: "spring", stiffness: 300 },
+            zIndex: 10
+          }}
+          viewport={{ once: true }}
+        >
+          {/* Add a semi-transparent overlay */}
+          <div className="absolute inset-0 bg-white/60 rounded-3xl"></div>
           
-          {/* Slider container with infinite loop */}
-          <div 
-            ref={sliderRef}
-            className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {/* Duplicate the industries array for seamless looping */}
-            {[...industries, ...industries].map((industry, i) => (
-              <motion.div 
-                key={`${industry.title}-${i}`} 
-                variants={fadeUp} 
-                className="min-w-[300px] p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center h-full flex flex-col relative overflow-hidden"
-                style={{
-                  backgroundImage: `url(${industry.icon})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-                whileHover={{ 
-                  scale: 1.05,
-                  transition: { duration: 0.3 }
-                }}
-                viewport={{ once: true }}
-              >
-                {/* Add a semi-transparent overlay */}
-                <div className="absolute inset-0 bg-white/80 rounded-3xl"></div>
-                
-                {/* Content with higher z-index */}
-                <div className="relative z-10">
-                  <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
-                  <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
-                  <ul className="mt-4 text-left space-y-2">
-                    {industry.features.map((feature, idx) => (
-                      <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
-                        <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                        <span>{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-6 flex justify-center">
-                    <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
-                  </div>
-                </div>
-                
-                {/* Sparkle effects */}
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ 
-                      scale: [0, 1, 0],
-                      opacity: [0, 0.5, 0],
-                      rotate: [0, 360]
-                    }}
-                    transition={{
-                      duration: 2,
-                      delay: 0.8 + i * 0.1,
-                      repeat: Infinity,
-                      repeatDelay: 4
-                    }}
-                    className="absolute w-2 h-2 bg-[#D4AF37] rounded-full z-20"
-                    style={{
-                      top: `${20 + Math.random() * 60}%`,
-                      left: `${20 + Math.random() * 60}%`,
-                    }}
-                  />
-                ))}
-              </motion.div>
-            ))}
+          {/* Content with higher z-index */}
+          <div className="relative z-10">
+            <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
+            <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
+            <ul className="mt-4 text-left space-y-2">
+              {industry.features.map((feature, idx) => (
+                <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
+                  <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 flex justify-center">
+              <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white/80 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
+            </div>
           </div>
-        </div>
-      </section>
-
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
       {/* Testimonials Section */}
       <section className="py-24 bg-gradient-to-r from-[#263037] to-[#36454f] text-white">
         <div className="max-w-6xl mx-auto px-6">

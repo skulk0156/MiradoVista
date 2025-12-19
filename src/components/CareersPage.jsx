@@ -90,51 +90,51 @@ const iconVariant = {
 // Main Careers component
 const Careers = () => {
   return (
-    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-24 text-black min-h-screen">
+    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-16 sm:pt-20 md:pt-24 text-black min-h-screen">
       {/* Animated Gold Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
       
-      <div className="px-6 md:px-12 lg:px-24">
+      <div className="px-4 sm:px-6 md:px-12 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <motion.h1 
             variants={headingVariant}
             initial="hidden"
             animate="visible"
-            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-8"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6 sm:mb-8 text-center md:text-left"
           >
             Careers
           </motion.h1>
           
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12"
             variants={containerVariant}
             initial="hidden"
             animate="visible"
           >
             <motion.div 
-              className="p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg hover:scale-105 transition-all text-white"
+              className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg hover:scale-105 transition-all text-white"
               variants={itemVariant}
             >
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
-                <FaBriefcase className="text-white text-2xl" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
+                <FaBriefcase className="text-white text-xl sm:text-2xl" />
               </div>
-              <h2 className="text-2xl font-semibold text-white mb-4">Join Our Team</h2>
-              <p className="text-white/90 mb-6 leading-relaxed">Explore opportunities to grow your career with us.</p>
-              <Link to="/careers/jobs" className="inline-block px-6 py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300">
+              <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">Join Our Team</h2>
+              <p className="text-white/90 mb-6 leading-relaxed text-sm sm:text-base">Explore opportunities to grow your career with us.</p>
+              <Link to="/careers/jobs" className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 text-sm sm:text-base">
                 View Open Positions
               </Link>
             </motion.div>
             
             <motion.div 
-              className="p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg hover:scale-105 transition-all text-white"
+              className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg hover:scale-105 transition-all text-white"
               variants={itemVariant}
             >
-              <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
-                <FaGraduationCap className="text-white text-2xl" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
+                <FaGraduationCap className="text-white text-xl sm:text-2xl" />
               </div>
-              <h2 class="text-2xl font-semibold text-white mb-4 text-center">Internship Program</h2>
-              <p className="text-white/90 mb-6 leading-relaxed">Kickstart your career with our internship opportunities.</p>
-              <Link to="/careers/internships" className="inline-block px-6 py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300">
+              <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4 text-center">Internship Program</h2>
+              <p className="text-white/90 mb-6 leading-relaxed text-sm sm:text-base">Kickstart your career with our internship opportunities.</p>
+              <Link to="/careers/internships" className="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 text-sm sm:text-base">
                 Learn More
               </Link>
             </motion.div>
@@ -180,12 +180,12 @@ const Jobs = () => {
       />
       
       {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col justify-center items-center p-6 text-center">
+      <div className="absolute inset-0 flex flex-col justify-center items-center p-4 sm:p-6 text-center">
         <motion.h1 
           variants={headingVariant}
           initial="hidden"
           animate="visible"
-          className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#263037] to-[#36454f] bg-clip-text text-transparent font-[Playfair_Display] mb-6 pb-2"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight bg-gradient-to-r from-[#263037] to-[#36454f] bg-clip-text text-transparent font-[Playfair_Display] mb-4 sm:mb-6 pb-2"
         >
           Career Opportunities
         </motion.h1>
@@ -194,7 +194,7 @@ const Jobs = () => {
           initial="hidden"
           animate="visible"
           transition={{ delay: 0.2 }}
-          className="text-lg text-black mb-8 max-w-2xl leading-relaxed"
+          className="text-base sm:text-lg text-black mb-6 sm:mb-8 max-w-xl sm:max-w-2xl leading-relaxed"
         >
           Join our team and build a rewarding career with us.
         </motion.p>
@@ -206,7 +206,7 @@ const Jobs = () => {
         >
           <Link 
             to="/contact" 
-            className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-black font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 inline-block"
+            className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-black font-medium rounded-full hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-300 inline-block text-sm sm:text-base"
           >
             Contact Recruiter
           </Link>
@@ -231,57 +231,57 @@ const Internships = () => {
         }}
       />
       
-      <div className="pt-24 px-6 md:px-12 lg:px-24 pb-12 relative">
+      <div className="pt-16 sm:pt-20 md:pt-24 px-4 sm:px-6 md:px-12 lg:px-24 pb-8 sm:pb-12 relative">
         <div className="max-w-7xl mx-auto">
           <motion.h1 
             variants={headingVariant}
             initial="hidden"
             animate="visible"
-            className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-8 leading-tight pb-2 text-center"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#8B4513] to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display] mb-6 sm:mb-8 leading-tight pb-2 text-center"
             style={{ lineHeight: '1.2' }}
           >
             Internship Program
           </motion.h1>
           
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12"
             variants={containerVariant}
             initial="hidden"
             animate="visible"
           >
             {/* Business Development Executive */}
             <motion.div 
-              className="p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
+              className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
               variants={cardVariant}
               whileHover="hover"
             >
               <motion.div 
-                className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4"
+                className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4"
                 variants={iconVariant}
                 whileHover="hover"
               >
-                <FaRocket className="text-white text-2xl" />
+                <FaRocket className="text-white text-xl sm:text-2xl" />
               </motion.div>
-              <h2 className="text-2xl font-semibold text-white mb-4">Business Development Executive</h2>
-              <p className="text-white/90 mb-6 leading-relaxed">Join our business development team and gain hands-on experience in market research, client relations, and strategic planning.</p>
+              <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">Business Development Executive</h2>
+              <p className="text-white/90 mb-6 leading-relaxed text-sm sm:text-base">Join our business development team and gain hands-on experience in market research, client relations, and strategic planning.</p>
               {/* Apply Now button removed */}
             </motion.div>
             
             {/* Talent Acquisition Specialist */}
             <motion.div 
-              className="p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
+              className="p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
               variants={cardVariant}
               whileHover="hover"
             >
               <motion.div 
-                className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4"
+                className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4"
                 variants={iconVariant}
                 whileHover="hover"
               >
-                <FaUsers className="text-white text-2xl" />
+                <FaUsers className="text-white text-xl sm:text-2xl" />
               </motion.div>
-              <h2 className="text-2xl font-semibold text-white mb-4">Talent Acquisition Specialist</h2>
-              <p className="text-white/90 mb-6 leading-relaxed">Learn the art of recruitment and talent management while working with our HR team to identify and attract top talent.</p>
+              <h2 className="text-xl sm:text-2xl font-semibold text-white mb-4">Talent Acquisition Specialist</h2>
+              <p className="text-white/90 mb-6 leading-relaxed text-sm sm:text-base">Learn the art of recruitment and talent management while working with our HR team to identify and attract top talent.</p>
               
               {/* Subcategories */}
               <div className="mt-6 space-y-4">
@@ -315,21 +315,21 @@ const Internships = () => {
           </motion.div>
           
           <motion.div 
-            className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
+            className="mt-8 sm:mt-12 p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-[#263037] to-[#36454f] shadow-lg text-white"
             variants={itemVariant}
             initial="hidden"
             animate="visible"
             transition={{ delay: 0.3 }}
           >
             <motion.h3 
-              className="text-xl font-semibold text-white mb-6 text-center"
+              className="text-xl font-semibold text-white mb-4 sm:mb-6 text-center"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
               Why Intern With Us?
             </motion.h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mt-4 sm:mt-6">
               <motion.div 
                 className="text-center"
                 initial={{ opacity: 0, y: 30 }}
@@ -338,14 +338,14 @@ const Internships = () => {
                 whileHover={{ y: -5 }}
               >
                 <motion.div 
-                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
                   variants={iconVariant}
                   whileHover="hover"
                 >
-                  <FaBook className="text-white text-2xl" />
+                  <FaBook className="text-white text-xl sm:text-2xl" />
                 </motion.div>
-                <h4 className="text-lg font-medium text-white mb-2">Hands-on Experience</h4>
-                <p className="text-white/80 text-sm leading-relaxed">Work on real projects and gain practical skills in your chosen field.</p>
+                <h4 className="text-base sm:text-lg font-medium text-white mb-2">Hands-on Experience</h4>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">Work on real projects and gain practical skills in your chosen field.</p>
               </motion.div>
               
               <motion.div 
@@ -356,14 +356,14 @@ const Internships = () => {
                 whileHover={{ y: -5 }}
               >
                 <motion.div 
-                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
                   variants={iconVariant}
                   whileHover="hover"
                 >
-                  <FaUsers className="text-white text-2xl" />
+                  <FaUsers className="text-white text-xl sm:text-2xl" />
                 </motion.div>
-                <h4 className="text-lg font-medium text-white mb-2">Mentorship</h4>
-                <p className="text-white/80 text-sm leading-relaxed">Learn from industry experts who guide you throughout your internship journey.</p>
+                <h4 className="text-base sm:text-lg font-medium text-white mb-2">Mentorship</h4>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">Learn from industry experts who guide you throughout your internship journey.</p>
               </motion.div>
               
               <motion.div 
@@ -374,14 +374,14 @@ const Internships = () => {
                 whileHover={{ y: -5 }}
               >
                 <motion.div 
-                  className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
+                  className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center shadow-lg"
                   variants={iconVariant}
                   whileHover="hover"
                 >
-                  <FaHandshake className="text-white text-2xl" />
+                  <FaHandshake className="text-white text-xl sm:text-2xl" />
                 </motion.div>
-                <h4 className="text-lg font-medium text-white mb-2">Career Opportunities</h4>
-                <p className="text-white/80 text-sm leading-relaxed">Outstanding interns may receive full-time employment offers upon completion.</p>
+                <h4 className="text-base sm:text-lg font-medium text-white mb-2">Career Opportunities</h4>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">Outstanding interns may receive full-time employment offers upon completion.</p>
               </motion.div>
             </div>
           </motion.div>
