@@ -5,9 +5,9 @@ import heroLogo1 from "../assets/hero1.jpeg";
 import managementImg from "../assets/employeeRep.jpeg";
 import heroBg from "../assets/1218.mp4";
 // Import your custom industry icons
-import retailIcon from "../assets/side-view-woman-working-as-real-estate-agent.jpg";
-import logisticsIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain Management through Warehousing in Ukraine.jfif";
-import itIcon from "../assets/Logistics Made Easy_ Enhancing Supply Chain Management through Warehousing in Ukraine.jfif";
+import retailIcon from "../assets/retail.jfif";
+import logisticsIcon from "../assets/Logistics& Ecom.jfif";
+import itIcon from "../assets/it.jpg";
 import realEstateIcon from "../assets/side-view-woman-working-as-real-estate-agent.jpg";
 import bfsiIcon from "../assets/technology-concept-with-futuristic-element.jpg";
 import edTechIcon from "../assets/city-committed-education.jpg";
