@@ -1,8 +1,23 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+    FaMapMarkerAlt,
+    FaPhone,
+    FaEnvelope,
+    FaClock,
+    FaCheckCircle,
+    FaExclamationCircle,
+    FaSpinner
+} from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
 
+/**
+ * A professional contact form component with validation and email submission.
+ * Includes success/error feedback and loading states.
+ */
 const Contact = () => {
+    // --- State Management ---
+    // Manages all form data, submission status, errors, and UI states.
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -13,30 +28,46 @@ const Contact = () => {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // --- Configuration ---
+    // EmailJS credentials. It's best practice to store these in environment variables for production.
+    const EMAILJS_SERVICE_ID = 'service_xq8cl85';
+    const EMAILJS_TEMPLATE_ID = 'template_dfjjfm5';
+    const EMAILJS_PUBLIC_KEY = '38Sl428DjprrRZRgT';
+
+    // --- Effects ---
+    // Initialize EmailJS service when the component mounts.
+    useEffect(() => {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+    }, []);
+
+    // --- Handlers ---
+    /**
+     * Validates the form data against a set of rules.
+     * @returns {object} An object containing any validation errors.
+     */
     const validateForm = () => {
         const newErrors = {};
-        
         if (!formData.name.trim()) {
             newErrors.name = 'Name is required';
         }
-        
         if (!formData.email.trim()) {
             newErrors.email = 'Email is required';
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             newErrors.email = 'Please enter a valid email address';
         }
-        
         if (!formData.service) {
             newErrors.service = 'Please select a service';
         }
-        
         if (!formData.message.trim()) {
             newErrors.message = 'Message is required';
         }
-        
         return newErrors;
     };
 
+    /**
+     * Handles input changes and updates the form state.
+     * @param {object} e - The event object from the input element.
+     */
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -46,6 +77,10 @@ const Contact = () => {
         }
     };
 
+    /**
+     * Handles the form submission process, including validation, API calls, and UI feedback.
+     * @param {object} e - The form submission event.
+     */
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formErrors = validateForm();
@@ -56,27 +91,44 @@ const Contact = () => {
         }
         
         setIsSubmitting(true);
+        setErrors({});
         
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            const templateParams = {
+                from_name: formData.name,
+                from_email: formData.email,
+                service: formData.service,
+                message: formData.message,
+            };
             
-            console.log("Form Submitted:", formData);
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams
+            );
+            
+            console.log("Email sent successfully");
             setIsSubmitted(true);
             setFormData({ name: '', email: '', service: '', message: '' });
-            setErrors({});
             
+            // Hide success message after 5 seconds
             setTimeout(() => setIsSubmitted(false), 5000);
         } catch (error) {
-            console.error("Error submitting form:", error);
-            setErrors({ submit: 'Failed to submit form. Please try again later.' });
+            console.error("Error sending email:", error);
+            setErrors({ submit: 'Failed to send message. Please try again later.' });
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+    // --- Animation Variants ---
+    // Defines the animation for the fade-in effect.
+    const fadeUp = { 
+        hidden: { opacity: 0, y: 20 }, 
+        visible: { opacity: 1, y: 0 } 
+    };
 
+    // --- Render ---
     return (
         <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
             
@@ -103,10 +155,11 @@ const Contact = () => {
                 </div>
             </motion.section>
 
-            {/* Contact Grid */}
+            {/* Contact Form & Details Grid */}
             <section className="max-w-6xl mx-auto px-6 pb-24">
                 <div className="grid md:grid-cols-2 gap-12">
                     
+                    {/* --- Contact Form --- */}
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
@@ -121,29 +174,32 @@ const Contact = () => {
                             Send Us a Message
                         </h2>
 
-                        {isSubmitted && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0 }}
-                                className="mb-6 p-4 bg-green-100 text-green-900 rounded-xl text-center shadow-md flex items-center justify-center gap-2"
-                            >
-                                <FaCheckCircle className="text-green-600" />
-                                Thank you! Your message has been received.
-                            </motion.div>
-                        )}
+                        {/* --- Success/Error Feedback --- */}
+                        <AnimatePresence>
+                            {isSubmitted && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0 }}
+                                    className="mb-6 p-4 bg-green-100 text-green-900 rounded-xl text-center shadow-md flex items-center justify-center gap-2"
+                                >
+                                    <FaCheckCircle className="text-green-600" />
+                                    <span>Thank you! Your message has been received. We'll get back to you shortly.</span>
+                                </motion.div>
+                            )}
+                            {errors.submit && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="mb-6 p-4 bg-red-100 text-red-900 rounded-xl text-center shadow-md flex items-center justify-center gap-2"
+                                >
+                                    <FaExclamationCircle className="text-red-600" />
+                                    <span>{errors.submit}</span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
 
-                        {errors.submit && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="mb-6 p-4 bg-red-100 text-red-900 rounded-xl text-center shadow-md flex items-center justify-center gap-2"
-                            >
-                                <FaExclamationCircle className="text-red-600" />
-                                {errors.submit}
-                            </motion.div>
-                        )}
-
+                        {/* --- Form Fields --- */}
                         <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                             <div>
                                 <label htmlFor="name" className="block mb-2 font-medium">Full Name</label>
@@ -156,7 +212,7 @@ const Contact = () => {
                                     required
                                     aria-invalid={errors.name ? 'true' : 'false'}
                                     aria-describedby={errors.name ? 'name-error' : undefined}
-                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.name ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.name ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-colors duration-300`}
                                 />
                                 {errors.name && (
                                     <p id="name-error" className="mt-1 text-sm text-red-300 flex items-center gap-1">
@@ -177,7 +233,7 @@ const Contact = () => {
                                     required
                                     aria-invalid={errors.email ? 'true' : 'false'}
                                     aria-describedby={errors.email ? 'email-error' : undefined}
-                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.email ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.email ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-colors duration-300`}
                                 />
                                 {errors.email && (
                                     <p id="email-error" className="mt-1 text-sm text-red-300 flex items-center gap-1">
@@ -235,7 +291,7 @@ const Contact = () => {
                                     required
                                     aria-invalid={errors.message ? 'true' : 'false'}
                                     aria-describedby={errors.message ? 'message-error' : undefined}
-                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.message ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]`}
+                                    className={`w-full px-5 py-3 rounded-2xl bg-white/20 border ${errors.message ? 'border-red-500' : 'border-white/20'} text-white placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] resize-none transition-colors duration-300`}
                                 />
                                 {errors.message && (
                                     <p id="message-error" className="mt-1 text-sm text-red-300 flex items-center gap-1">
@@ -245,16 +301,21 @@ const Contact = () => {
                                 )}
                             </div>
 
+                            {/* --- Submit Button --- */}
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className={`w-full py-3 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white font-semibold shadow-lg hover:scale-105 transition duration-300 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                className={`w-full py-3 rounded-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${
+                                    isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] hover:scale-105 hover:shadow-lg'
+                                }`}
                             >
+                                {isSubmitting ? <FaSpinner className="animate-spin" /> : null}
                                 {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                             </button>
                         </form>
                     </motion.div>
 
+                    {/* --- Contact Details --- */}
                     <motion.div
                         initial="hidden"
                         whileInView="visible"
@@ -271,47 +332,44 @@ const Contact = () => {
 
                         <div className="space-y-6">
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center">
-                                    <FaMapMarkerAlt className="text-white" />
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center flex-shrink-0">
+                                    <FaMapMarkerAlt className="text-white text-xl" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Corporate Office</h3>
-                                    <p>Office No. 41/42 Tejaswani HSG,<br/> Baner Gaon, Haveli , Pune <br/>Maharashtra - 411045</p>
+                                    <p className="text-gray-200">Office No. 41/42 Tejaswani HSG,<br/> Baner Gaon, Haveli , Pune <br/>Maharashtra - 411045</p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center">
-                                    <FaPhone className="text-white" />
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center flex-shrink-0">
+                                    <FaPhone className="text-white text-xl" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Phone</h3>
-                                    <p>+91-8669667854</p>
+                                    <p className="text-gray-200">+91-8669667854</p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center">
-                                    <FaEnvelope className="text-white" />
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center flex-shrink-0">
+                                    <FaEnvelope className="text-white text-xl" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Email</h3>
                                     <p>
-                                        <a href="contact@miradovistahr.com" className="text-[#F0C14B]">contact@miradovistahr.com</a><br/>
+                                        <a href="mailto:contact@miradovistahr.com" className="text-[#F0C14B] hover:underline">contact@miradovistahr.com</a>
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center">
-                                    <FaClock className="text-white" />
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center flex-shrink-0">
+                                    <FaClock className="text-white text-xl" />
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-[#D4AF37] mb-1">Business Hours</h3>
-                                    <p>
-                                        Monday - Friday : 9 AM - 6 PM
-
-                                    </p>
+                                    <p className="text-gray-200">Monday - Friday : 9 AM - 6 PM</p>
                                 </div>
                             </div>
                         </div>
@@ -319,8 +377,8 @@ const Contact = () => {
                 </div>
             </section>
 
-            {/* Gradient Animation */}
-            <style>{`
+            {/* --- Gradient Animation --- */}
+            <style jsx>{`
                 @keyframes gradientBackground {
                     0% { background-position: 0% 50%; }
                     50% { background-position: 100% 50%; }

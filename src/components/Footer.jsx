@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt, FaFacebookF, FaLinkedinIn, FaInstagram, FaPaperPlane, FaClock } from 'react-icons/fa';
 import logo from "../assets/miradovista-logo.png";
 
 const Footer = () => {
+    const navigate = useNavigate();
     const currentYear = new Date().getFullYear();
 
     const quickLinks = [
@@ -15,10 +16,11 @@ const Footer = () => {
     ];
 
     const services = [
-        { name: "HR Consulting", href: "/services/hr-consulting" },
-        { name: "Legal Solutions", href: "/services/legal-consulting" },
-        { name: "IT Services", href: "/services/it-consulting" },
-        { name: "Office Supplies", href: "/services/stationery-supplies" },
+        { name: "Talent Acquisition Services", link: "/services/talent-acquisition" },
+        { name: "Industry-Specific Hiring", link: "/services/industry-hiring" },
+        { name: "Consulting & Advisory", link: "/services/consulting-advisory" },
+        { name: "Candidate Services", link: "/services/candidate-services" },
+        { name: "Employer Support", link: "/services/employer-support" },
     ];
 
     const socialLinks = [
@@ -26,6 +28,11 @@ const Footer = () => {
         { icon: <FaLinkedinIn />, href: "https://www.linkedin.com/company/miradovista-hr/" },
         { icon: <FaInstagram />, href: "https://www.instagram.com/miradovistahr/" },
     ];
+
+    const handleServiceClick = (path) => {
+        console.log(`Navigating to: ${path}`);
+        navigate(path);
+    };
 
     return (
         <footer className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-[Poppins] overflow-hidden">
@@ -97,13 +104,13 @@ const Footer = () => {
                         <ul className="space-y-3">
                             {services.map((service, index) => (
                                 <li key={index}>
-                                    <Link 
-                                        to={service.href} 
-                                        className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300 flex items-center group"
+                                    <button
+                                        onClick={() => handleServiceClick(service.link)}
+                                        className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300 flex items-center group text-left w-full"
                                     >
                                         <span className="w-0 h-0.5 bg-[#D4AF37] mr-0 transition-all duration-300 group-hover:w-6 group-hover:mr-2"></span>
                                         {service.name}
-                                    </Link>
+                                    </button>
                                 </li>
                             ))}
                         </ul>

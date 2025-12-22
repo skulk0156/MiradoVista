@@ -371,8 +371,6 @@ export default function Home() {
           ))}
         </motion.div>
       </section>
-// Find this section in your code and replace it with the updated version
-
 {/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
 {/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
 <section id="industries" className="max-w-8xl mx-auto py-24 px-8">

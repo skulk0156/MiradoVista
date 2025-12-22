@@ -1,8 +1,45 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaBriefcase, FaUpload, FaUser, FaEnvelope, FaPhone, FaLinkedin } from 'react-icons/fa';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  FaBriefcase,
+  FaUpload,
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaLinkedin,
+  FaTimes,
+  FaCheck,
+  FaExclamationTriangle,
+  FaSpinner
+} from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
+
+// Toast Notification Component
+const Toast = ({ message, type, isVisible }) => {
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: -50, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.9 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className={`fixed top-5 right-5 z-50 p-4 rounded-lg shadow-xl flex items-center gap-3 text-white font-medium text-sm ${
+            type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          }`}
+        >
+          {type === 'success' ? <FaCheck className="text-xl" /> : <FaExclamationTriangle className="text-xl" />}
+          <span>{message}</span>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 
 const PostResumePage = () => {
+  const formRef = useRef(null);
+  const fileInputRef = useRef(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -14,81 +51,144 @@ const PostResumePage = () => {
 
   const [resumeFile, setResumeFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [toast, setToast] = useState({ message: '', type: '', isVisible: false });
+  const [errors, setErrors] = useState({});
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+  // Cloudinary Configuration
+  const CLOUDINARY_CLOUD_NAME = 'dpgjy3rs7';
+  const CLOUDINARY_UPLOAD_PRESET = 'resume_uploads';
+
+  // EmailJS Configuration
+  const EMAILJS_SERVICE_ID = 'service_zgnm035';
+  const EMAILJS_TEMPLATE_ID = 'template_91ejmvk';
+  const EMAILJS_PUBLIC_KEY = '38Sl428DjprrRZRgT';
+
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  const showToast = function(message, type) {
+    setToast({ message, type, isVisible: true });
+    setTimeout(function() {
+      setToast(currentToast => ({ ...currentToast, isVisible: false }));
+    }, 4000);
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setResumeFile(e.target.files[0]);
+  const handleInputChange = function(e) {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-  const handleSubmit = async (e) => {
-    if (!resumeFile) {
-      alert('Please upload your resume file.');
+  const handleFileChange = function(file) {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Resume must be under 5MB', 'error');
       return;
     }
+    setResumeFile(file);
+    if (errors.resume) {
+      setErrors(prev => ({ ...prev, resume: '' }));
+    }
+  };
+  
+  const onFileDrop = function(e) {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFileChange(e.dataTransfer.files[0]);
+    }
+  };
 
+  const onDragOver = function(e) {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const onDragLeave = function(e) {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const removeFile = function() {
+    setResumeFile(null);
+    if(fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const validateForm = function() {
+    const newErrors = {};
+    // All these fields are mandatory and validated
+    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email address';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.DesiredJobTitle.trim()) newErrors.DesiredJobTitle = 'Desired job title is required';
+    if (!formData.linkedInProfile.trim()) newErrors.linkedInProfile = 'LinkedIn profile URL is required';
+    if (!resumeFile) newErrors.resume = 'Please upload your resume';
+    return newErrors;
+  };
+
+  const handleSubmit = async function(e) {
+    e.preventDefault();
+    const formErrors = validateForm();
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
     setIsSubmitting(true);
-
-    // --- PASTE YOUR GETFORM URL HERE ---
-    const getformEndpoint = 'https://formspree.io/f/xzznqeje'; // <--- REPLACE THIS WITH YOUR GETFORM URL
-
-    const dataToSend = new FormData();
-    dataToSend.append('resume', resumeFile);
-    dataToSend.append('fullName', formData.fullName);
-    dataToSend.append('email', formData.email);
-    dataToSend.append('phone', formData.phone);
-    dataToSend.append('DesiredJobTitle', formData.DesiredJobTitle);
-    dataToSend.append('linkedInProfile', formData.linkedInProfile);
-    dataToSend.append('coverLetter', formData.coverLetter);
-    
-    dataToSend.append('subject', `New Resume Submission from ${formData.fullName}`);
-
+    setErrors({});
     try {
-      const response = await fetch(getformEndpoint, {
-        method: 'POST',
-        body: dataToSend,
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-
-      if (response.ok) {
-        alert(`Thank you, ${formData.fullName}! Your resume has been submitted successfully.`);
-        // Reset form
-        setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
-        setResumeFile(null);
-        e.target.reset();
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to submit resume: ${errorData.message || 'Please check your form fields and try again.'}`);
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', resumeFile);
+      uploadFormData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      const cloudinaryResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`,
+        { method: 'POST', body: uploadFormData }
+      );
+      if (!cloudinaryResponse.ok) {
+        throw new Error('File upload to Cloudinary failed.');
       }
+      const fileData = await cloudinaryResponse.json();
+      const resumeUrl = fileData.secure_url;
+      const formElement = formRef.current;
+      const templateParams = {
+        from_name: formElement['fullName'].value,
+        from_email: formElement['email'].value,
+        phone: formElement['phone'].value,
+        job_title: formElement['DesiredJobTitle'].value,
+        linkedin: formElement['linkedInProfile'].value,
+        cover_letter: formElement['coverLetter'].value,
+        resume_url: resumeUrl,
+      };
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+      showToast('Thank you! Your resume has been submitted successfully.', 'success');
+      setFormData({ fullName: '', email: '', phone: '', DesiredJobTitle: '', linkedInProfile: '', coverLetter: '' });
+      setResumeFile(null);
+      formRef.current.reset();
     } catch (error) {
-      console.error('Error submitting resume:', error);
-      alert('An error occurred while submitting. Please check your connection and try again.');
+      console.error("Submission error:", error);
+      showToast('Failed to submit resume. Please try again later.', 'error');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
-      {/* Animated Gold Gradient Background */}
+    <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black min-h-screen">
+      <Toast message={toast.message} type={toast.type} isVisible={toast.isVisible} />
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-10"></div>
+      <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-20 blur-[200px] rounded-full pointer-events-none"></div>
       
       <div className="max-w-4xl mx-auto px-6 py-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          // --- CHANGED: Added dark gradient background ---
           className="bg-gradient-to-b from-[#22282c] to-[#36454f] rounded-3xl border border-[#D4AF37]/20 shadow-lg p-8 md:p-12"
         >
           <div className="text-center mb-8">
@@ -96,173 +196,219 @@ const PostResumePage = () => {
             <h1 className="text-4xl font-bold font-[Playfair_Display] text-[#D4AF37] mb-3">
               Join Our Talent Network
             </h1>
-            {/* --- CHANGED: Text color to light --- */}
             <p className="text-lg text-gray-200">
-              Submit your resume and we'll keep you in mind for future opportunities that match your profile.
+              Submit your resume and we'll contact you for matching opportunities.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Full Name */}
-              <div>
-                {/* --- CHANGED: Label text color to light --- */}
-                <label htmlFor="fullName" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                  <FaUser className="text-[#D4AF37]" />
-                  Full Name *
-                </label>
-                {/* --- CHANGED: Input styles for dark theme --- */}
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Floating Label Input */}
+              <div className="relative group">
                 <input
-                  type="text"
                   id="fullName"
                   name="fullName"
-                  value={formData.fullName}
+                  required // This field is mandatory
+                  placeholder=" "
+                  className={`input peer ${errors.fullName ? 'border-red-500' : ''}`}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                  placeholder="John Doe"
                 />
+                <label htmlFor="fullName" className="floating-label">Full Name</label>
+                <FaUser className="input-icon" />
+                {errors.fullName && <p className="mt-1 text-sm text-red-300">{errors.fullName}</p>}
               </div>
 
-              {/* Email */}
-              <div>
-                <label htmlFor="email" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                  <FaEnvelope className="text-[#D4AF37]" />
-                  Email Address *
-                </label>
+              <div className="relative group">
                 <input
-                  type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
+                  type="email"
+                  required // This field is mandatory
+                  placeholder=" "
+                  className={`input peer ${errors.email ? 'border-red-500' : ''}`}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                  placeholder="john.doe@example.com"
                 />
+                <label htmlFor="email" className="floating-label">Email Address</label>
+                <FaEnvelope className="input-icon" />
+                {errors.email && <p className="mt-1 text-sm text-red-300">{errors.email}</p>}
               </div>
 
-              {/* Phone */}
-              <div>
-                <label htmlFor="phone" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                  <FaPhone className="text-[#D4AF37]" />
-                  Phone Number *
-                </label>
+              <div className="relative group">
                 <input
-                  type="tel"
                   id="phone"
                   name="phone"
-                  value={formData.phone}
+                  required // This field is mandatory
+                  placeholder=" "
+                  className={`input peer ${errors.phone ? 'border-red-500' : ''}`}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                  placeholder="+1 234 567 8900"
                 />
+                <label htmlFor="phone" className="floating-label">Phone Number</label>
+                <FaPhone className="input-icon" />
+                {errors.phone && <p className="mt-1 text-sm text-red-300">{errors.phone}</p>}
               </div>
 
-              {/* Desired Job Title */}
-              <div>
-                <label htmlFor="DesiredJobTitle" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                  <FaBriefcase className="text-[#D4AF37]" />
-                  Desired Job Title *
-                </label>
+              <div className="relative group">
                 <input
-                  type="text"
                   id="DesiredJobTitle"
                   name="DesiredJobTitle"
-                  value={formData.DesiredJobTitle}
+                  required // This field is mandatory
+                  placeholder=" "
+                  className={`input peer ${errors.DesiredJobTitle ? 'border-red-500' : ''}`}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                  placeholder="Senior Software Engineer"
                 />
+                <label htmlFor="DesiredJobTitle" className="floating-label">Desired Job Title</label>
+                <FaBriefcase className="input-icon" />
+                {errors.DesiredJobTitle && <p className="mt-1 text-sm text-red-300">{errors.DesiredJobTitle}</p>}
               </div>
             </div>
-            
-            {/* LinkedIn Profile */}
-            <div>
-              <label htmlFor="linkedInProfile" className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                <FaLinkedin className="text-[#D4AF37]" />
-                LinkedIn Profile URL *
-              </label>
+
+            <div className="relative group">
               <input
-                type="url"
                 id="linkedInProfile"
                 name="linkedInProfile"
-                value={formData.linkedInProfile}
+                required // This field is mandatory
+                placeholder=" "
+                className={`input w-full peer ${errors.linkedInProfile ? 'border-red-500' : ''}`}
                 onChange={handleInputChange}
-                required  // Added required attribute to make this field compulsory
-                className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                placeholder="https://linkedin.com/in/johndoe"
               />
+              <label htmlFor="linkedInProfile" className="floating-label">LinkedIn Profile URL</label>
+              <FaLinkedin className="input-icon" />
+              {errors.linkedInProfile && <p className="mt-1 text-sm text-red-300">{errors.linkedInProfile}</p>}
             </div>
 
-            {/* Resume Upload */}
-            <div>
-              <label className="flex items-center gap-2 text-sm font-semibold text-gray-300 mb-2">
-                <FaUpload className="text-[#D4AF37]" />
-                Upload Resume (PDF, DOC, DOCX) *
+            {/* Enhanced File Upload - PDF ONLY */}
+            <div className="relative">
+              <input
+                ref={fileInputRef}
+                type="file"
+                id="resume"
+                accept=".pdf" // ✅ CHANGE: Accepts PDF files only
+                className="hidden"
+                onChange={(e) => handleFileChange(e.target.files[0])}
+              />
+              <label
+                htmlFor="resume"
+                onDrop={onFileDrop}
+                onDragOver={onDragOver}
+                onDragLeave={onDragLeave}
+                className={`block text-center border-2 border-dashed rounded-lg p-6 cursor-pointer transition-all duration-300 ${
+                  errors.resume
+                    ? 'border-red-500 bg-red-900/20 text-red-300'
+                    : isDragging
+                    ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                    : 'border-gray-600 bg-gray-800/40 text-gray-300 hover:border-[#D4AF37]'
+                }`}
+              >
+                <FaUpload className="mx-auto text-3xl mb-2" />
+                <p className="text-sm">
+                  {resumeFile ? resumeFile.name : 'Click to upload or drag and drop your resume'}
+                </p>
+                <p className="text-xs text-gray-400 mt-1">✅ CHANGE: (PDF only - Max 5MB)</p>
               </label>
-              <div className="relative">
-                <input
-                  type="file"
-                  id="resume"
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx"
-                  required
-                  className="hidden"
-                />
-                {/* --- CHANGED: File upload area styles for dark theme --- */}
-                <label
-                  htmlFor="resume"
-                  className="flex items-center justify-center w-full px-4 py-8 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer bg-gray-800/30 hover:bg-gray-800/50 transition-all duration-300"
-                >
-                  <div className="text-center">
-                    <FaUpload className="text-3xl text-[#D4AF37] mx-auto mb-2" />
-                    {/* --- CHANGED: Text color to light --- */}
-                    <p className="text-gray-300">
-                      {resumeFile ? resumeFile.name : 'Click to upload or drag and drop'}
-                    </p>
-                    <p className="text-xs text-gray-400">PDF, DOC, DOCX (MAX. 5MB)</p>
-                  </div>
-                </label>
-              </div>
+              {resumeFile && (
+                <div className="flex items-center justify-between mt-2 p-2 bg-gray-800/40 rounded text-sm text-gray-300">
+                  <span>{resumeFile.name} ({(resumeFile.size / 1024 / 1024).toFixed(2)} MB)</span>
+                  <button type="button" onClick={removeFile} className="text-red-400 hover:text-red-300"><FaTimes /></button>
+                </div>
+              )}
+              {errors.resume && <p className="mt-1 text-sm text-red-300">{errors.resume}</p>}
             </div>
 
-            {/* Cover Letter */}
-            <div>
-              {/* --- CHANGED: Label text color to light --- */}
-              <label htmlFor="coverLetter" className="text-sm font-semibold text-gray-300 mb-2 block">
-                Cover Letter / Additional Information
-              </label>
-              {/* --- CHANGED: Textarea styles for dark theme --- */}
+            {/* Textarea with Character Counter - Optional Field */}
+            <div className="relative group">
               <textarea
                 id="coverLetter"
                 name="coverLetter"
-                value={formData.coverLetter}
-                onChange={handleInputChange}
                 rows="5"
-                className="w-full px-4 py-3 rounded-lg border border-gray-600 bg-gray-800/50 text-white focus:outline-none focus:ring-2 focus:ring-[#D4AF37] transition-all duration-300"
-                placeholder="Tell us a bit about yourself and why you're interested in our company..."
+                placeholder=" "
+                maxLength="500"
+                className="input w-full peer resize-none"
+                onChange={handleInputChange}
               ></textarea>
+              <label htmlFor="coverLetter" className="floating-label">Cover Letter / Additional Info (Optional)</label>
+              <span className="absolute bottom-2 right-3 text-xs text-gray-400 peer-focus:text-[#D4AF37] transition-colors">
+                {formData.coverLetter.length}/500
+              </span>
             </div>
 
-            {/* Submit Button */}
-            <div className="text-center pt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`px-10 py-3 rounded-full font-semibold shadow-lg transition-all duration-300 ${
-                  isSubmitting
-                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] text-white hover:scale-105 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)]'
-                }`}
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit Resume'}
-              </button>
-            </div>
+            {/* Submit Button with Spinner */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-3 rounded-full font-semibold text-white transition-all duration-300 flex items-center justify-center gap-2 ${
+                isSubmitting
+                  ? 'bg-gray-500 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] hover:scale-105 hover:shadow-lg'
+              }`}
+            >
+              {isSubmitting ? <FaSpinner className="animate-spin" /> : null}
+              {isSubmitting ? 'Submitting...' : 'Submit Resume'}
+            </button>
           </form>
         </motion.div>
       </div>
+
+      <style jsx>{`
+        @keyframes gradientBackground {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .animate-gradientBackground {
+          animation: gradientBackground 30s ease infinite;
+        }
+        .input {
+          background-color: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          padding: 16px 16px 16px 45px; /* Left padding for icon */
+          border-radius: 8px;
+          font-size: 16px;
+          transition: all 0.3s ease;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .input:focus {
+          outline: none;
+          border-color: #D4AF37;
+          box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        .input::placeholder {
+          color: transparent;
+        }
+        .input:focus::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+        .floating-label {
+          position: absolute;
+          left: 45px;
+          top: 16px;
+          color: rgba(255, 255, 255, 0.6);
+          pointer-events: none;
+          transition: all 0.2s ease;
+          background-color: transparent;
+        }
+        .input:focus ~ .floating-label,
+        .input:not(:placeholder-shown) ~ .floating-label {
+          top: -10px;
+          left: 12px;
+          font-size: 12px;
+          color: #D4AF37;
+          background-color: #22282c;
+          padding: 0 4px;
+        }
+        .input-icon {
+          position: absolute;
+          left: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: rgba(255, 255, 255, 0.4);
+          transition: color 0.3s ease;
+        }
+        .input:focus ~ .input-icon {
+          color: #D4AF37;
+        }
+      `}</style>
     </div>
   );
 };
