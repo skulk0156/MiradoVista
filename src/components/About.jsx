@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle, FaClock, FaSearch, FaHandshake } from 'react-icons/fa';
-import aboutpiv from '../assets/Aboutpiv.png'; // Update this path to match your image location
+import { FaBullseye, FaEye, FaNetworkWired, FaUserTie, FaShieldAlt, FaChartLine, FaCheckCircle, FaClock, FaSearch, FaHandshake, FaLightbulb, FaUsers, FaAward, FaRocket } from 'react-icons/fa';
+import aboutpiv from '../assets/Aboutpiv.png';
 
 // --- Animation Variants ---
 const containerVariant = {
@@ -43,6 +43,21 @@ const DifferentiatorCard = ({ icon, title, description }) => (
     </motion.div>
 );
 
+// New component for Core Values
+const CoreValueCard = ({ icon, title, description, index }) => (
+    <motion.div 
+        className="p-6 rounded-2xl bg-gradient-to-br from-white to-[#FAF8F3] border border-[#D4AF37]/20 shadow-lg hover:shadow-xl transition-all h-full flex flex-col items-center text-center"
+        variants={itemVariant}
+        custom={index}
+    >
+        <div className="w-16 h-16 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] flex items-center justify-center mb-4">
+            {icon}
+        </div>
+        <h3 className="text-xl font-semibold text-[#8B4513] mb-3 leading-relaxed">{title}</h3>
+        <p className="text-[#333333] leading-relaxed flex-grow">{description}</p>
+    </motion.div>
+);
+
 const AboutUs = () => {
     // New data for why choose us section
     const whyChooseUs = [
@@ -65,6 +80,30 @@ const AboutUs = () => {
             title: "Transparent & Ethical Approach",
             desc: "No hidden terms, no unclear processes. We maintain complete transparency, confidentiality, and integrity throughout the hiring cycle",
             icon: <FaShieldAlt className="text-white text-xl" />
+        }
+    ];
+
+    // Core Values data
+    const coreValues = [
+        {
+            title: "Integrity and Transparency",
+            desc: "We operate with complete honesty and openness in all our dealings, ensuring trust and long-term relationships with clients and candidates.",
+            icon: <FaShieldAlt className="text-white text-xl" />
+        },
+        {
+            title: "Client-Centric Approach",
+            desc: "Your success is our priority. We tailor our solutions to meet your unique needs and exceed your expectations at every step.",
+            icon: <FaUsers className="text-white text-xl" />
+        },
+        {
+            title: "Professional Excellence",
+            desc: "We maintain the highest standards of professionalism, expertise, and quality in every aspect of our recruitment process.",
+            icon: <FaAward className="text-white text-xl" />
+        },
+        {
+            title: "Continuous Innovation",
+            desc: "We constantly evolve our methods and embrace new technologies to provide cutting-edge recruitment solutions.",
+            icon: <FaRocket className="text-white text-xl" />
         }
     ];
 
@@ -160,32 +199,30 @@ const AboutUs = () => {
                         </motion.div>
                     </motion.div>
                     
+                    {/* Core Values Section - Enhanced */}
                     <motion.div
-                        variants={headingVariant}
+                        variants={containerVariant}
                         initial="hidden"
                         whileInView="visible"
-                        transition={{ duration: 0.7, delay: 0.3 }}
-                        viewport={{ once: true, amount: 0.8 }}
-                        className="bg-white/80 backdrop-blur-sm p-8 rounded-3xl border border-[#D4AF37]/20 shadow-lg"
+                        viewport={{ once: true, amount: 0.2 }}
                     >
-                        <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center leading-relaxed">Our Core Values</h3>
-                        <div className="grid md:grid-cols-2 gap-4">
-                            <div className="flex items-start gap-3">
-                                <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333] leading-relaxed">Integrity and Transparency</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333] leading-relaxed">Client-Centric Approach</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333] leading-relaxed">Professional Excellence</span>
-                            </div>
-                            <div className="flex items-start gap-3">
-                                <FaCheckCircle className="text-[#D4AF37] mt-1" />
-                                <span className="text-[#333333] leading-relaxed">Continuous Innovation</span>
-                            </div>
+                        <motion.h3 
+                            className="text-3xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-12 leading-relaxed"
+                            variants={headingVariant}
+                        >
+                            Our Core Values
+                        </motion.h3>
+                        
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {coreValues.map((value, index) => (
+                                <CoreValueCard
+                                    key={index}
+                                    icon={value.icon}
+                                    title={value.title}
+                                    description={value.desc}
+                                    index={index}
+                                />
+                            ))}
                         </div>
                     </motion.div>
                 </div>

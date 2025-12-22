@@ -324,8 +324,8 @@ const InternshipForm = () => {
     if (!formData.education.trim()) errors.education = 'Education level is required';
     if (!formData.university.trim()) errors.university = 'University is required';
     if (!formData.graduationYear.trim()) errors.graduationYear = 'Graduation year is required';
-    if (!formData.experience.trim()) errors.experience = 'Please describe your relevant experience';
-    if (!formData.coverLetter.trim()) errors.coverLetter = 'Cover letter is required';
+    if (!formData.experience.trim()) errors.experience = 'Please describe your relevant experience or N/A';
+    if (!formData.coverLetter.trim()) errors.coverLetter = 'Cover letter is required or N/A';
     
     if (!formData.recruitmentType) {
       errors.recruitmentType = 'Please select a recruitment focus';
@@ -588,7 +588,7 @@ const InternshipForm = () => {
                     onChange={handleChange}
                     rows="4"
                     className={`w-full px-4 py-3 rounded-lg bg-white/10 border ${formErrors.experience ? 'border-red-400' : 'border-white/20'} text-white placeholder-white/50 focus:outline-none transition-all duration-300`}
-                    placeholder="Describe any relevant experience, projects, or skills that make you a good fit for this internship..."
+                    placeholder="Describe any relevant experience, projects, or skills that make you a good fit for this internship... or N/A"
                     whileFocus={inputVariant.focus}
                   ></motion.textarea>
                   {formErrors.experience && <p className="text-red-400 text-xs mt-1">{formErrors.experience}</p>}
@@ -603,7 +603,7 @@ const InternshipForm = () => {
                     onChange={handleChange}
                     rows="4"
                     className={`w-full px-4 py-3 rounded-lg bg-white/10 border ${formErrors.coverLetter ? 'border-red-400' : 'border-white/20'} text-white placeholder-white/50 focus:outline-none transition-all duration-300`}
-                    placeholder="Tell us why you're interested in this internship and what you hope to gain from the experience..."
+                    placeholder="Tell us why you're interested in this internship and what you hope to gain from the experience... or N/A"
                     whileFocus={inputVariant.focus}
                   ></motion.textarea>
                   {formErrors.coverLetter && <p className="text-red-400 text-xs mt-1">{formErrors.coverLetter}</p>}

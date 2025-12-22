@@ -38,11 +38,11 @@ const Footer = () => {
         <footer className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white font-[Poppins] overflow-hidden">
             {/* Decorative Background Pattern */}
             <div className="absolute inset-0 opacity-5">
-                <div className="absolute inset-0" style={{ 
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` 
+                <div className="absolute inset-0" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
                 }}></div>
             </div>
-            
+
             <div className="relative z-10 max-w-7xl mx-auto px-6 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     {/* Column 1: About & Logo */}
@@ -56,7 +56,7 @@ const Footer = () => {
                         <p className="text-gray-300 leading-relaxed mb-4">
                             India's leading placement consultant, connecting top talent with premier opportunities. We are your dedicated partner in growth.
                         </p>
-                        
+
                         {/* Social Media Icons */}
                         <div className="flex space-x-4 mb-6">
                             {socialLinks.map((social, index) => (
@@ -83,8 +83,8 @@ const Footer = () => {
                         <ul className="space-y-3">
                             {quickLinks.map((link, index) => (
                                 <li key={index}>
-                                    <Link 
-                                        to={link.href} 
+                                    <Link
+                                        to={link.href}
                                         className="text-gray-300 hover:text-[#D4AF37] transition-colors duration-300 flex items-center group"
                                     >
                                         <span className="w-0 h-0.5 bg-[#D4AF37] mr-0 transition-all duration-300 group-hover:w-6 group-hover:mr-2"></span>
@@ -128,7 +128,9 @@ const Footer = () => {
                                     <FaMapMarkerAlt className="text-[#D4AF37]" />
                                 </div>
                                 <p className="text-gray-300">
-                                     Baner, Pune, Maharashtra, India
+                                    Office No. 41/42 Tejaswani HSG,
+                                    Baner Gaon, Haveli , Pune
+                                    Maharashtra - 411045
                                 </p>
                             </div>
                             <div className="flex items-center gap-3 group">
@@ -161,10 +163,10 @@ const Footer = () => {
                         </p>
                     </div>
                     <p className="text-center text-gray-500 text-sm mt-4">
-                        Powered by <a 
-                            href="https://wordlanetech.com/" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        Powered by <a
+                            href="https://wordlanetech.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="text-[#D4AF37] hover:text-[#F0C14B] transition-colors duration-300"
                         >
                             Word Lane Tech
