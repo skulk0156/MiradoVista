@@ -5,7 +5,10 @@ import jobsVideo from "../assets/jobs_page.mp4";
 import Navbar from "./Navbar";
 import { useState, useEffect } from "react";
 
-// Animation variants
+// Formspree endpoint - replace with your actual Formspree endpoint
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xojakvqo';
+
+// Animation variants (unchanged)
 const containerVariant = {
     hidden: { opacity: 0 },
     visible: {
@@ -96,7 +99,7 @@ const inputVariant = {
     }
 };
 
-// Main Careers component
+// Main Careers component (unchanged)
 const Careers = () => {
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-16 sm:pt-20 md:pt-24 text-black min-h-screen">
@@ -154,7 +157,7 @@ const Careers = () => {
   );
 };
 
-// Jobs subpage
+// Jobs subpage (unchanged)
 const Jobs = () => {
   return (
     <div className="h-screen w-full overflow-hidden relative">
@@ -225,7 +228,7 @@ const Jobs = () => {
   );
 };
 
-// Internship Application Form Component
+// Internship Application Form Component with Formspree integration
 const InternshipForm = () => {
   const navigate = useNavigate();
   const { internshipType } = useParams();
@@ -239,15 +242,12 @@ const InternshipForm = () => {
     graduationYear: '',
     experience: '',
     coverLetter: '',
-    resume: null,
-    resumeUrl: '',
     recruitmentType: ''
   });
   
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [emailError, setEmailError] = useState('');
   
   // Set default recruitment type based on URL parameter
@@ -270,142 +270,44 @@ const InternshipForm = () => {
     }
   };
   
-  const handleFileChange = (e) => {
-    setFormData(prev => ({ ...prev, resume: e.target.files[0] }));
-  };
-  
-  // Function to upload file to Cloudinary using Fetch API
-  const uploadFileToCloudinary = async (file) => {
-    const cloudName = 'your-cloud-name'; // Replace with your Cloudinary cloud name
-    const uploadPreset = 'internship_resumes'; // Replace with your Cloudinary upload preset
-    
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', uploadPreset);
-    
-    try {
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`,
-        {
-          method: 'POST',
-          body: formData
-        }
-      );
-      
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-      
-      const data = await response.json();
-      return data.secure_url;
-    } catch (error) {
-      console.error('Error uploading file to Cloudinary:', error);
-      throw error;
-    }
-  };
-  
-  // Function to send email using Fetch API
-  const sendEmail = async (resumeUrl) => {
-    const emailData = {
-      to: 'hr@yourcompany.com', // Replace with your HR email
-      from: formData.email,
-      subject: `New Internship Application: ${getInternshipTitle()}`,
-      html: generateEmailHTML(resumeUrl),
-      replyTo: formData.email
+  // Function to submit form to Formspree
+  const submitToFormspree = async () => {
+    // Prepare form data for Formspree
+    const formDataForFormspree = {
+      ...formData,
+      internshipType: getInternshipTitle(),
+      submission_date: new Date().toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      _subject: `New Internship Application: ${getInternshipTitle()}`,
+      _replyto: formData.email
     };
     
     try {
-      // Using Formspree as example (you'll need to create a free account)
-      const response = await fetch('https://formspree.io/f/your-form-id', {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({
-          ...formData,
-          resumeUrl,
-          internshipType: getInternshipTitle(),
-          submission_date: new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          })
-        })
+        body: JSON.stringify(formDataForFormspree)
       });
       
       if (!response.ok) {
-        throw new Error('Failed to send email');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit form');
       }
       
       return await response.json();
     } catch (error) {
-      console.error('Error sending email:', error);
-      setEmailError('Failed to send application. Please try again later.');
+      console.error('Error submitting to Formspree:', error);
+      setEmailError(error.message || 'Failed to submit application. Please try again later.');
       throw error;
     }
-  };
-  
-  // Generate HTML email content
-  const generateEmailHTML = (resumeUrl) => {
-    return `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
-          .header { background: linear-gradient(135deg, #D4AF37, #F0C14B); color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
-          .content { background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-          .section { margin-bottom: 20px; }
-          .label { font-weight: bold; color: #8B4513; }
-          .value { margin-left: 10px; }
-          .resume-link { display: inline-block; background: #D4AF37; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>New Internship Application</h1>
-          <p>${getInternshipTitle()}</p>
-        </div>
-        <div class="content">
-          <div class="section">
-            <span class="label">Name:</span>
-            <span class="value">${formData.firstName} ${formData.lastName}</span>
-          </div>
-          <div class="section">
-            <span class="label">Email:</span>
-            <span class="value">${formData.email}</span>
-          </div>
-          <div class="section">
-            <span class="label">Phone:</span>
-            <span class="value">${formData.phone}</span>
-          </div>
-          <div class="section">
-            <span class="label">Education:</span>
-            <span class="value">${formData.education} at ${formData.university} (${formData.graduationYear})</span>
-          </div>
-          <div class="section">
-            <span class="label">Recruitment Focus:</span>
-            <span class="value">${formData.recruitmentType}</span>
-          </div>
-          <div class="section">
-            <span class="label">Experience:</span>
-            <div style="margin-top: 10px; padding: 10px; background: #f9f9f9; border-radius: 5px;">${formData.experience}</div>
-          </div>
-          <div class="section">
-            <span class="label">Cover Letter:</span>
-            <div style="margin-top: 10px; padding: 10px; background: #f9f9f9; border-radius: 5px;">${formData.coverLetter}</div>
-          </div>
-          <div class="section">
-            <span class="label">Resume:</span>
-            <a href="${resumeUrl}" class="resume-link" target="_blank">Download Resume</a>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
   };
   
   const validateForm = () => {
@@ -424,7 +326,6 @@ const InternshipForm = () => {
     if (!formData.graduationYear.trim()) errors.graduationYear = 'Graduation year is required';
     if (!formData.experience.trim()) errors.experience = 'Please describe your relevant experience';
     if (!formData.coverLetter.trim()) errors.coverLetter = 'Cover letter is required';
-    if (!formData.resume) errors.resume = 'Please upload your resume';
     
     if (!formData.recruitmentType) {
       errors.recruitmentType = 'Please select a recruitment focus';
@@ -442,17 +343,8 @@ const InternshipForm = () => {
       setEmailError('');
       
       try {
-        // Upload resume to Cloudinary
-        setUploadProgress(25);
-        const resumeUrl = await uploadFileToCloudinary(formData.resume);
-        setUploadProgress(75);
-        
-        // Update form data with resume URL
-        setFormData(prev => ({ ...prev, resumeUrl }));
-        
-        // Send email
-        await sendEmail(resumeUrl);
-        setUploadProgress(100);
+        // Submit form to Formspree
+        await submitToFormspree();
         
         // Show success message
         setIsSubmitting(false);
@@ -470,8 +362,6 @@ const InternshipForm = () => {
             graduationYear: '',
             experience: '',
             coverLetter: '',
-            resume: null,
-            resumeUrl: '',
             recruitmentType: ''
           });
           setSubmitSuccess(false);
@@ -479,7 +369,6 @@ const InternshipForm = () => {
         }, 3000);
       } catch (error) {
         setIsSubmitting(false);
-        setUploadProgress(0);
         console.error('Error submitting application:', error);
       }
     }
@@ -720,43 +609,6 @@ const InternshipForm = () => {
                   {formErrors.coverLetter && <p className="text-red-400 text-xs mt-1">{formErrors.coverLetter}</p>}
                 </motion.div>
                 
-                <motion.div variants={itemVariant} className="mb-6">
-                  <div className="relative">
-                    <motion.input
-                      type="file"
-                      id="resume"
-                      name="resume"
-                      onChange={handleFileChange}
-                      accept=".pdf,.doc,.docx"
-                      className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gradient-to-r file:from-[#D4AF37] file:to-[#F0C14B] file:text-white hover:file:from-[#D4AF37]/90 hover:file:to-[#F0C14B]/90 focus:outline-none transition-all duration-300"
-                      whileFocus={inputVariant.focus}
-                    />
-                  </div>
-                  {formErrors.resume && <p className="text-red-400 text-xs mt-1">{formErrors.resume}</p>}
-                  {formData.resume && (
-                    <p className="text-white/70 text-xs mt-1">Selected file: {formData.resume.name}</p>
-                  )}
-                </motion.div>
-                
-                {isSubmitting && uploadProgress > 0 && (
-                  <motion.div 
-                    className="mb-6"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                  >
-                    <div className="w-full bg-white/20 rounded-full h-2.5">
-                      <motion.div 
-                        className="bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] h-2.5 rounded-full"
-                        style={{ width: `${uploadProgress}%` }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${uploadProgress}%` }}
-                        transition={{ duration: 0.5 }}
-                      ></motion.div>
-                    </div>
-                    <p className="text-white/70 text-xs mt-1">Uploading and submitting... {uploadProgress}%</p>
-                  </motion.div>
-                )}
-                
                 {emailError && (
                   <motion.div 
                     className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg"
@@ -791,7 +643,7 @@ const InternshipForm = () => {
   );
 };
 
-// Internships subpage with enhanced animations
+// Internships subpage with enhanced animations (unchanged)
 const Internships = () => {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins]">
@@ -980,7 +832,7 @@ const Internships = () => {
   );
 };
 
-// Careers routing component
+// Careers routing component (unchanged)
 const CareersPage = () => {
   return (
     <Routes>
