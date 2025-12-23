@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ref, onValue, set, serverTimestamp } from "firebase/database";
+import { ref, onValue, set, serverTimestamp, runTransaction, get } from "firebase/database";
 import { database } from "../firebase/config.js";
 import { FaUsers, FaArrowRight, FaCheckCircle, FaChevronLeft, FaChevronRight, FaQuoteLeft, FaStar, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -40,77 +40,96 @@ export default function Home() {
   const sliderRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Generate unique browser fingerprint
+  // GENERATE UNIQUE ID PER TAB (Session Based)
   const generateBrowserFingerprint = () => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.textBaseline = 'top';
-    ctx.font = '14px Arial';
-    ctx.fillText('Browser fingerprint', 2, 2);
+    // Check if we already have an ID in this tab's session storage
+    let sessionId = sessionStorage.getItem('mv_visitor_session_id');
     
-    const fingerprint = [
-      navigator.userAgent,
-      navigator.language,
-      screen.width + 'x' + screen.height,
-      new Date().getTimezoneOffset(),
-      canvas.toDataURL()
-    ].join('|');
+    if (!sessionId) {
+      // If not, generate a new random ID for this specific tab
+      sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+      
+      // Save it to sessionStorage so refreshes don't count as new visitors
+      sessionStorage.setItem('mv_visitor_session_id', sessionId);
+      console.log("New Session ID generated for this tab:", sessionId);
+    } else {
+      console.log("Existing Session ID found (Page Refresh):", sessionId);
+    }
     
-    return btoa(fingerprint).substring(0, 32); // Create 32-char unique ID
+    return sessionId;
   };
 
   // Track UNIQUE visitors only on component mount
   useEffect(() => {
     const trackUniqueVisitor = async () => {
-      const fingerprint = generateBrowserFingerprint();
-      const visitorRef = ref(database, `unique_visitors/logs/${fingerprint}`);
-      const totalRef = ref(database, 'unique_visitors/total');
-      
-      // Check if this unique visitor has been tracked before
-      onValue(visitorRef, (snapshot) => {
-        const hasVisitedBefore = snapshot.exists();
-        
-        if (!hasVisitedBefore) {
-          // First time this unique visitor is coming - increment count
-          onValue(totalRef, (totalSnapshot) => {
-            const currentCount = totalSnapshot.val() || 0;
-            const newCount = currentCount + 1;
-            
-            // Update total unique visitors
-            set(totalRef, newCount);
-            
-            // Log this unique visitor
-            set(visitorRef, {
-              userId: fingerprint,
-              timestamp: serverTimestamp(),
-              userAgent: navigator.userAgent,
-              page: window.location.pathname,
-              referrer: document.referrer,
-              browserInfo: {
-                language: navigator.language,
-                platform: navigator.platform,
-                screen: `${screen.width}x${screen.height}`,
-                timezone: new Date().getTimezoneOffset()
-              }
-            });
-          }, { onlyOnce: true });
-        }
-        
+      if (!database) {
+        console.error("Firebase database is not initialized.");
         setLoading(false);
-      }, { onlyOnce: true });
+        return;
+      }
+
+      const sessionId = generateBrowserFingerprint();
+      const visitorLogRef = ref(database, `unique_visitors/logs/${sessionId}`);
+      const totalVisitorsRef = ref(database, 'unique_visitors/total');
+      
+      console.log("Tracking visitor with ID:", sessionId);
+
+      // 1. Set up real-time listener for the TOTAL count
+      const unsubscribe = onValue(totalVisitorsRef, (snapshot) => {
+        const count = snapshot.val();
+        console.log("Real-time count update:", count);
+        setUniqueVisitorCount(count || 0);
+        setLoading(false);
+      }, (error) => {
+        console.error("Permission Denied or Error reading count:", error);
+        setLoading(false);
+      });
+
+      // 2. Check if this specific tab/session has been counted
+      try {
+        const snapshot = await get(visitorLogRef);
+        
+        if (!snapshot.exists()) {
+          // NEW TAB / NEW SESSION - INCREMENT
+          console.log("New session detected! Incrementing count...");
+          
+          // A. Log the visitor
+          set(visitorLogRef, {
+            userId: sessionId,
+            timestamp: serverTimestamp(),
+            userAgent: navigator.userAgent,
+            page: window.location.pathname,
+            type: "session_based" // Indicates this counts tabs
+          });
+
+          // B. Increment Total Count
+          runTransaction(totalVisitorsRef, (currentCount) => {
+            console.log("Transaction current count:", currentCount);
+            return (currentCount || 0) + 1;
+          }).then((result) => {
+            if (result.committed) {
+              console.log("Count incremented successfully.");
+            } else {
+              console.log("Transaction aborted.");
+            }
+          }).catch((error) => {
+            console.error("Transaction failed (Check Firebase Rules):", error);
+          });
+
+        } else {
+          console.log("Returning session (Refresh). No increment.");
+        }
+      } catch (error) {
+        console.error("Error checking visitor log:", error);
+      }
+
+      return () => unsubscribe();
     };
     
     trackUniqueVisitor();
-    
-    // Listen for real-time updates to unique visitor count
-    const totalRef = ref(database, 'unique_visitors/total');
-    const unsubscribe = onValue(totalRef, (snapshot) => {
-      const count = snapshot.val() || 0;
-      setUniqueVisitorCount(count);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
   }, []);
 
   // Counter animation effect
@@ -121,7 +140,6 @@ export default function Home() {
           if (entry.isIntersecting && !doneRef.current) {
             doneRef.current = true;
             counters.forEach((c, idx) => {
-              // Skip real-time counter for animation
               if (c.isRealtime) {
                 setValues((prev) => {
                   const copy = [...prev];
@@ -317,7 +335,7 @@ export default function Home() {
         ))}
         <motion.div initial="hidden" animate="visible" className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <motion.div variants={fadeUp} className="text-left">
-            <motion.h1 variants={fadeUp} className="text-12xl md:text-4xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
+            <motion.h1 variants={fadeUp} className="text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
               Creating Meaningful Connections Between Talent & Employment
             </motion.h1>
             <motion.p variants={fadeUp} className="mt-6 text-lg text-white">
