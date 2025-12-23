@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import heroLogo from "../assets/miradovista-logo.png";
+import { motion } from "framer-motion";
+import { ref, onValue, set, serverTimestamp } from "firebase/database";
+import { database } from "../firebase/config.js";
+import { FaUsers, FaArrowRight, FaCheckCircle, FaChevronLeft, FaChevronRight, FaQuoteLeft, FaStar, FaEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
+
+// Import your assets
 import heroLogo1 from "../assets/hero1.jpeg";
 import managementImg from "../assets/employeeRep.jpeg";
 import heroBg from "../assets/1218.mp4";
-// Import your custom industry icons
 import retailIcon from "../assets/retail.jfif";
 import logisticsIcon from "../assets/Logistics& Ecom.jfif";
 import itIcon from "../assets/it.jpg";
@@ -12,14 +16,23 @@ import realEstateIcon from "../assets/side-view-woman-working-as-real-estate-age
 import bfsiIcon from "../assets/technology-concept-with-futuristic-element.jpg";
 import edTechIcon from "../assets/city-committed-education.jpg";
 import automobileIcon from "../assets/Dream car menufecturing.jfif";
-import { motion } from "framer-motion";
-import { FaUserTie, FaLaptopCode, FaBoxes, FaGavel, FaQuoteLeft, FaStar, FaArrowRight, FaCheckCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIndustry, FaBuilding, FaUniversity, FaCar, FaShoppingCart, FaShippingFast, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function Home() {
-  const counters = [
+  // Real-time unique visitor tracking
+  const [uniqueVisitorCount, setUniqueVisitorCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  
+  // Static counters
+  const staticCounters = [
     { id: "clients", end: 320, label: "Clients" },
     { id: "placements", end: 240, label: "Placements" },
-    { id: "years", end: 3.5, label: "Years" },
+    { id: "years", end: 4, label: "Years" },
+  ];
+  
+  // Combined counters with unique visitor count
+  const counters = [
+    ...staticCounters,
+    { id: "unique_visitors", end: uniqueVisitorCount, label: "Unique Visitors", isRealtime: true },
   ];
 
   const [values, setValues] = useState(counters.map(() => 0));
@@ -27,6 +40,80 @@ export default function Home() {
   const sliderRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Generate unique browser fingerprint
+  const generateBrowserFingerprint = () => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.textBaseline = 'top';
+    ctx.font = '14px Arial';
+    ctx.fillText('Browser fingerprint', 2, 2);
+    
+    const fingerprint = [
+      navigator.userAgent,
+      navigator.language,
+      screen.width + 'x' + screen.height,
+      new Date().getTimezoneOffset(),
+      canvas.toDataURL()
+    ].join('|');
+    
+    return btoa(fingerprint).substring(0, 32); // Create 32-char unique ID
+  };
+
+  // Track UNIQUE visitors only on component mount
+  useEffect(() => {
+    const trackUniqueVisitor = async () => {
+      const fingerprint = generateBrowserFingerprint();
+      const visitorRef = ref(database, `unique_visitors/logs/${fingerprint}`);
+      const totalRef = ref(database, 'unique_visitors/total');
+      
+      // Check if this unique visitor has been tracked before
+      onValue(visitorRef, (snapshot) => {
+        const hasVisitedBefore = snapshot.exists();
+        
+        if (!hasVisitedBefore) {
+          // First time this unique visitor is coming - increment count
+          onValue(totalRef, (totalSnapshot) => {
+            const currentCount = totalSnapshot.val() || 0;
+            const newCount = currentCount + 1;
+            
+            // Update total unique visitors
+            set(totalRef, newCount);
+            
+            // Log this unique visitor
+            set(visitorRef, {
+              userId: fingerprint,
+              timestamp: serverTimestamp(),
+              userAgent: navigator.userAgent,
+              page: window.location.pathname,
+              referrer: document.referrer,
+              browserInfo: {
+                language: navigator.language,
+                platform: navigator.platform,
+                screen: `${screen.width}x${screen.height}`,
+                timezone: new Date().getTimezoneOffset()
+              }
+            });
+          }, { onlyOnce: true });
+        }
+        
+        setLoading(false);
+      }, { onlyOnce: true });
+    };
+    
+    trackUniqueVisitor();
+    
+    // Listen for real-time updates to unique visitor count
+    const totalRef = ref(database, 'unique_visitors/total');
+    const unsubscribe = onValue(totalRef, (snapshot) => {
+      const count = snapshot.val() || 0;
+      setUniqueVisitorCount(count);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Counter animation effect
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -34,6 +121,16 @@ export default function Home() {
           if (entry.isIntersecting && !doneRef.current) {
             doneRef.current = true;
             counters.forEach((c, idx) => {
+              // Skip real-time counter for animation
+              if (c.isRealtime) {
+                setValues((prev) => {
+                  const copy = [...prev];
+                  copy[idx] = c.end;
+                  return copy;
+                });
+                return;
+              }
+              
               const duration = 1500;
               const frameRate = 30;
               const totalFrames = Math.round(duration / frameRate);
@@ -59,9 +156,9 @@ export default function Home() {
     const statEl = document.querySelector("#statistics");
     if (statEl) observer.observe(statEl);
     return () => observer.disconnect();
-  }, []);
+  }, [uniqueVisitorCount]);
 
-  // Auto-scroll functionality for the slider with infinite loop
+  // Auto-scroll for industries slider
   useEffect(() => {
     if (!sliderRef.current || isPaused) return;
     
@@ -69,7 +166,6 @@ export default function Home() {
     const scrollAmount = 1;
     
     const scrollInterval = setInterval(() => {
-      // When reaching the end of the first set, jump to the beginning of the second set
       if (slider.scrollLeft >= slider.scrollWidth / 2) {
         slider.scrollLeft = 0;
       } else {
@@ -89,49 +185,42 @@ export default function Home() {
       desc: "Retail management, fast-moving consumer goods, and supply chain solutions.",
       icon: retailIcon,
       features: ["Retail Management", "Consumer Goods", "Supply Chain"],
-      learnMoreLink: "/industries/retail-fmcg"
     },
     {
       title: "Logistic & E-commerce",
       desc: "Logistics management, e-commerce platforms, and delivery solutions.",
       icon: logisticsIcon,
       features: ["Logistics Management", "E-commerce Platforms", "Delivery Solutions"],
-      learnMoreLink: "/industries/logistics-ecommerce"
     },
     {
       title: "IT",
       desc: "Software development, cloud services, cybersecurity, and tech innovation.",
       icon: itIcon,
       features: ["Software Development", "IT Infrastructure", "Tech Support"],
-      learnMoreLink: "/industries/it"
     },
     {
       title: "Real Estate",
       desc: "Property management, real estate development, and construction services.",
       icon: realEstateIcon,
       features: ["Property Management", "Real Estate Development", "Construction"],
-      learnMoreLink: "/industries/real-estate"
     },
     {
       title: "BFSI",
       desc: "Banking, financial services, and insurance solutions for modern businesses.",
       icon: bfsiIcon,
       features: ["Banking Services", "Financial Planning", "Insurance Solutions"],
-      learnMoreLink: "/industries/bfsi"
     },
     {
       title: "EdTech",
       desc: "Educational technology solutions, e-learning platforms, and digital training.",
       icon: edTechIcon,
       features: ["E-Learning Platforms", "Educational Software", "Digital Training"],
-      learnMoreLink: "/industries/edtech"
     },
     {
       title: "Automobile & Manufacturing",
       desc: "Automotive engineering, manufacturing processes, and industrial solutions.",
       icon: automobileIcon,
       features: ["Automotive Engineering", "Manufacturing", "Industrial Solutions"],
-      learnMoreLink: "/industries/automobile-manufacturing"
     }
   ];
 
@@ -175,7 +264,6 @@ export default function Home() {
     }
   ];
 
-  // Reduced number of particles for less golden effect
   const particles = Array.from({ length: 10 }).map((_, i) => ({
     id: i,
     size: Math.random() * 2 + 1,
@@ -184,12 +272,11 @@ export default function Home() {
     delay: Math.random() * 5,
   }));
 
-  // Function to handle manual slider navigation
   const handleSliderNavigation = (direction) => {
     if (!sliderRef.current) return;
     
     const slider = sliderRef.current;
-    const scrollAmount = 320; // Width of one card plus gap
+    const scrollAmount = 320;
     
     if (direction === 'left') {
       slider.scrollLeft -= scrollAmount;
@@ -200,12 +287,10 @@ export default function Home() {
 
   return (
     <div className="relative overflow-x-hidden bg-gradient-to-br from-[#FAF8F3] via-white to-[#FFF9E5] font-[Poppins] pt-10 text-black">
-      {/* Reduced opacity of Animated Gold Gradient Background */}
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#F5DFB0] via-[#F0C14B] to-[#D4AF37] bg-[length:400%_400%] animate-gradientBackground opacity-5"></div>
 
       {/* Hero Section */}
       <section className="relative px-6 py-24 overflow-hidden">
-        {/* Hero Background Video - Replaced image with video element */}
         <div className="absolute inset-0 -z-5">
           <video
             className="w-full h-full object-cover"
@@ -215,13 +300,11 @@ export default function Home() {
             playsInline
           >
             <source src={heroBg} type="video/mp4" />
-            Your browser does not support the video tag.
+            Your browser does not support video tag.
           </video>
-          {/* Reduced overlay opacity for clearer background video */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-black/10 to-black/20"></div>
         </div>
         
-        {/* Reduced opacity and size of Floating Gold Glow */}
         <div className="absolute top-[-220px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-to-br from-[#F5DFB0] to-[#D4AF37] opacity-10 blur-[200px] rounded-full pointer-events-none"></div>
         {particles.map((p) => (
           <motion.div
@@ -233,7 +316,6 @@ export default function Home() {
           />
         ))}
         <motion.div initial="hidden" animate="visible" className="relative z-10 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Text Content */}
           <motion.div variants={fadeUp} className="text-left">
             <motion.h1 variants={fadeUp} className="text-12xl md:text-4xl font-extrabold leading-tight bg-gradient-to-r from-white to-[#D4AF37] bg-clip-text text-transparent font-[Playfair_Display]">
               Creating Meaningful Connections Between Talent & Employment
@@ -251,7 +333,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
           
-          {/* Right Side - Square Logo with Pop-up Animation */}
           <motion.div 
             initial={{ scale: 0, rotate: -180, opacity: 0 }} 
             animate={{ 
@@ -273,7 +354,6 @@ export default function Home() {
               }}
               className="relative"
             >
-              {/* Reduced opacity of Animated glow effect behind logo */}
               <motion.div 
                 initial={{ scale: 0 }}
                 animate={{ scale: [0, 1.5, 1] }}
@@ -287,7 +367,6 @@ export default function Home() {
                 className="absolute inset-0 bg-gradient-to-r from-[#D4AF37] to-[#F0C14B] opacity-10 blur-xl rounded-3xl"
               />
               <img src={heroLogo1} alt="MiradoVista HR" className="h-80 w-80 rounded-3xl relative z-10 object-cover" />
-              {/* Reduced number of sparkle effects */}
               {[...Array(3)].map((_, i) => (
                 <motion.div
                   key={i}
@@ -360,91 +439,125 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Statistics Section */}
+      {/* Statistics Section - UNIQUE VISITORS COUNTER */}
       <section id="statistics" className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3]">
-        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-3 gap-10 text-center max-w-6xl mx-auto px-6">
+        <motion.div variants={staggerParent} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-4 gap-10 text-center max-w-6xl mx-auto px-6">
           {counters.map((c, idx) => (
-            <motion.div key={c.id} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all">
-              <div className="text-5xl md:text-6xl font-extrabold text-[#D4AF37]">{values[idx]}+</div>
-              <div className="mt-2 text-lg text-[#333333]">{c.label}</div>
+            <motion.div key={c.id} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all relative">
+              {c.isRealtime && (
+                <div className="absolute top-2 right-2">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-2 h-2 bg-green-500 rounded-full"
+                    title="Live unique visitor count"
+                  />
+                </div>
+              )}
+              <div className="text-5xl md:text-6xl font-extrabold text-[#D4AF37]">
+                {loading && c.isRealtime ? (
+                  <span className="inline-block animate-pulse">...</span>
+                ) : (
+                  <>
+                    {values[idx]}+
+                    {c.isRealtime && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: [0, 1.2, 1] }}
+                        transition={{ duration: 0.5 }}
+                        className="inline-block ml-2"
+                        title="Total unique visitors"
+                      >
+                        <FaUsers className="text-2xl text-[#D4AF37]" />
+                      </motion.div>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="mt-2 text-lg text-[#333333] flex items-center justify-center gap-2">
+                {c.label}
+                {c.isRealtime && (
+                  <span className="text-xs text-green-600 font-semibold animate-pulse">LIVE</span>
+                )}
+              </div>
+              {c.isRealtime && (
+                <div className="mt-2 text-xs text-gray-500">
+                  Unique visitors only (no refreshes)
+                </div>
+              )}
             </motion.div>
           ))}
         </motion.div>
       </section>
-{/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
-{/* Industries We Serve Section - Horizontal Slider with Infinite Loop */}
-<section id="industries" className="max-w-8xl mx-auto py-24 px-8">
-  <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
-  <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
-  
-  <div className="relative mt-14">
-    {/* Navigation buttons */}
-    <button 
-      onClick={() => handleSliderNavigation('left')}
-      className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
-      aria-label="Previous slide"
-    >
-      <FaChevronLeft className="text-xl" />
-    </button>
-    <button 
-      onClick={() => handleSliderNavigation('right')}
-      className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
-      aria-label="Next slide"
-    >
-      <FaChevronRight className="text-xl" />
-    </button>
-    
-    {/* Slider container with infinite loop */}
-    <div 
-      ref={sliderRef}
-      className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide pt-8"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-    >
-      {/* Duplicate the industries array for seamless looping */}
-      {[...industries, ...industries].map((industry, i) => (
-        <motion.div 
-          key={`${industry.title}-${i}`} 
-          variants={fadeUp} 
-          className="min-w-[300px] p-8 pt-12 rounded-3xl border border-[#D4AF37]/20 text-center h-full flex flex-col relative overflow-hidden"
-          style={{
-            backgroundImage: `url(${industry.icon})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-          whileHover={{ 
-            scale: 1.05,
-            x: Math.random() > 0.5 ? 10 : -10,
-            transition: { duration: 0.3, type: "spring", stiffness: 300 },
-            zIndex: 10
-          }}
-          viewport={{ once: true }}
-        >
-          {/* Add a semi-transparent overlay */}
-          <div className="absolute inset-0 bg-white/60 rounded-3xl"></div>
+
+      {/* Industries Section */}
+      <section id="industries" className="max-w-8xl mx-auto py-24 px-8">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display]">Industries We Serve</motion.h2>
+        <p className="mt-4 text-center text-[#333333] max-w-2xl mx-auto">Connecting talent across diverse sectors with industry-specific recruitment solutions.</p>
+        
+        <div className="relative mt-14">
+          <button 
+            onClick={() => handleSliderNavigation('left')}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
+            aria-label="Previous slide"
+          >
+            <FaChevronLeft className="text-xl" />
+          </button>
+          <button 
+            onClick={() => handleSliderNavigation('right')}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[#D4AF37] rounded-full p-3"
+            aria-label="Next slide"
+          >
+            <FaChevronRight className="text-xl" />
+          </button>
           
-          {/* Content with higher z-index */}
-          <div className="relative z-10">
-            <h4 className="text-lg font-semibold text-[#D4AF37]">{industry.title}</h4>
-            <p className="mt-3 text-sm text-[#333333] flex-grow">{industry.desc}</p>
-            <ul className="mt-4 text-left space-y-2">
-              {industry.features.map((feature, idx) => (
-                <li key={idx} className="text-sm text-[#333333] flex items-start gap-2">
-                  <FaCheckCircle className="text-[#D4AF37] mt-0.5 flex-shrink-0" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 flex justify-center">
-              <Link to="/contact" className="px-4 py-2 rounded-full border border-[#D4AF37] bg-white/80 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
-            </div>
+          <div 
+            ref={sliderRef}
+            className="flex overflow-x-auto gap-8 pb-4 scrollbar-hide pt-8"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {[...industries, ...industries].map((industry, i) => (
+              <motion.div 
+                key={`${industry.title}-${i}`} 
+                variants={fadeUp} 
+                className="min-w-[300px] p-8 pt-12 rounded-3xl border border-[#D4AF37]/20 text-center h-full flex flex-col relative overflow-hidden"
+                style={{
+                  backgroundImage: `url(${industry.icon})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  x: Math.random() > 0.5 ? 10 : -10,
+                  transition: { duration: 0.3, type: "spring", stiffness: 300 },
+                  zIndex: 10
+                }}
+                viewport={{ once: true }}
+              >
+                <div className="absolute inset-0 bg-black/65 rounded-3xl"></div>
+                <div className="relative z-10">
+                  <h4 className="text-lg font-semibold text-[#F0C14B]">{industry.title}</h4>
+                  <p className="mt-3 text-sm text-white flex-grow">{industry.desc}</p>
+                  <ul className="mt-4 text-left space-y-2">
+                    {industry.features.map((feature, idx) => (
+                      <li key={idx} className="text-sm text-white flex items-start gap-2">
+                        <FaCheckCircle className="text-[#F0C14B] mt-0.5 flex-shrink-0" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6 flex justify-center">
+                    <Link to="/contact" className="px-4 py-2 rounded-full border border-[#F0C14B] bg-[#D4AF37]/80 text-white hover:bg-[#D4AF37] hover:text-white transition">Contact</Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section className="py-24 bg-gradient-to-r from-[#263037] to-[#36454f] text-white">
         <div className="max-w-6xl mx-auto px-6">
@@ -471,7 +584,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Rudrapur Office Section - Centered Card */}
+      {/* Office Section */}
       <section className="py-24 bg-gradient-to-br from-[#FFF9E5] to-[#FAF8F3]">
         <div className="max-w-2xl mx-auto px-6">
           <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-4xl font-bold text-center text-[#D4AF37] font-[Playfair_Display] mb-12">Our Office</motion.h2>
@@ -482,7 +595,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all"
           >
-            <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center">Pune </h3>
+            <h3 className="text-2xl font-semibold text-[#D4AF37] mb-6 text-center">Pune</h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <FaMapMarkerAlt className="text-[#D4AF37] mt-1" />
@@ -500,6 +613,7 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
       {/* Contact Section */}
       <section id="contact" className="py-24 bg-gradient-to-br from-[#263037] to-[#36454f] text-center">
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl font-bold font-[Playfair_Display] text-[#D4AF37]">Searching for a Job?</motion.h2>
@@ -518,7 +632,6 @@ export default function Home() {
         </motion.div>
       </section>
       
-      {/* Gradient animation - Fixed warning by removing jsx attribute */}
       <style>{`
         @keyframes gradientBackground {
           0% { background-position: 0% 50%; }
