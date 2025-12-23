@@ -316,12 +316,6 @@ const AboutUs = () => {
                         </motion.div>
                         <motion.div className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg text-center relative" variants={itemVariant}>
                             <div className="absolute top-2 right-2">
-                                <motion.div
-                                    animate={{ scale: [1, 1.2, 1] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                    className="w-2 h-2 bg-green-500 rounded-full"
-                                    title="Unique visitor count"
-                                />
                             </div>
                             <p className="text-5xl md:text-6xl font-extrabold text-[#D4AF37] mb-2 leading-relaxed">
                                 {loading ? (
@@ -334,7 +328,7 @@ const AboutUs = () => {
                                             animate={{ scale: [0, 1.2, 1] }}
                                             transition={{ duration: 0.5 }}
                                             className="inline-block ml-2"
-                                            title="Unique visitors"
+                                            title="visitors"
                                         >
                                             <FaUsers className="text-2xl text-[#D4AF37]" />
                                         </motion.div>
@@ -342,10 +336,8 @@ const AboutUs = () => {
                                 )}
                             </p>
                             <p className="text-lg text-[#333333] leading-relaxed flex items-center justify-center gap-2">
-                                Unique Visitors
-                                <span className="text-xs text-green-600 font-semibold animate-pulse">LIVE</span>
+                                Visitors
                             </p>
-                            <p className="mt-2 text-xs text-gray-500">Unique visitors only (no refreshes)</p>
                         </motion.div>
                     </motion.div>
                 </div>
