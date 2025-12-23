@@ -32,7 +32,7 @@ export default function Home() {
   // Combined counters with unique visitor count
   const counters = [
     ...staticCounters,
-    { id: "unique_visitors", end: uniqueVisitorCount, label: "Unique Visitors", isRealtime: true },
+    { id: "unique_visitors", end: uniqueVisitorCount, label: "Visitors", isRealtime: true },
   ];
 
   const [values, setValues] = useState(counters.map(() => 0));
@@ -446,12 +446,6 @@ export default function Home() {
             <motion.div key={c.id} variants={fadeUp} className="p-8 rounded-3xl bg-white border border-[#D4AF37]/20 shadow-lg hover:scale-105 transition-all relative">
               {c.isRealtime && (
                 <div className="absolute top-2 right-2">
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-2 h-2 bg-green-500 rounded-full"
-                    title="Live unique visitor count"
-                  />
                 </div>
               )}
               <div className="text-5xl md:text-6xl font-extrabold text-[#D4AF37]">
@@ -476,15 +470,7 @@ export default function Home() {
               </div>
               <div className="mt-2 text-lg text-[#333333] flex items-center justify-center gap-2">
                 {c.label}
-                {c.isRealtime && (
-                  <span className="text-xs text-green-600 font-semibold animate-pulse">LIVE</span>
-                )}
               </div>
-              {c.isRealtime && (
-                <div className="mt-2 text-xs text-gray-500">
-                  Unique visitors only (no refreshes)
-                </div>
-              )}
             </motion.div>
           ))}
         </motion.div>
